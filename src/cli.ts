@@ -1,13 +1,29 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs';
-import { Command } from 'commander';
+import { Command, CommanderError } from 'commander';
 import { getTemplate, listTemplates } from './catalog.js';
+import { parseTextArgs } from './cli-args.js';
 import { BUILTIN_FONTS } from './render/font.js';
 import { defaultOutputName, renderMeme } from './render/renderer.js';
 import { MemeError, type MemeSpec, type TextBox } from './spec.js';
 
+// Exit cleanly when a downstream consumer closes stdout (e.g. `meme ... | head`).
+process.stdout.on('error', (err: NodeJS.ErrnoException) => {
+  if (err.code === 'EPIPE') process.exit(0);
+  throw err;
+});
+
+const jsonMode = process.argv.includes('--json');
+
 const program = new Command();
 program.name('meme').description('Meme maker for agents').version('0.1.0');
+program.option('--templates-dir <dir>', 'load templates from a custom directory');
+program.exitOverride();
+program.configureOutput({ writeErr: () => {} });
+program.hook('preAction', () => {
+  const dir = program.opts<{ templatesDir?: string }>().templatesDir;
+  if (dir) process.env.MEME_TEMPLATES_DIR = dir;
+});
 
 function output(data: unknown, json: boolean, human: () => void): void {
   if (json) process.stdout.write(JSON.stringify(data, null, 2) + '\n');
@@ -17,20 +33,10 @@ function output(data: unknown, json: boolean, human: () => void): void {
 function fail(err: unknown, json: boolean): never {
   const code = err instanceof MemeError ? err.code : 'IO_ERROR';
   const message = err instanceof Error ? err.message : String(err);
-  if (json) process.stdout.write(JSON.stringify({ error: { code, message } }) + '\n');
+  const details = err instanceof MemeError ? err.details : undefined;
+  if (json) process.stdout.write(JSON.stringify({ error: { code, message, details } }) + '\n');
   else process.stderr.write(`error [${code}]: ${message}\n`);
   process.exit(1);
-}
-
-function parseTextArgs(values: string[]): TextBox[] {
-  return values.map((value) => {
-    const eq = value.indexOf('=');
-    if (eq === -1) return { text: value };
-    const key = value.slice(0, eq);
-    const text = value.slice(eq + 1);
-    if (/^\d+$/.test(key)) return { text };
-    return { slot: key, text };
-  });
 }
 
 interface RenderOpts {
@@ -44,13 +50,27 @@ interface RenderOpts {
   format?: 'png' | 'jpeg' | 'gif' | 'webp';
   quality?: string;
   maxWidth?: string;
+  force?: boolean;
+  strict?: boolean;
   json?: boolean;
 }
 
+function readJsonFile(path: string): unknown {
+  const raw = readFileSync(path, 'utf8');
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    throw new MemeError('INVALID_JSON', `"${path}" is not valid JSON: ${(err as Error).message}`, {
+      file: path,
+    });
+  }
+}
+
 async function runRender(opts: RenderOpts, base: MemeSpec['base']): Promise<void> {
-  let texts: TextBox[] = parseTextArgs(opts.text);
+  const slotNames = base.kind === 'template' ? getTemplate(base.id).slots.map((s) => s.name) : [];
+  let texts: TextBox[] = parseTextArgs(opts.text, slotNames);
   if (opts.textFile) {
-    const parsed = JSON.parse(readFileSync(opts.textFile, 'utf8'));
+    const parsed = readJsonFile(opts.textFile) as { texts?: TextBox[] } | TextBox[];
     texts = texts.concat(Array.isArray(parsed) ? parsed : (parsed.texts ?? []));
   }
   const spec: MemeSpec = {
@@ -60,6 +80,8 @@ async function runRender(opts: RenderOpts, base: MemeSpec['base']): Promise<void
       format: opts.format,
       quality: opts.quality ? parseInt(opts.quality, 10) : undefined,
       maxWidth: opts.maxWidth ? parseInt(opts.maxWidth, 10) : undefined,
+      overwrite: opts.force,
+      onDegrade: opts.strict ? 'error' : undefined,
     },
   };
   spec.output.path =
@@ -84,7 +106,7 @@ async function runRender(opts: RenderOpts, base: MemeSpec['base']): Promise<void
       process.stdout.write(
         `wrote ${result.path} (${result.width}x${result.height} ${result.format}, ${result.bytes} bytes)\n`,
       );
-      for (const w of result.warnings) process.stderr.write(`warning: ${w}\n`);
+      for (const w of result.warnings) process.stderr.write(`warning: ${JSON.stringify(w)}\n`);
     },
   );
 }
@@ -197,6 +219,8 @@ program
   .option('--format <fmt>', 'png|jpeg|gif|webp')
   .option('--quality <n>', 'jpeg/webp quality')
   .option('--max-width <px>', 'downscale output to max width')
+  .option('--force', 'overwrite an existing output file')
+  .option('--strict', 'treat degraded-render warnings as errors')
   .option('--json', 'JSON output')
   .action(async (opts: RenderOpts) => {
     try {
@@ -230,6 +254,8 @@ program
   .option('--format <fmt>', 'png|jpeg|webp')
   .option('--quality <n>', 'jpeg/webp quality')
   .option('--max-width <px>', 'downscale output to max width')
+  .option('--force', 'overwrite an existing output file')
+  .option('--strict', 'treat degraded-render warnings as errors')
   .option('--json', 'JSON output')
   .action(
     async (
@@ -257,32 +283,61 @@ const spec = program.command('spec').description('render from a full MemeSpec JS
 spec
   .command('render <file>')
   .option('-o, --out <path>', 'override output path')
+  .option('--force', 'overwrite an existing output file')
+  .option('--strict', 'treat degraded-render warnings as errors')
   .option('--json', 'JSON output')
-  .action(async (file: string, opts: { out?: string; json?: boolean }) => {
-    try {
-      const raw = file === '-' ? readFileSync(0, 'utf8') : readFileSync(file, 'utf8');
-      const parsed = JSON.parse(raw);
-      if (opts.out) parsed.output = { ...(parsed.output ?? {}), path: opts.out };
-      const result = await renderMeme(parsed);
-      output(
-        {
-          path: result.path,
-          width: result.width,
-          height: result.height,
-          format: result.format,
-          bytes: result.bytes,
-          warnings: result.warnings,
-        },
-        opts.json ?? false,
-        () =>
-          process.stdout.write(
-            `wrote ${result.path ?? '(buffer)'} (${result.width}x${result.height} ${result.format})\n`,
-          ),
-      );
-    } catch (err) {
-      fail(err, opts.json ?? false);
-    }
-  });
+  .action(
+    async (
+      file: string,
+      opts: { out?: string; force?: boolean; strict?: boolean; json?: boolean },
+    ) => {
+      try {
+        const raw = file === '-' ? readFileSync(0, 'utf8') : readFileSync(file, 'utf8');
+        let parsed: { output?: Record<string, unknown>; base?: { kind?: string } };
+        try {
+          parsed = JSON.parse(raw);
+        } catch (err) {
+          throw new MemeError(
+            'INVALID_JSON',
+            `"${file}" is not valid JSON: ${(err as Error).message}`,
+            { file },
+          );
+        }
+        parsed.output = { ...(parsed.output ?? {}) };
+        if (opts.out) parsed.output.path = opts.out;
+        if (opts.force) parsed.output.overwrite = true;
+        if (opts.strict) parsed.output.onDegrade = 'error';
+        if (!parsed.output.path) {
+          parsed.output.path = defaultOutputName(
+            parsed as MemeSpec,
+            (parsed.output.format as string | undefined) ??
+              (parsed.base?.kind === 'template' &&
+              getTemplateType(parsed.base as MemeSpec['base']) === 'gif'
+                ? 'gif'
+                : 'png'),
+          );
+        }
+        const result = await renderMeme(parsed);
+        output(
+          {
+            path: result.path,
+            width: result.width,
+            height: result.height,
+            format: result.format,
+            bytes: result.bytes,
+            warnings: result.warnings,
+          },
+          opts.json ?? false,
+          () =>
+            process.stdout.write(
+              `wrote ${result.path ?? '(buffer)'} (${result.width}x${result.height} ${result.format})\n`,
+            ),
+        );
+      } catch (err) {
+        fail(err, opts.json ?? false);
+      }
+    },
+  );
 
 program
   .command('fonts')
@@ -296,4 +351,12 @@ program
     });
   });
 
-program.parseAsync(process.argv).catch((err) => fail(err, false));
+program.parseAsync(process.argv).catch((err) => {
+  if (err instanceof CommanderError) {
+    if (err.code === 'commander.helpDisplayed' || err.code === 'commander.version') {
+      process.exit(0);
+    }
+    fail(new MemeError('INVALID_SPEC', err.message.replace(/^error: /, '')), jsonMode);
+  }
+  fail(err, jsonMode);
+});
