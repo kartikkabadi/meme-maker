@@ -1,5 +1,5 @@
 import type { TextBox, TextStyle } from '../spec.js';
-import { DEFAULT_FONT, loadFont, type Font, type Glyph } from './font.js';
+import { DEFAULT_FONT, isIgnorable, loadFont, type Font } from './font.js';
 
 export interface Rect {
   x: number;
@@ -61,9 +61,7 @@ export function resolveStyle(...overrides: (TextStyle | undefined)[]): ResolvedS
 }
 
 export function measureText(text: string, font: Font, size: number): number {
-  let units = 0;
-  for (const ch of text) units += font.glyph(ch.codePointAt(0)!).advanceWidth;
-  return (units / font.unitsPerEm) * size;
+  return font.measureText(text, size);
 }
 
 /** Greedy word wrap; words longer than maxWidth are placed on their own line. */
@@ -145,49 +143,6 @@ export function fitText(
   };
 }
 
-function glyphPath(glyph: Glyph, scale: number, dx: number, dy: number): string {
-  let d = '';
-  const fx = (x: number) => (dx + x * scale).toFixed(2);
-  const fy = (y: number) => (dy - y * scale).toFixed(2);
-  for (const contour of glyph.contours) {
-    const pts = contour.points;
-    if (pts.length === 0) continue;
-    // Ensure we start on an on-curve point (synthesize midpoint if needed).
-    let startIdx = pts.findIndex((p) => p.onCurve);
-    let start: { x: number; y: number };
-    if (startIdx === -1) {
-      start = { x: (pts[0]!.x + pts[1]!.x) / 2, y: (pts[0]!.y + pts[1]!.y) / 2 };
-      startIdx = 0;
-    } else {
-      start = pts[startIdx]!;
-    }
-    d += `M${fx(start.x)} ${fy(start.y)}`;
-    let prevOff: { x: number; y: number } | null = null;
-    for (let i = 1; i <= pts.length; i++) {
-      const pt = pts[(startIdx + i) % pts.length]!;
-      const target = i === pts.length ? start : pt;
-      if (i === pts.length && prevOff === null) break;
-      if (pt.onCurve || i === pts.length) {
-        if (prevOff) {
-          d += `Q${fx(prevOff.x)} ${fy(prevOff.y)} ${fx(target.x)} ${fy(target.y)}`;
-          prevOff = null;
-        } else {
-          d += `L${fx(target.x)} ${fy(target.y)}`;
-        }
-      } else {
-        if (prevOff) {
-          const mid = { x: (prevOff.x + pt.x) / 2, y: (prevOff.y + pt.y) / 2 };
-          d += `Q${fx(prevOff.x)} ${fy(prevOff.y)} ${fx(mid.x)} ${fy(mid.y)}`;
-        }
-        prevOff = { x: pt.x, y: pt.y };
-      }
-    }
-    if (prevOff) d += `Q${fx(prevOff.x)} ${fy(prevOff.y)} ${fx(start.x)} ${fy(start.y)}`;
-    d += 'Z';
-  }
-  return d;
-}
-
 export interface TextLayer {
   svg: string;
   overflow: boolean;
@@ -227,7 +182,7 @@ export function renderTextLayer(
   const unsupported = new Set<string>();
   for (const ch of text) {
     const cp = ch.codePointAt(0)!;
-    if (!/\s/.test(ch) && font.glyphIndex(cp) === 0) {
+    if (!/\s/.test(ch) && !font.hasGlyph(cp)) {
       unsupported.add(`U+${cp.toString(16).toUpperCase().padStart(4, '0')}`);
     }
   }
@@ -239,7 +194,6 @@ export function renderTextLayer(
     style.size === 'auto' ? undefined : style.size,
   );
   const { lines, size, lineHeightPx } = fitted;
-  const scale = size / font.unitsPerEm;
   const ascentPx = (font.ascender / font.unitsPerEm) * size;
   const blockHeight = lines.length * lineHeightPx;
   const anchor = box.anchor ?? defaults?.anchor ?? 'middle';
@@ -264,10 +218,13 @@ export function renderTextLayer(
     const baseline = blockTop + i * lineHeightPx + (lineHeightPx - emHeightPx) / 2 + ascentPx;
     let d = '';
     let cursor = x;
+    let prev: number | undefined;
     for (const ch of line) {
-      const glyph = font.glyph(ch.codePointAt(0)!);
-      d += glyphPath(glyph, scale, cursor, baseline);
-      cursor += glyph.advanceWidth * scale;
+      const cp = ch.codePointAt(0)!;
+      cursor += font.kerningPx(prev, cp, size);
+      d += font.pathData(cp, cursor, baseline, size);
+      cursor += font.advancePx(cp, size);
+      if (!isIgnorable(cp)) prev = cp;
     }
     if (d) paths.push(d);
     if (style.underline && line.length > 0) {
