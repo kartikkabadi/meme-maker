@@ -14,7 +14,7 @@ import { MemeError } from './spec.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const MAX_BODY_BYTES = 1_000_000;
+const MAX_SPEC_BODY_BYTES = 1_000_000;
 const THUMB_WIDTH = 320;
 
 const MIME: Record<string, string> = {
@@ -65,14 +65,14 @@ function sendError(res: ServerResponse, err: unknown): void {
   sendJson(res, status, { error: { code, message, details } });
 }
 
-async function readBody(req: IncomingMessage): Promise<unknown> {
+async function readBody(req: IncomingMessage, maxBytes = MAX_SPEC_BODY_BYTES): Promise<unknown> {
   const chunks: Buffer[] = [];
   let total = 0;
   for await (const chunk of req) {
     total += (chunk as Buffer).length;
-    if (total > MAX_BODY_BYTES) {
-      throw new MemeError('RESOURCE_LIMIT', `request body exceeds ${MAX_BODY_BYTES} bytes`, {
-        limit: MAX_BODY_BYTES,
+    if (total > maxBytes) {
+      throw new MemeError('RESOURCE_LIMIT', `request body exceeds ${maxBytes} bytes`, {
+        limit: maxBytes,
         kind: 'body_bytes',
       });
     }
@@ -279,7 +279,13 @@ async function handle(req: IncomingMessage, res: ServerResponse, uiDir: string):
     sendJson(
       res,
       200,
-      await saveHistory((await readBody(req)) as { spec?: unknown; png?: string }),
+      // History saves carry a base64 raster; allow the input-bytes limit plus base64 overhead.
+      await saveHistory(
+        (await readBody(req, Math.ceil(limits.maxInputBytes() * 1.5))) as {
+          spec?: unknown;
+          png?: string;
+        },
+      ),
     );
     return;
   }
@@ -354,7 +360,12 @@ export async function startServer(options: HttpServerOptions = {}): Promise<Runn
   setPathPolicy('confined');
   const uiDir = options.uiDir ?? join(__dirname, 'ui');
   const server = createServer((req, res) => {
-    handle(req, res, uiDir).catch((err: unknown) => sendError(res, err));
+    handle(req, res, uiDir).catch((err: unknown) => {
+      sendError(res, err);
+      // An unconsumed request body (e.g. over-limit) poisons keep-alive reuse;
+      // drop the connection once the error response is flushed.
+      if (!req.complete) res.once('close', () => req.destroy());
+    });
   });
   const port = await listen(server, options.port ?? 0);
   const url = `http://127.0.0.1:${port}`;
@@ -362,6 +373,10 @@ export async function startServer(options: HttpServerOptions = {}): Promise<Runn
     server,
     url,
     port,
-    close: () => new Promise((r) => server.close(() => r())),
+    close: () =>
+      new Promise((r) => {
+        server.close(() => r());
+        server.closeIdleConnections();
+      }),
   };
 }
