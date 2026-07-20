@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, isAbsolute, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ManifestSchema, MemeError, type Template } from './spec.js';
 
@@ -12,20 +12,43 @@ export const FONTS_DIR = join(ASSETS_DIR, 'fonts');
 let cachedTemplates: Template[] | null = null;
 let cachedDir: string | null = null;
 
-export function loadManifest(templatesDir: string = TEMPLATES_DIR): Template[] {
-  if (cachedTemplates && cachedDir === templatesDir) return cachedTemplates;
+/** Active templates dir: MEME_TEMPLATES_DIR (or --templates-dir) > bundled assets. */
+export function templatesRoot(): string {
+  return process.env.MEME_TEMPLATES_DIR ?? TEMPLATES_DIR;
+}
+
+function validateTemplateFile(file: string, id: string): void {
+  if (isAbsolute(file) || file.split(/[\\/]/).includes('..')) {
+    throw new MemeError('PATH_DENIED', `template "${id}" has an unsafe file path "${file}"`, {
+      path: file,
+    });
+  }
+}
+
+export function loadManifest(templatesDir?: string): Template[] {
+  const dir = templatesDir ?? templatesRoot();
+  if (cachedTemplates && cachedDir === dir) return cachedTemplates;
   let raw: string;
   try {
-    raw = readFileSync(join(templatesDir, 'manifest.json'), 'utf8');
+    raw = readFileSync(join(dir, 'manifest.json'), 'utf8');
   } catch (err) {
     throw new MemeError('IO_ERROR', `cannot read manifest: ${(err as Error).message}`);
   }
-  const parsed = ManifestSchema.safeParse(JSON.parse(raw));
+  let json: unknown;
+  try {
+    json = JSON.parse(raw);
+  } catch (err) {
+    throw new MemeError('INVALID_JSON', `manifest is not valid JSON: ${(err as Error).message}`, {
+      file: join(dir, 'manifest.json'),
+    });
+  }
+  const parsed = ManifestSchema.safeParse(json);
   if (!parsed.success) {
     throw new MemeError('INVALID_SPEC', `invalid manifest: ${parsed.error.message}`);
   }
+  for (const t of parsed.data.templates) validateTemplateFile(t.file, t.id);
   cachedTemplates = parsed.data.templates;
-  cachedDir = templatesDir;
+  cachedDir = dir;
   return cachedTemplates;
 }
 
@@ -62,9 +85,7 @@ export function getTemplate(id: string, templatesDir?: string): Template {
   return template;
 }
 
-export function templateImagePath(
-  template: Template,
-  templatesDir: string = TEMPLATES_DIR,
-): string {
-  return join(templatesDir, template.file);
+export function templateImagePath(template: Template, templatesDir?: string): string {
+  validateTemplateFile(template.file, template.id);
+  return join(templatesDir ?? templatesRoot(), template.file);
 }
