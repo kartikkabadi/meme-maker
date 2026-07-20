@@ -1,0 +1,145 @@
+{
+  "templates": [
+    {
+      "id": "drake",
+      "name": "Drake Hotline Bling",
+      "type": "image",
+      "file": "images/drake.jpg",
+      "width": 1200,
+      "height": 1200,
+      "tags": ["choice", "preference", "two-panel"],
+      "slots": [
+        { "name": "no", "rect": [620, 30, 560, 540], "hint": "the rejected option" },
+        { "name": "yes", "rect": [620, 630, 560, 540], "hint": "the preferred option" }
+      ],
+      "source": "https://imgflip.com/memetemplate/Drake-Hotline-Bling"
+    },
+    {
+      "id": "distracted-boyfriend",
+      "name": "Distracted Boyfriend",
+      "type": "image",
+      "file": "images/distracted-boyfriend.jpg",
+      "width": 1200,
+      "height": 800,
+      "tags": ["temptation", "choice", "three-actor"],
+      "slots": [
+        { "name": "other-woman", "rect": [90, 470, 440, 290], "hint": "the tempting new thing" },
+        { "name": "boyfriend", "rect": [580, 280, 300, 260], "hint": "the one being tempted" },
+        { "name": "girlfriend", "rect": [880, 320, 300, 320], "hint": "the neglected existing thing" }
+      ],
+      "source": "https://imgflip.com/memetemplate/Distracted-Boyfriend"
+    },
+    {
+      "id": "two-buttons",
+      "name": "Two Buttons",
+      "type": "image",
+      "file": "images/two-buttons.jpg",
+      "width": 600,
+      "height": 908,
+      "tags": ["choice", "dilemma", "decision"],
+      "slots": [
+        { "name": "left", "rect": [55, 90, 215, 130], "hint": "first difficult option" },
+        { "name": "right", "rect": [300, 55, 215, 120], "hint": "second difficult option" },
+        { "name": "caption", "rect": [30, 770, 540, 120], "hint": "who is struggling to decide (optional)" }
+      ],
+      "source": "https://imgflip.com/memetemplate/Two-Buttons"
+    },
+    {
+      "id": "change-my-mind",
+      "name": "Change My Mind",
+      "type": "image",
+      "file": "images/change-my-mind.jpg",
+      "width": 482,
+      "height": 361,
+      "tags": ["opinion", "debate", "hot-take"],
+      "slots": [
+        { "name": "sign", "rect": [200, 175, 235, 100], "hint": "the controversial opinion on the sign" }
+      ],
+      "source": "https://imgflip.com/memetemplate/Change-My-Mind"
+    },
+    {
+      "id": "surprised-pikachu",
+      "name": "Surprised Pikachu",
+      "type": "image",
+      "file": "images/surprised-pikachu.jpg",
+      "width": 1200,
+      "height": 1200,
+      "tags": ["surprise", "consequences", "reaction"],
+      "slots": [
+        { "name": "top", "rect": [40, 25, 1120, 330], "hint": "the action and its predictable consequence" }
+      ],
+      "source": "https://imgflip.com/memetemplate/Surprised-Pikachu"
+    },
+    {
+      "id": "expanding-brain",
+      "name": "Expanding Brain",
+      "type": "image",
+      "file": "images/expanding-brain.jpg",
+      "width": 857,
+      "height": 1202,
+      "tags": ["escalation", "four-panel", "galaxy-brain"],
+      "slots": [
+        { "name": "level1", "rect": [15, 15, 400, 270], "hint": "the basic idea" },
+        { "name": "level2", "rect": [15, 315, 400, 270], "hint": "a slightly smarter idea" },
+        { "name": "level3", "rect": [15, 615, 400, 270], "hint": "a much smarter idea" },
+        { "name": "level4", "rect": [15, 915, 400, 270], "hint": "the transcendent galaxy-brain idea" }
+      ],
+      "source": "https://imgflip.com/memetemplate/Expanding-Brain"
+    },
+    {
+      "id": "woman-yelling-at-cat",
+      "name": "Woman Yelling at Cat",
+      "type": "image",
+      "file": "images/woman-yelling-at-cat.jpg",
+      "width": 680,
+      "height": 438,
+      "tags": ["argument", "reaction", "two-panel"],
+      "slots": [
+        { "name": "woman", "rect": [10, 8, 320, 110], "hint": "the angry accusation" },
+        { "name": "cat", "rect": [350, 8, 320, 110], "hint": "the smug rebuttal" }
+      ],
+      "source": "https://imgflip.com/memetemplate/Woman-Yelling-At-Cat"
+    },
+    {
+      "id": "this-is-fine",
+      "name": "This Is Fine",
+      "type": "image",
+      "file": "images/this-is-fine.jpg",
+      "width": 500,
+      "height": 436,
+      "tags": ["denial", "disaster", "coping"],
+      "slots": [
+        { "name": "top", "rect": [10, 8, 480, 90], "hint": "the disaster being ignored (optional caption)" }
+      ],
+      "source": "https://imgflip.com/memetemplate/This-Is-Fine"
+    },
+    {
+      "id": "batman-slapping-robin",
+      "name": "Batman Slapping Robin",
+      "type": "image",
+      "file": "images/batman-slapping-robin.jpg",
+      "width": 400,
+      "height": 387,
+      "tags": ["correction", "interruption", "two-actor"],
+      "slots": [
+        { "name": "robin", "rect": [12, 8, 180, 95], "hint": "the naive statement being interrupted" },
+        { "name": "batman", "rect": [210, 8, 178, 95], "hint": "the forceful correction" }
+      ],
+      "source": "https://imgflip.com/memetemplate/Batman-Slapping-Robin"
+    },
+    {
+      "id": "one-does-not-simply",
+      "name": "One Does Not Simply",
+      "type": "image",
+      "file": "images/one-does-not-simply.jpg",
+      "width": 568,
+      "height": 335,
+      "tags": ["difficulty", "warning", "classic"],
+      "slots": [
+        { "name": "top", "rect": [30, 8, 508, 80], "hint": "usually 'ONE DOES NOT SIMPLY'" },
+        { "name": "bottom", "rect": [30, 245, 508, 82], "hint": "the thing that cannot simply be done" }
+      ],
+      "source": "https://imgflip.com/memetemplate/One-Does-Not-Simply"
+    }
+  ]
+}
