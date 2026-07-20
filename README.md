@@ -11,14 +11,27 @@ Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent 
 - Supports blank canvases, grid layouts (2x1, 2x2, ...), custom images, and free-form text boxes
 - Runs fully headless and offline; identical input produces identical output
 
-## Install
+## Quick start
 
 ```sh
-npm install
-npm run build
+git clone https://github.com/kartikkabadi/meme-maker.git && cd meme-maker
+npm install && npm run build
+node dist/cli.js render --template drake \
+  --text no="MANUAL MEME EDITORS" --text yes="A CLI FOR AGENTS" -o drake.png
 ```
 
-(Once published: `npm i -g agent-meme-maker`.)
+That's it — `drake.png` is a finished meme. (Once published: `npm i -g agent-meme-maker` gives you the `meme` and `meme-maker-mcp` binaries.)
+
+## Templates
+
+37 templates ship in the catalog: 32 static images (drake, distracted-boyfriend, expanding-brain, woman-yelling-at-cat, always-has-been, grus-plan, buff-doge-vs-cheems, trade-offer, ...) and 5 animated GIFs (mind-blown, deal-with-it, typing-cat, blinking-white-guy, homer-bush).
+
+```sh
+node dist/cli.js templates list --json          # full catalog with slots & tags
+node dist/cli.js templates show drake --json    # slot rects + hints for one template
+```
+
+Each template declares named text slots (e.g. drake has `no` and `yes`) with hints describing what goes where. Non-template bases (canvas, image, layout) accept the convenience slots `top`, `middle`, and `bottom`.
 
 ## CLI
 
@@ -61,6 +74,23 @@ Stdio transport, five tools: `list_templates`, `get_template`, `render_meme`, `r
 ```
 
 `render_meme` takes a full `MemeSpec` and returns the rendered image inline (≤ 1 MB) plus the file path when `output.path` is given.
+
+## MemeSpec for agents
+
+Everything renders from one declarative JSON spec — ideal for programmatic generation (see [examples/](examples/)):
+
+```json
+{
+  "base": { "kind": "template", "id": "drake" },
+  "texts": [
+    { "slot": "no", "text": "MANUAL MEME EDITORS" },
+    { "slot": "yes", "text": "A CLI FOR AGENTS" }
+  ],
+  "output": { "path": "drake.png", "format": "png" }
+}
+```
+
+Render it with `meme spec render examples/drake.json` or pass the same shape to the `render_meme` MCP tool.
 
 ## Library
 
