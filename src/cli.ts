@@ -340,6 +340,24 @@ spec
   );
 
 program
+  .command('ui')
+  .description('start the local web UI (gallery, editor, history)')
+  .option('--port <n>', 'port to listen on (auto-picks a free port on conflict)')
+  .action(async (opts: { port?: string }) => {
+    try {
+      const { startServer } = await import('./http.js');
+      const { url } = await startServer({
+        port: opts.port ? parseInt(opts.port, 10) : undefined,
+      });
+      // Machine-readable first line so agents/hosts can discover the port.
+      process.stdout.write(JSON.stringify({ url }) + '\n');
+      process.stderr.write(`meme ui listening at ${url} (Ctrl+C to stop)\n`);
+    } catch (err) {
+      fail(err, jsonMode);
+    }
+  });
+
+program
   .command('fonts')
   .description('font utilities')
   .command('list')

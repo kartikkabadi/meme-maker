@@ -394,6 +394,52 @@ async function renderMemeInner(
   return result;
 }
 
+export interface MeasuredBox {
+  box: number;
+  slot?: string;
+  rect: { x: number; y: number; width: number; height: number };
+  fittedSize: number;
+  overflow: boolean;
+}
+
+export interface MeasureResult {
+  width: number;
+  height: number;
+  boxes: MeasuredBox[];
+  warnings: Warning[];
+}
+
+/** Resolve slot rects and fitted font sizes without rasterizing (DESIGN-v2 §4.1). */
+export async function measureMeme(input: MemeSpec | unknown): Promise<MeasureResult> {
+  const spec = parseMemeSpec(input);
+  const { template, width, height } = await buildBase(spec);
+  const warnings: Warning[] = [];
+  const boxes: MeasuredBox[] = spec.texts.map((box, i) => {
+    const { rect, defaults } = resolveRect(box, template, width, height);
+    const layer = renderTextLayer(box, rect, width, height, defaults);
+    if (box.text.trim() === '') warnings.push({ code: 'EMPTY_TEXT', box: i });
+    if (layer.unsupportedGlyphs.length > 0) {
+      warnings.push({ code: 'UNSUPPORTED_GLYPHS', box: i, codepoints: layer.unsupportedGlyphs });
+    }
+    if (layer.overflow) {
+      warnings.push({ code: 'TEXT_OVERFLOW', box: i, fittedSize: layer.fittedSize });
+    }
+    return {
+      box: i,
+      slot: box.slot,
+      rect: {
+        x: Math.round(rect.x),
+        y: Math.round(rect.y),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+      },
+      fittedSize: layer.fittedSize,
+      overflow: layer.overflow,
+    };
+  });
+  return { width, height, boxes, warnings };
+}
+
 export function defaultOutputName(spec: MemeSpec, format: string): string {
   const hash = createHash('sha1').update(JSON.stringify(spec)).digest('hex').slice(0, 8);
   const name = spec.base.kind === 'template' ? spec.base.id : spec.base.kind;
