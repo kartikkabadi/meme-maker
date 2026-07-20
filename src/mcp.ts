@@ -3,10 +3,26 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 import { getTemplate, listTemplates } from './catalog.js';
+import { limits, Semaphore } from './limits.js';
+import { setPathPolicy } from './paths.js';
 import { renderMeme } from './render/renderer.js';
-import { BaseSchema, MemeError, OutputSchema, TextBoxSchema } from './spec.js';
+import { BaseSchema, MemeError, OutputSchema, TextBoxSchema, type MemeSpec } from './spec.js';
 
-const MAX_INLINE_BYTES = 1_000_000;
+// MCP is an untrusted surface: confine all file reads/writes (DESIGN-v2 §3.5).
+setPathPolicy('confined');
+
+const MAX_INLINE_BYTES = (() => {
+  const n = parseInt(process.env.MEME_MAX_INLINE_BYTES ?? '', 10);
+  return Number.isFinite(n) && n > 0 ? n : 1_000_000;
+})();
+
+// Default downscale so flagship templates fit the inline cap.
+const DEFAULT_MAX_WIDTH = (() => {
+  const n = parseInt(process.env.MEME_MCP_DEFAULT_MAX_WIDTH ?? '', 10);
+  return Number.isFinite(n) && n > 0 ? n : 800;
+})();
+
+const semaphore = new Semaphore(limits.maxConcurrency());
 
 const server = new McpServer({ name: 'meme-maker', version: '0.1.0' });
 
@@ -18,8 +34,9 @@ type ToolResult = {
 function errorResult(err: unknown): ToolResult {
   const code = err instanceof MemeError ? err.code : 'IO_ERROR';
   const message = err instanceof Error ? err.message : String(err);
+  const details = err instanceof MemeError ? err.details : undefined;
   return {
-    content: [{ type: 'text', text: JSON.stringify({ error: { code, message } }) }],
+    content: [{ type: 'text', text: JSON.stringify({ error: { code, message, details } }) }],
     isError: true,
   };
 }
@@ -28,9 +45,16 @@ function mimeType(format: string): string {
   return format === 'jpeg' ? 'image/jpeg' : `image/${format}`;
 }
 
-async function renderTool(spec: unknown): Promise<ToolResult> {
+async function renderTool(spec: {
+  base: MemeSpec['base'];
+  texts: MemeSpec['texts'];
+  output: MemeSpec['output'];
+}): Promise<ToolResult> {
   try {
-    const result = await renderMeme(spec);
+    const output = { ...spec.output };
+    if (output.maxWidth === undefined) output.maxWidth = DEFAULT_MAX_WIDTH;
+    const result = await semaphore.run(() => renderMeme({ ...spec, output }));
+    const inline = result.bytes <= MAX_INLINE_BYTES;
     const meta = {
       path: result.path,
       mimeType: mimeType(result.format),
@@ -38,10 +62,11 @@ async function renderTool(spec: unknown): Promise<ToolResult> {
       height: result.height,
       bytes: result.bytes,
       warnings: result.warnings,
-      base64: result.path ? undefined : result.buffer.toString('base64'),
+      // meta.base64 is gated by the same inline cap as the image block (D1).
+      base64: result.path || !inline ? undefined : result.buffer.toString('base64'),
     };
     const content: ToolResult['content'] = [{ type: 'text', text: JSON.stringify(meta) }];
-    if (result.bytes <= MAX_INLINE_BYTES) {
+    if (inline) {
       content.push({
         type: 'image',
         data: result.buffer.toString('base64'),
@@ -101,7 +126,7 @@ server.tool(
 
 server.tool(
   'render_meme',
-  'Render a meme from a MemeSpec: template/image/canvas base plus text boxes. Returns the file path (if output.path given) and the image inline when small enough.',
+  'Render a meme from a MemeSpec: template/image/canvas base plus text boxes. For template bases, use slot names from get_template. For non-template bases, the band slots "top", "middle", "bottom" position text automatically. Filesystem image paths are confined to MEME_INPUT_ROOT and disabled unless MEME_ALLOW_FS=1; outputs are confined under the output root (default ./.memes). Returns the file path (if output.path given) and the image inline when small enough (output.maxWidth defaults to 800 so results fit inline).',
   {
     base: BaseSchema,
     texts: z.array(TextBoxSchema).default([]),
@@ -112,7 +137,7 @@ server.tool(
 
 server.tool(
   'render_layout',
-  'Render a grid layout of images (cover-fit cells) with optional text overlays.',
+  'Render a grid layout of images (cover-fit cells) with optional text overlays (band slots "top", "middle", "bottom" are supported). Cell image paths require MEME_ALLOW_FS=1 and are confined to MEME_INPUT_ROOT.',
   {
     grid: z.tuple([z.number().int().positive(), z.number().int().positive()]),
     cells: z.array(z.object({ image: z.string() })),
