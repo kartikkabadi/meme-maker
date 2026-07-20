@@ -15,6 +15,38 @@ describe('measureText', () => {
   });
 });
 
+describe('font fallback chain', () => {
+  it('covers emoji via Noto Emoji fallback', () => {
+    expect(font.hasGlyph(0x1f680)).toBe(true);
+    expect(font.pathData(0x1f680, 0, 0, 32).length).toBeGreaterThan(0);
+    expect(font.advancePx(0x1f680, 32)).toBeGreaterThan(0);
+  });
+
+  it('reports truly unmapped codepoints as unsupported', () => {
+    expect(font.hasGlyph(0x0378)).toBe(false);
+  });
+
+  it('treats variation selectors and ZWJ as ignorable zero-width', () => {
+    expect(font.hasGlyph(0xfe0f)).toBe(true);
+    expect(font.advancePx(0xfe0f, 32)).toBe(0);
+    expect(measureText('A\u200dB', font, 32)).toBeCloseTo(measureText('AB', font, 32), 6);
+  });
+});
+
+describe('kerning', () => {
+  it('applies negative kerning to kerned pairs', () => {
+    const av = measureText('AV', font, 100);
+    const sum = measureText('A', font, 100) + measureText('V', font, 100);
+    expect(av).toBeLessThan(sum);
+  });
+
+  it('skips kerning across fonts in the chain', () => {
+    const mixed = measureText('A\u{1F680}', font, 100);
+    const sum = measureText('A', font, 100) + measureText('\u{1F680}', font, 100);
+    expect(mixed).toBeCloseTo(sum, 6);
+  });
+});
+
 describe('wrapText', () => {
   it('keeps short text on one line', () => {
     expect(wrapText('HI', font, 20, 500)).toEqual(['HI']);

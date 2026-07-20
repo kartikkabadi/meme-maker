@@ -115,15 +115,24 @@ describe('renderMeme', () => {
     ).rejects.toMatchObject({ code: 'UNREADABLE_IMAGE' });
   });
 
-  it('warns with structured UNSUPPORTED_GLYPHS for unmapped codepoints', async () => {
+  it('renders emoji via the fallback chain without warnings', async () => {
     const result = await renderMeme({
       base: { kind: 'canvas', width: 300, height: 200 },
       texts: [{ text: 'SHIP IT \u{1F680}' }],
       output: {},
     });
+    expect(result.warnings.find((x) => x.code === 'UNSUPPORTED_GLYPHS')).toBeUndefined();
+  });
+
+  it('warns with structured UNSUPPORTED_GLYPHS for unmapped codepoints', async () => {
+    const result = await renderMeme({
+      base: { kind: 'canvas', width: 300, height: 200 },
+      texts: [{ text: 'BAD \u{0378}' }],
+      output: {},
+    });
     const w = result.warnings.find((x) => x.code === 'UNSUPPORTED_GLYPHS');
     expect(w).toBeDefined();
-    expect(w && 'codepoints' in w ? w.codepoints : []).toContain('U+1F680');
+    expect(w && 'codepoints' in w ? w.codepoints : []).toContain('U+0378');
   });
 
   it('warns EMPTY_TEXT for blank boxes', async () => {
