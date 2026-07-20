@@ -133,6 +133,25 @@ describe('renderMeme', () => {
     expect(meta.width).toBe(60);
   });
 
+  it('supports top/middle/bottom band slots on non-template bases', async () => {
+    const result = await renderMeme({
+      base: { kind: 'canvas', width: 600, height: 400 },
+      texts: [
+        { slot: 'top', text: 'TOP' },
+        { slot: 'bottom', text: 'BOTTOM' },
+      ],
+      output: {},
+    });
+    expect(result.width).toBe(600);
+    await expect(
+      renderMeme({
+        base: { kind: 'canvas', width: 600, height: 400 },
+        texts: [{ slot: 'sideways', text: 'NOPE' }],
+        output: {},
+      }),
+    ).rejects.toMatchObject({ code: 'SLOT_NOT_FOUND' });
+  });
+
   it('rejects layout with too many cells', async () => {
     await expect(
       renderMeme({

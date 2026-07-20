@@ -37,7 +37,23 @@ function resolveRect(
 } {
   if (box.slot !== undefined) {
     if (!template) {
-      throw new MemeError('SLOT_NOT_FOUND', `slot "${box.slot}" given but base is not a template`);
+      const bandHeight = height * 0.25;
+      const bands: Record<string, { y: number; anchor: 'top' | 'middle' | 'bottom' }> = {
+        top: { y: 0, anchor: 'top' },
+        middle: { y: (height - bandHeight) / 2, anchor: 'middle' },
+        bottom: { y: height - bandHeight, anchor: 'bottom' },
+      };
+      const band = bands[box.slot];
+      if (!band) {
+        throw new MemeError(
+          'SLOT_NOT_FOUND',
+          `slot "${box.slot}" given but base is not a template; only "top", "middle", "bottom" are allowed`,
+        );
+      }
+      return {
+        rect: { x: width * 0.05, y: band.y, width: width * 0.9, height: bandHeight },
+        defaults: { anchor: band.anchor },
+      };
     }
     const slot = template.slots.find((s) => s.name === box.slot);
     if (!slot) {
