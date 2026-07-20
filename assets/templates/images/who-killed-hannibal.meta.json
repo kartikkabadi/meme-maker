@@ -1,0 +1,36 @@
+{
+  "name": "Who Killed Hannibal",
+  "tags": [
+    "blame",
+    "irony",
+    "two-panel"
+  ],
+  "category": "irony",
+  "slots": [
+    {
+      "name": "setup",
+      "rect": [
+        27,
+        20,
+        836,
+        140
+      ],
+      "hint": "who/what caused the problem"
+    },
+    {
+      "name": "question",
+      "rect": [
+        27,
+        840,
+        836,
+        140
+      ],
+      "hint": "\"why would X do this?\""
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Who-Killed-Hannibal",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}

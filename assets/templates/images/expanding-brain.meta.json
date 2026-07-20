@@ -1,0 +1,56 @@
+{
+  "name": "Expanding Brain",
+  "tags": [
+    "escalation",
+    "four-panel",
+    "galaxy-brain"
+  ],
+  "category": "escalation",
+  "slots": [
+    {
+      "name": "level1",
+      "rect": [
+        15,
+        15,
+        400,
+        270
+      ],
+      "hint": "the basic idea"
+    },
+    {
+      "name": "level2",
+      "rect": [
+        15,
+        315,
+        400,
+        270
+      ],
+      "hint": "a slightly smarter idea"
+    },
+    {
+      "name": "level3",
+      "rect": [
+        15,
+        615,
+        400,
+        270
+      ],
+      "hint": "a much smarter idea"
+    },
+    {
+      "name": "level4",
+      "rect": [
+        15,
+        915,
+        400,
+        270
+      ],
+      "hint": "the transcendent galaxy-brain idea"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Expanding-Brain",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}

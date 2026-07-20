@@ -1,0 +1,36 @@
+{
+  "name": "Buff Doge vs Cheems",
+  "tags": [
+    "comparison",
+    "then-vs-now",
+    "two-panel"
+  ],
+  "category": "comparison",
+  "slots": [
+    {
+      "name": "buff",
+      "rect": [
+        20,
+        15,
+        430,
+        160
+      ],
+      "hint": "the strong impressive old version"
+    },
+    {
+      "name": "cheems",
+      "rect": [
+        490,
+        15,
+        430,
+        160
+      ],
+      "hint": "the weak pathetic new version"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Buff-Doge-vs-Cheems",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}

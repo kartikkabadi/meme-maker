@@ -1,7 +1,8 @@
 Template images bundled under assets/templates/ are widely-circulated
 internet meme templates, included at reduced resolution for the purpose of
 meme creation under a fair-use posture. Provenance for each template is
-recorded in the "source" field of assets/templates/manifest.json.
+recorded in the structured "source" field ({url, license, attribution}) of
+assets/templates/manifest.json and listed in assets/templates/CREDITS.md.
 
 If you are a rights holder and would like a template removed, please open an
 issue and it will be removed promptly.

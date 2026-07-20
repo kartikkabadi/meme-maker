@@ -1,0 +1,45 @@
+{
+  "name": "Anakin Padme 4 Panel",
+  "tags": [
+    "expectation",
+    "four-panel",
+    "dialogue"
+  ],
+  "slots": [
+    {
+      "name": "anakin",
+      "rect": [
+        15,
+        260,
+        355,
+        110
+      ],
+      "hint": "the plan or claim being made"
+    },
+    {
+      "name": "padme-hopeful",
+      "rect": [
+        400,
+        260,
+        355,
+        110
+      ],
+      "hint": "the hopeful assumption, phrased as a question e.g. 'for the better, right?'"
+    },
+    {
+      "name": "padme-worried",
+      "rect": [
+        400,
+        645,
+        355,
+        110
+      ],
+      "hint": "the same question repeated with concern (often identical text)"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Anakin-Padme-4-Panel",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}

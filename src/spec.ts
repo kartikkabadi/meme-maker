@@ -131,6 +131,14 @@ export const TemplateSlotSchema = z
   })
   .strict();
 
+export const TemplateSourceSchema = z
+  .object({
+    url: z.string(),
+    license: z.string(),
+    attribution: z.string().optional(),
+  })
+  .strict();
+
 export const TemplateSchema = z
   .object({
     id: z.string(),
@@ -140,13 +148,15 @@ export const TemplateSchema = z
     width: z.number().int().positive(),
     height: z.number().int().positive(),
     tags: z.array(z.string()),
+    category: z.string().optional(),
     slots: z.array(TemplateSlotSchema),
-    source: z.string().optional(),
+    source: TemplateSourceSchema.optional(),
   })
   .strict();
 
 export const ManifestSchema = z.object({ templates: z.array(TemplateSchema) }).strict();
 
+export type TemplateSource = z.infer<typeof TemplateSourceSchema>;
 export type TemplateSlot = z.infer<typeof TemplateSlotSchema>;
 export type Template = z.infer<typeof TemplateSchema>;
 export type Manifest = z.infer<typeof ManifestSchema>;

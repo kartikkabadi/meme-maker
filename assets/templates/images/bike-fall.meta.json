@@ -1,0 +1,45 @@
+{
+  "name": "Bike Fall",
+  "tags": [
+    "self-sabotage",
+    "three-panel",
+    "irony"
+  ],
+  "slots": [
+    {
+      "name": "riding",
+      "rect": [
+        15,
+        10,
+        220,
+        120
+      ],
+      "hint": "who is happily going along"
+    },
+    {
+      "name": "stick",
+      "rect": [
+        15,
+        240,
+        220,
+        110
+      ],
+      "hint": "the self-sabotaging action (stick in spokes)"
+    },
+    {
+      "name": "blame",
+      "rect": [
+        15,
+        470,
+        220,
+        120
+      ],
+      "hint": "the complaint after the self-inflicted fall"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Bike-Fall",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}
