@@ -59,9 +59,7 @@ function resolveRect(
   return { rect: { x, y, width: w, height: h } };
 }
 
-async function buildBase(
-  spec: MemeSpec,
-): Promise<{
+async function buildBase(spec: MemeSpec): Promise<{
   buffer?: Buffer;
   gifPath?: string;
   template: Template | null;
