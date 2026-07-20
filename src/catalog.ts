@@ -9,8 +9,13 @@ export const ASSETS_DIR = join(__dirname, '..', 'assets');
 export const TEMPLATES_DIR = join(ASSETS_DIR, 'templates');
 export const FONTS_DIR = join(ASSETS_DIR, 'fonts');
 
-let cachedTemplates: Template[] | null = null;
-let cachedDir: string | null = null;
+interface CatalogCache {
+  templates: Template[];
+  index: Map<string, Template>;
+  dir: string;
+}
+
+let cache: CatalogCache | null = null;
 
 /** Active templates dir: MEME_TEMPLATES_DIR (or --templates-dir) > bundled assets. */
 export function templatesRoot(): string {
@@ -26,8 +31,12 @@ function validateTemplateFile(file: string, id: string): void {
 }
 
 export function loadManifest(templatesDir?: string): Template[] {
+  return loadCatalog(templatesDir).templates;
+}
+
+function loadCatalog(templatesDir?: string): CatalogCache {
   const dir = templatesDir ?? templatesRoot();
-  if (cachedTemplates && cachedDir === dir) return cachedTemplates;
+  if (cache && cache.dir === dir) return cache;
   let raw: string;
   try {
     raw = readFileSync(join(dir, 'manifest.json'), 'utf8');
@@ -47,9 +56,9 @@ export function loadManifest(templatesDir?: string): Template[] {
     throw new MemeError('INVALID_SPEC', `invalid manifest: ${parsed.error.message}`);
   }
   for (const t of parsed.data.templates) validateTemplateFile(t.file, t.id);
-  cachedTemplates = parsed.data.templates;
-  cachedDir = dir;
-  return cachedTemplates;
+  const templates = parsed.data.templates;
+  cache = { templates, index: new Map(templates.map((t) => [t.id, t])), dir };
+  return cache;
 }
 
 export interface TemplateFilter {
@@ -75,11 +84,10 @@ export function listTemplates(filter: TemplateFilter = {}, templatesDir?: string
 }
 
 export function getTemplate(id: string, templatesDir?: string): Template {
-  const template = loadManifest(templatesDir).find((t) => t.id === id);
+  const { index } = loadCatalog(templatesDir);
+  const template = index.get(id);
   if (!template) {
-    const ids = loadManifest(templatesDir)
-      .map((t) => t.id)
-      .join(', ');
+    const ids = [...index.keys()].join(', ');
     throw new MemeError('TEMPLATE_NOT_FOUND', `unknown template "${id}"; available: ${ids}`);
   }
   return template;
