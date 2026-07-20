@@ -4,6 +4,7 @@ Render a spec file:
 
 ```sh
 meme spec render examples/drake.json
+meme spec render examples/layout-2x2.json   # 2x2 grid; expects a.jpg..d.jpg in cwd
 ```
 
 Or caption templates directly from the CLI:
