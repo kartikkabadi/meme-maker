@@ -3,7 +3,7 @@
 Render a spec file:
 
 ```sh
-meme render --spec examples/drake.json
+meme spec render examples/drake.json
 ```
 
 Or caption templates directly from the CLI:
