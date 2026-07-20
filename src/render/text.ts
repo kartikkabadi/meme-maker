@@ -191,6 +191,18 @@ function glyphPath(glyph: Glyph, scale: number, dx: number, dy: number): string 
 export interface TextLayer {
   svg: string;
   overflow: boolean;
+  fittedSize: number;
+  unsupportedGlyphs: string[];
+}
+
+/** XML-escape a value before interpolating it into an SVG attribute. */
+export function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 }
 
 /**
@@ -212,6 +224,13 @@ export function renderTextLayer(
   const style = resolveStyle(defaults?.style, box.style);
   const font = loadFont(style.font);
   const text = style.caps ? box.text.toUpperCase() : box.text;
+  const unsupported = new Set<string>();
+  for (const ch of text) {
+    const cp = ch.codePointAt(0)!;
+    if (!/\s/.test(ch) && font.glyphIndex(cp) === 0) {
+      unsupported.add(`U+${cp.toString(16).toUpperCase().padStart(4, '0')}`);
+    }
+  }
   const fitted = fitText(
     text,
     font,
@@ -254,7 +273,7 @@ export function renderTextLayer(
     if (style.underline && line.length > 0) {
       const uy = (baseline + size * 0.08).toFixed(2);
       underlines.push(
-        `<line x1="${x.toFixed(2)}" y1="${uy}" x2="${(x + lineWidth).toFixed(2)}" y2="${uy}" stroke="${style.color}" stroke-width="${Math.max(1, size / 16).toFixed(2)}"/>`,
+        `<line x1="${x.toFixed(2)}" y1="${uy}" x2="${(x + lineWidth).toFixed(2)}" y2="${uy}" stroke="${escapeXml(style.color)}" stroke-width="${Math.max(1, size / 16).toFixed(2)}"/>`,
       );
     }
   });
@@ -269,19 +288,24 @@ export function renderTextLayer(
   const boldStroke = style.bold ? Math.max(1, size / 40) : 0;
 
   const background = style.background
-    ? `<rect x="${rect.x}" y="${blockTop.toFixed(2)}" width="${rect.width}" height="${blockHeight.toFixed(2)}" fill="${style.background}"/>`
+    ? `<rect x="${rect.x}" y="${blockTop.toFixed(2)}" width="${rect.width}" height="${blockHeight.toFixed(2)}" fill="${escapeXml(style.background)}"/>`
     : '';
   const strokeLayer =
     strokeWidth > 0 && d
-      ? `<path d="${d}" fill="${style.stroke}" stroke="${style.stroke}" stroke-width="${(strokeWidth * 2 + boldStroke).toFixed(2)}" stroke-linejoin="round"/>`
+      ? `<path d="${d}" fill="${escapeXml(style.stroke)}" stroke="${escapeXml(style.stroke)}" stroke-width="${(strokeWidth * 2 + boldStroke).toFixed(2)}" stroke-linejoin="round"/>`
       : '';
   const fillLayer = d
-    ? `<path d="${d}" fill="${style.color}"${boldStroke ? ` stroke="${style.color}" stroke-width="${boldStroke.toFixed(2)}"` : ''}/>`
+    ? `<path d="${d}" fill="${escapeXml(style.color)}"${boldStroke ? ` stroke="${escapeXml(style.color)}" stroke-width="${boldStroke.toFixed(2)}"` : ''}/>`
     : '';
 
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${canvasHeight}">` +
     `<g opacity="${style.opacity}"${transform}>${background}${strokeLayer}${fillLayer}${underlines.join('')}</g>` +
     `</svg>`;
-  return { svg, overflow: fitted.overflow };
+  return {
+    svg,
+    overflow: fitted.overflow,
+    fittedSize: size,
+    unsupportedGlyphs: [...unsupported].sort(),
+  };
 }
