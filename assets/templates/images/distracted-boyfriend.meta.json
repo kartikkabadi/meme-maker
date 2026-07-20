@@ -1,0 +1,46 @@
+{
+  "name": "Distracted Boyfriend",
+  "tags": [
+    "temptation",
+    "choice",
+    "three-actor"
+  ],
+  "category": "choice",
+  "slots": [
+    {
+      "name": "other-woman",
+      "rect": [
+        90,
+        470,
+        440,
+        290
+      ],
+      "hint": "the tempting new thing"
+    },
+    {
+      "name": "boyfriend",
+      "rect": [
+        580,
+        280,
+        300,
+        260
+      ],
+      "hint": "the one being tempted"
+    },
+    {
+      "name": "girlfriend",
+      "rect": [
+        880,
+        320,
+        300,
+        320
+      ],
+      "hint": "the neglected existing thing"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Distracted-Boyfriend",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}

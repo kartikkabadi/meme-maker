@@ -24,7 +24,11 @@ That's it — `drake.png` is a finished meme. (Once published: `npm i -g agent-m
 
 ## Templates
 
-37 templates ship in the catalog: 32 static images (drake, distracted-boyfriend, expanding-brain, woman-yelling-at-cat, always-has-been, grus-plan, buff-doge-vs-cheems, trade-offer, ...) and 5 animated GIFs (mind-blown, deal-with-it, typing-cat, blinking-white-guy, homer-bush).
+118 templates ship in the catalog: 103 static images (drake, distracted-boyfriend, expanding-brain, woman-yelling-at-cat, afraid-to-ask-andy, doge, red-pill-blue-pill, scroll-of-truth, ...) and 15 animated GIFs (mind-blown, deal-with-it, crab-rave, confused-travolta, shrek-running, ...). Provenance for every template is tracked in [assets/templates/CREDITS.md](assets/templates/CREDITS.md).
+
+![Template catalog contact sheet](docs/contact-sheet.webp)
+
+The manifest is generated: each template's metadata lives in a `<id>.meta.json` sidecar next to its media file, and `npm run build:manifest` scans `assets/templates/**`, derives file paths and dimensions, validates against the schema, and emits `manifest.json`. `npm run build:thumbs` renders ~320 px webp previews into `assets/templates/thumbs/` plus the contact sheet above.
 
 ```sh
 node dist/cli.js templates list --json          # full catalog with slots & tags

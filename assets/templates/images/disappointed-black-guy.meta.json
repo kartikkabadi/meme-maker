@@ -1,0 +1,36 @@
+{
+  "name": "Disappointed Black Guy",
+  "tags": [
+    "expectation",
+    "reality",
+    "two-panel"
+  ],
+  "category": "comparison",
+  "slots": [
+    {
+      "name": "expectation",
+      "rect": [
+        520,
+        13,
+        450,
+        129
+      ],
+      "hint": "what was hoped for"
+    },
+    {
+      "name": "reality",
+      "rect": [
+        520,
+        355,
+        450,
+        129
+      ],
+      "hint": "the disappointing reality"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/50421420/Disappointed-Black-Guy",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}

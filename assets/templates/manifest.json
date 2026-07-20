@@ -1,160 +1,86 @@
 {
   "templates": [
     {
-      "id": "drake",
-      "name": "Drake Hotline Bling",
+      "id": "afraid-to-ask-andy",
+      "name": "Afraid To Ask Andy",
       "type": "image",
-      "file": "images/drake.jpg",
-      "width": 1200,
-      "height": 1200,
-      "tags": ["choice", "preference", "two-panel"],
-      "slots": [
-        { "name": "no", "rect": [620, 30, 560, 540], "hint": "the rejected option" },
-        { "name": "yes", "rect": [620, 630, 560, 540], "hint": "the preferred option" }
+      "file": "images/afraid-to-ask-andy.jpg",
+      "width": 620,
+      "height": 607,
+      "tags": [
+        "confusion",
+        "embarrassment",
+        "admission"
       ],
-      "source": "https://imgflip.com/memetemplate/Drake-Hotline-Bling"
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            19,
+            12,
+            583,
+            121
+          ],
+          "hint": "the thing you never understood"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            19,
+            473,
+            583,
+            121
+          ],
+          "hint": "\"and at this point I'm too afraid to ask\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Afraid-To-Ask-Andy",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
-      "id": "distracted-boyfriend",
-      "name": "Distracted Boyfriend",
+      "id": "all-my-homies-hate",
+      "name": "All My Homies Hate",
       "type": "image",
-      "file": "images/distracted-boyfriend.jpg",
-      "width": 1200,
-      "height": 800,
-      "tags": ["temptation", "choice", "three-actor"],
-      "slots": [
-        { "name": "other-woman", "rect": [90, 470, 440, 290], "hint": "the tempting new thing" },
-        { "name": "boyfriend", "rect": [580, 280, 300, 260], "hint": "the one being tempted" },
-        { "name": "girlfriend", "rect": [880, 320, 300, 320], "hint": "the neglected existing thing" }
-      ],
-      "source": "https://imgflip.com/memetemplate/Distracted-Boyfriend"
-    },
-    {
-      "id": "two-buttons",
-      "name": "Two Buttons",
-      "type": "image",
-      "file": "images/two-buttons.jpg",
-      "width": 600,
-      "height": 908,
-      "tags": ["choice", "dilemma", "decision"],
-      "slots": [
-        { "name": "left", "rect": [55, 90, 215, 130], "hint": "first difficult option" },
-        { "name": "right", "rect": [300, 55, 215, 120], "hint": "second difficult option" },
-        { "name": "caption", "rect": [30, 770, 540, 120], "hint": "who is struggling to decide (optional)" }
-      ],
-      "source": "https://imgflip.com/memetemplate/Two-Buttons"
-    },
-    {
-      "id": "change-my-mind",
-      "name": "Change My Mind",
-      "type": "image",
-      "file": "images/change-my-mind.jpg",
-      "width": 482,
-      "height": 361,
-      "tags": ["opinion", "debate", "hot-take"],
-      "slots": [
-        { "name": "sign", "rect": [200, 175, 235, 100], "hint": "the controversial opinion on the sign" }
-      ],
-      "source": "https://imgflip.com/memetemplate/Change-My-Mind"
-    },
-    {
-      "id": "surprised-pikachu",
-      "name": "Surprised Pikachu",
-      "type": "image",
-      "file": "images/surprised-pikachu.jpg",
-      "width": 1200,
-      "height": 1200,
-      "tags": ["surprise", "consequences", "reaction"],
-      "slots": [
-        { "name": "top", "rect": [40, 25, 1120, 330], "hint": "the action and its predictable consequence" }
-      ],
-      "source": "https://imgflip.com/memetemplate/Surprised-Pikachu"
-    },
-    {
-      "id": "expanding-brain",
-      "name": "Expanding Brain",
-      "type": "image",
-      "file": "images/expanding-brain.jpg",
-      "width": 857,
-      "height": 1202,
-      "tags": ["escalation", "four-panel", "galaxy-brain"],
-      "slots": [
-        { "name": "level1", "rect": [15, 15, 400, 270], "hint": "the basic idea" },
-        { "name": "level2", "rect": [15, 315, 400, 270], "hint": "a slightly smarter idea" },
-        { "name": "level3", "rect": [15, 615, 400, 270], "hint": "a much smarter idea" },
-        { "name": "level4", "rect": [15, 915, 400, 270], "hint": "the transcendent galaxy-brain idea" }
-      ],
-      "source": "https://imgflip.com/memetemplate/Expanding-Brain"
-    },
-    {
-      "id": "woman-yelling-at-cat",
-      "name": "Woman Yelling at Cat",
-      "type": "image",
-      "file": "images/woman-yelling-at-cat.jpg",
+      "file": "images/all-my-homies-hate.jpg",
       "width": 680,
-      "height": 438,
-      "tags": ["argument", "reaction", "two-panel"],
-      "slots": [
-        { "name": "woman", "rect": [10, 8, 320, 110], "hint": "the angry accusation" },
-        { "name": "cat", "rect": [350, 8, 320, 110], "hint": "the smug rebuttal" }
+      "height": 615,
+      "tags": [
+        "hate",
+        "consensus",
+        "opinion"
       ],
-      "source": "https://imgflip.com/memetemplate/Woman-Yelling-At-Cat"
-    },
-    {
-      "id": "this-is-fine",
-      "name": "This Is Fine",
-      "type": "image",
-      "file": "images/this-is-fine.jpg",
-      "width": 500,
-      "height": 436,
-      "tags": ["denial", "disaster", "coping"],
+      "category": "opinion",
       "slots": [
-        { "name": "top", "rect": [10, 8, 480, 90], "hint": "the disaster being ignored (optional caption)" }
+        {
+          "name": "top",
+          "rect": [
+            20,
+            12,
+            639,
+            123
+          ],
+          "hint": "the thing everyone dislikes"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            20,
+            480,
+            639,
+            123
+          ],
+          "hint": "\"all my homies hate X\""
+        }
       ],
-      "source": "https://imgflip.com/memetemplate/This-Is-Fine"
-    },
-    {
-      "id": "batman-slapping-robin",
-      "name": "Batman Slapping Robin",
-      "type": "image",
-      "file": "images/batman-slapping-robin.jpg",
-      "width": 400,
-      "height": 387,
-      "tags": ["correction", "interruption", "two-actor"],
-      "slots": [
-        { "name": "robin", "rect": [12, 8, 180, 95], "hint": "the naive statement being interrupted" },
-        { "name": "batman", "rect": [210, 8, 178, 95], "hint": "the forceful correction" }
-      ],
-      "source": "https://imgflip.com/memetemplate/Batman-Slapping-Robin"
-    },
-    {
-      "id": "one-does-not-simply",
-      "name": "One Does Not Simply",
-      "type": "image",
-      "file": "images/one-does-not-simply.jpg",
-      "width": 568,
-      "height": 335,
-      "tags": ["difficulty", "warning", "classic"],
-      "slots": [
-        { "name": "top", "rect": [30, 8, 508, 80], "hint": "usually 'ONE DOES NOT SIMPLY'" },
-        { "name": "bottom", "rect": [30, 245, 508, 82], "hint": "the thing that cannot simply be done" }
-      ],
-      "source": "https://imgflip.com/memetemplate/One-Does-Not-Simply"
-    },
-    {
-      "id": "anakin-padme-4-panel",
-      "name": "Anakin Padme 4 Panel",
-      "type": "image",
-      "file": "images/anakin-padme-4-panel.jpg",
-      "width": 768,
-      "height": 768,
-      "tags": ["expectation", "four-panel", "dialogue"],
-      "slots": [
-        { "name": "anakin", "rect": [15, 260, 355, 110], "hint": "the plan or claim being made" },
-        { "name": "padme-hopeful", "rect": [400, 260, 355, 110], "hint": "the hopeful assumption, phrased as a question e.g. 'for the better, right?'" },
-        { "name": "padme-worried", "rect": [400, 645, 355, 110], "hint": "the same question repeated with concern (often identical text)" }
-      ],
-      "source": "https://imgflip.com/memetemplate/Anakin-Padme-4-Panel"
+      "source": {
+        "url": "https://imgflip.com/memetemplate/216523697/All-My-Homies-Hate",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "always-has-been",
@@ -163,12 +89,353 @@
       "file": "images/always-has-been.jpg",
       "width": 960,
       "height": 540,
-      "tags": ["revelation", "betrayal", "space"],
-      "slots": [
-        { "name": "realization", "rect": [40, 25, 560, 130], "hint": "the shocking realization, e.g. 'wait, it's all X?'" },
-        { "name": "response", "rect": [560, 300, 380, 120], "hint": "usually 'Always has been'" }
+      "tags": [
+        "revelation",
+        "betrayal",
+        "space"
       ],
-      "source": "https://imgflip.com/memetemplate/Always-Has-Been"
+      "slots": [
+        {
+          "name": "realization",
+          "rect": [
+            40,
+            25,
+            560,
+            130
+          ],
+          "hint": "the shocking realization, e.g. 'wait, it's all X?'"
+        },
+        {
+          "name": "response",
+          "rect": [
+            560,
+            300,
+            380,
+            120
+          ],
+          "hint": "usually 'Always has been'"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Always-Has-Been",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "american-chopper-argument",
+      "name": "American Chopper Argument",
+      "type": "image",
+      "file": "images/american-chopper-argument.jpg",
+      "width": 356,
+      "height": 1000,
+      "tags": [
+        "argument",
+        "debate",
+        "five-panel"
+      ],
+      "category": "argument",
+      "slots": [
+        {
+          "name": "line1",
+          "rect": [
+            11,
+            5,
+            335,
+            90
+          ],
+          "hint": "first argument"
+        },
+        {
+          "name": "line2",
+          "rect": [
+            11,
+            205,
+            335,
+            90
+          ],
+          "hint": "angry rebuttal"
+        },
+        {
+          "name": "line3",
+          "rect": [
+            11,
+            405,
+            335,
+            90
+          ],
+          "hint": "counter-point"
+        },
+        {
+          "name": "line4",
+          "rect": [
+            11,
+            605,
+            335,
+            90
+          ],
+          "hint": "escalation"
+        },
+        {
+          "name": "line5",
+          "rect": [
+            11,
+            805,
+            335,
+            90
+          ],
+          "hint": "final point"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/American-Chopper-Argument",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "anakin-padme-4-panel",
+      "name": "Anakin Padme 4 Panel",
+      "type": "image",
+      "file": "images/anakin-padme-4-panel.jpg",
+      "width": 768,
+      "height": 768,
+      "tags": [
+        "expectation",
+        "four-panel",
+        "dialogue"
+      ],
+      "slots": [
+        {
+          "name": "anakin",
+          "rect": [
+            15,
+            260,
+            355,
+            110
+          ],
+          "hint": "the plan or claim being made"
+        },
+        {
+          "name": "padme-hopeful",
+          "rect": [
+            400,
+            260,
+            355,
+            110
+          ],
+          "hint": "the hopeful assumption, phrased as a question e.g. 'for the better, right?'"
+        },
+        {
+          "name": "padme-worried",
+          "rect": [
+            400,
+            645,
+            355,
+            110
+          ],
+          "hint": "the same question repeated with concern (often identical text)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Anakin-Padme-4-Panel",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "and-just-like-that",
+      "name": "And Just Like That",
+      "type": "image",
+      "file": "images/and-just-like-that.jpg",
+      "width": 1000,
+      "height": 667,
+      "tags": [
+        "sudden",
+        "change",
+        "forrest-gump"
+      ],
+      "category": "observation",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            13,
+            940,
+            133
+          ],
+          "hint": "the thing that was a big deal"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            520,
+            940,
+            133
+          ],
+          "hint": "\"and just like that, X was over\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/And-Just-Like-That",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "anthony-adams-rubbing-hands",
+      "name": "Anthony Adams Rubbing Hands",
+      "type": "image",
+      "file": "images/anthony-adams-rubbing-hands.jpg",
+      "width": 680,
+      "height": 848,
+      "tags": [
+        "anticipation",
+        "scheming",
+        "excitement"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            20,
+            17,
+            639,
+            170
+          ],
+          "hint": "the situation"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            20,
+            661,
+            639,
+            170
+          ],
+          "hint": "what you are eagerly anticipating"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/196595107/Anthony-Adams-Rubbing-Hands",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "aragorn-black-gate",
+      "name": "Aragorn \"For Frodo\"",
+      "type": "image",
+      "file": "images/aragorn-black-gate.jpg",
+      "width": 1000,
+      "height": 835,
+      "tags": [
+        "sacrifice",
+        "dedication",
+        "charge"
+      ],
+      "category": "announcement",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            651,
+            940,
+            167
+          ],
+          "hint": "who/what you are charging into battle for"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/73966654/Aragorn-Black-Gate-for-Frodo",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "avatar-guy",
+      "name": "Avatar Guy (Everything Changed)",
+      "type": "image",
+      "file": "images/avatar-guy.jpg",
+      "width": 1000,
+      "height": 882,
+      "tags": [
+        "change",
+        "nostalgia",
+        "narration"
+      ],
+      "category": "observation",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            18,
+            940,
+            176
+          ],
+          "hint": "how things used to be"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            688,
+            940,
+            176
+          ],
+          "hint": "\"everything changed when X attacked\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/443188629/Avatar-guy",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "batman-slapping-robin",
+      "name": "Batman Slapping Robin",
+      "type": "image",
+      "file": "images/batman-slapping-robin.jpg",
+      "width": 400,
+      "height": 387,
+      "tags": [
+        "correction",
+        "interruption",
+        "two-actor"
+      ],
+      "slots": [
+        {
+          "name": "robin",
+          "rect": [
+            12,
+            8,
+            180,
+            95
+          ],
+          "hint": "the naive statement being interrupted"
+        },
+        {
+          "name": "batman",
+          "rect": [
+            210,
+            8,
+            178,
+            95
+          ],
+          "hint": "the forceful correction"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Batman-Slapping-Robin",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "bell-curve",
@@ -177,13 +444,161 @@
       "file": "images/bell-curve.jpg",
       "width": 675,
       "height": 499,
-      "tags": ["iq", "distribution", "three-actor"],
-      "slots": [
-        { "name": "low", "rect": [10, 40, 190, 120], "hint": "the simple take from the low end (agrees with high end)" },
-        { "name": "mid", "rect": [235, 10, 205, 100], "hint": "the overcomplicated midwit take" },
-        { "name": "high", "rect": [470, 40, 195, 120], "hint": "the enlightened take (same as the low end)" }
+      "tags": [
+        "iq",
+        "distribution",
+        "three-actor"
       ],
-      "source": "https://imgflip.com/memetemplate/Bell-Curve"
+      "slots": [
+        {
+          "name": "low",
+          "rect": [
+            10,
+            40,
+            190,
+            120
+          ],
+          "hint": "the simple take from the low end (agrees with high end)"
+        },
+        {
+          "name": "mid",
+          "rect": [
+            235,
+            10,
+            205,
+            100
+          ],
+          "hint": "the overcomplicated midwit take"
+        },
+        {
+          "name": "high",
+          "rect": [
+            470,
+            40,
+            195,
+            120
+          ],
+          "hint": "the enlightened take (same as the low end)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Bell-Curve",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "ben-affleck-smoking",
+      "name": "Ben Affleck Smoking",
+      "type": "image",
+      "file": "images/ben-affleck-smoking.jpg",
+      "width": 750,
+      "height": 858,
+      "tags": [
+        "exhaustion",
+        "stress",
+        "resignation"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            22,
+            17,
+            705,
+            172
+          ],
+          "hint": "the exhausting situation"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            22,
+            669,
+            705,
+            172
+          ],
+          "hint": "the world-weary response"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/166152128/Ben-affleck-smoking",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "bernie-once-again-asking",
+      "name": "Bernie I Am Once Again Asking",
+      "type": "image",
+      "file": "images/bernie-once-again-asking.jpg",
+      "width": 750,
+      "height": 750,
+      "tags": [
+        "request",
+        "plea",
+        "asking"
+      ],
+      "category": "request",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            38,
+            540,
+            675,
+            180
+          ],
+          "hint": "what you are once again asking for"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Bernie-I-Am-Once-Again-Asking-For-Your-Support",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "big-thumb-guy",
+      "name": "Big Thumb Guy",
+      "type": "image",
+      "file": "images/big-thumb-guy.jpg",
+      "width": 757,
+      "height": 1000,
+      "tags": [
+        "approval",
+        "thumbs-up",
+        "awkward"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            23,
+            20,
+            712,
+            200
+          ],
+          "hint": "the situation"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            23,
+            780,
+            712,
+            200
+          ],
+          "hint": "the awkward approval"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/373007204/Big-thumb-guy",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "bike-fall",
@@ -192,13 +607,99 @@
       "file": "images/bike-fall.jpg",
       "width": 500,
       "height": 680,
-      "tags": ["self-sabotage", "three-panel", "irony"],
-      "slots": [
-        { "name": "riding", "rect": [15, 10, 220, 120], "hint": "who is happily going along" },
-        { "name": "stick", "rect": [15, 240, 220, 110], "hint": "the self-sabotaging action (stick in spokes)" },
-        { "name": "blame", "rect": [15, 470, 220, 120], "hint": "the complaint after the self-inflicted fall" }
+      "tags": [
+        "self-sabotage",
+        "three-panel",
+        "irony"
       ],
-      "source": "https://imgflip.com/memetemplate/Bike-Fall"
+      "slots": [
+        {
+          "name": "riding",
+          "rect": [
+            15,
+            10,
+            220,
+            120
+          ],
+          "hint": "who is happily going along"
+        },
+        {
+          "name": "stick",
+          "rect": [
+            15,
+            240,
+            220,
+            110
+          ],
+          "hint": "the self-sabotaging action (stick in spokes)"
+        },
+        {
+          "name": "blame",
+          "rect": [
+            15,
+            470,
+            220,
+            120
+          ],
+          "hint": "the complaint after the self-inflicted fall"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Bike-Fall",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "both-buttons-pressed",
+      "name": "Both Buttons Pressed",
+      "type": "image",
+      "file": "images/both-buttons-pressed.jpg",
+      "width": 600,
+      "height": 908,
+      "tags": [
+        "choice",
+        "both",
+        "decision"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "left",
+          "rect": [
+            54,
+            91,
+            216,
+            118
+          ],
+          "hint": "first option"
+        },
+        {
+          "name": "right",
+          "rect": [
+            300,
+            54,
+            216,
+            118
+          ],
+          "hint": "second option"
+        },
+        {
+          "name": "caption",
+          "rect": [
+            30,
+            772,
+            540,
+            118
+          ],
+          "hint": "who refuses to choose (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/286646496/Both-Buttons-Pressed",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "buff-doge-vs-cheems",
@@ -207,12 +708,111 @@
       "file": "images/buff-doge-vs-cheems.jpg",
       "width": 937,
       "height": 720,
-      "tags": ["comparison", "then-vs-now", "two-panel"],
-      "slots": [
-        { "name": "buff", "rect": [20, 15, 430, 160], "hint": "the strong impressive old version" },
-        { "name": "cheems", "rect": [490, 15, 430, 160], "hint": "the weak pathetic new version" }
+      "tags": [
+        "comparison",
+        "then-vs-now",
+        "two-panel"
       ],
-      "source": "https://imgflip.com/memetemplate/Buff-Doge-vs-Cheems"
+      "category": "comparison",
+      "slots": [
+        {
+          "name": "buff",
+          "rect": [
+            20,
+            15,
+            430,
+            160
+          ],
+          "hint": "the strong impressive old version"
+        },
+        {
+          "name": "cheems",
+          "rect": [
+            490,
+            15,
+            430,
+            160
+          ],
+          "hint": "the weak pathetic new version"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Buff-Doge-vs-Cheems",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "change-my-mind",
+      "name": "Change My Mind",
+      "type": "image",
+      "file": "images/change-my-mind.jpg",
+      "width": 482,
+      "height": 361,
+      "tags": [
+        "opinion",
+        "debate",
+        "hot-take"
+      ],
+      "category": "opinion",
+      "slots": [
+        {
+          "name": "sign",
+          "rect": [
+            200,
+            175,
+            235,
+            100
+          ],
+          "hint": "the controversial opinion on the sign"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Change-My-Mind",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "charlie-conspiracy",
+      "name": "Charlie Conspiracy Board",
+      "type": "image",
+      "file": "images/charlie-conspiracy.jpg",
+      "width": 1000,
+      "height": 750,
+      "tags": [
+        "conspiracy",
+        "explaining",
+        "frantic"
+      ],
+      "category": "explanation",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            15,
+            940,
+            150
+          ],
+          "hint": "the wild theory being explained"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            585,
+            940,
+            150
+          ],
+          "hint": "the conclusion (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/92084495/Charlie-Conspiracy-Always-Sunny-in-Philidelphia",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "clown-applying-makeup",
@@ -221,14 +821,131 @@
       "file": "images/clown-applying-makeup.jpg",
       "width": 750,
       "height": 798,
-      "tags": ["escalation", "four-panel", "self-deception"],
-      "slots": [
-        { "name": "step1", "rect": [385, 15, 350, 170], "hint": "the first questionable decision" },
-        { "name": "step2", "rect": [385, 215, 350, 170], "hint": "doubling down" },
-        { "name": "step3", "rect": [385, 415, 350, 170], "hint": "getting worse" },
-        { "name": "step4", "rect": [385, 615, 350, 170], "hint": "the full clown moment" }
+      "tags": [
+        "escalation",
+        "four-panel",
+        "self-deception"
       ],
-      "source": "https://imgflip.com/memetemplate/Clown-Applying-Makeup"
+      "category": "escalation",
+      "slots": [
+        {
+          "name": "step1",
+          "rect": [
+            385,
+            15,
+            350,
+            170
+          ],
+          "hint": "the first questionable decision"
+        },
+        {
+          "name": "step2",
+          "rect": [
+            385,
+            215,
+            350,
+            170
+          ],
+          "hint": "doubling down"
+        },
+        {
+          "name": "step3",
+          "rect": [
+            385,
+            415,
+            350,
+            170
+          ],
+          "hint": "getting worse"
+        },
+        {
+          "name": "step4",
+          "rect": [
+            385,
+            615,
+            350,
+            170
+          ],
+          "hint": "the full clown moment"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Clown-Applying-Makeup",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "competition-opponent",
+      "name": "When I'm In A Competition And My Opponent Is",
+      "type": "image",
+      "file": "images/competition-opponent.jpg",
+      "width": 916,
+      "height": 900,
+      "tags": [
+        "competition",
+        "confidence",
+        "reaction"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            46,
+            144,
+            824,
+            126
+          ],
+          "hint": "who/what the laughable opponent is"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/360597639/whe-im-in-a-competition-and-my-opponent-is",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "disappointed-black-guy",
+      "name": "Disappointed Black Guy",
+      "type": "image",
+      "file": "images/disappointed-black-guy.jpg",
+      "width": 1000,
+      "height": 645,
+      "tags": [
+        "expectation",
+        "reality",
+        "two-panel"
+      ],
+      "category": "comparison",
+      "slots": [
+        {
+          "name": "expectation",
+          "rect": [
+            520,
+            13,
+            450,
+            129
+          ],
+          "hint": "what was hoped for"
+        },
+        {
+          "name": "reality",
+          "rect": [
+            520,
+            355,
+            450,
+            129
+          ],
+          "hint": "the disappointing reality"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/50421420/Disappointed-Black-Guy",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "disaster-girl",
@@ -237,12 +954,285 @@
       "file": "images/disaster-girl.jpg",
       "width": 500,
       "height": 375,
-      "tags": ["chaos", "mischief", "reaction"],
-      "slots": [
-        { "name": "top", "rect": [15, 8, 470, 70], "hint": "the disaster or chaos caused" },
-        { "name": "bottom", "rect": [15, 300, 470, 68], "hint": "the smug culprit's perspective (optional)" }
+      "tags": [
+        "chaos",
+        "mischief",
+        "reaction"
       ],
-      "source": "https://imgflip.com/memetemplate/Disaster-Girl"
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            15,
+            8,
+            470,
+            70
+          ],
+          "hint": "the disaster or chaos caused"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            15,
+            300,
+            470,
+            68
+          ],
+          "hint": "the smug culprit's perspective (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Disaster-Girl",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "distracted-boyfriend",
+      "name": "Distracted Boyfriend",
+      "type": "image",
+      "file": "images/distracted-boyfriend.jpg",
+      "width": 1200,
+      "height": 800,
+      "tags": [
+        "temptation",
+        "choice",
+        "three-actor"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "other-woman",
+          "rect": [
+            90,
+            470,
+            440,
+            290
+          ],
+          "hint": "the tempting new thing"
+        },
+        {
+          "name": "boyfriend",
+          "rect": [
+            580,
+            280,
+            300,
+            260
+          ],
+          "hint": "the one being tempted"
+        },
+        {
+          "name": "girlfriend",
+          "rect": [
+            880,
+            320,
+            300,
+            320
+          ],
+          "hint": "the neglected existing thing"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Distracted-Boyfriend",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "doge",
+      "name": "Doge",
+      "type": "image",
+      "file": "images/doge.jpg",
+      "width": 620,
+      "height": 620,
+      "tags": [
+        "doge",
+        "wow",
+        "classic"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            19,
+            12,
+            583,
+            124
+          ],
+          "hint": "much wow (top text)"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            19,
+            484,
+            583,
+            124
+          ],
+          "hint": "very meme (bottom text)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Doge",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "dont-make-me-tap-the-sign",
+      "name": "Don't Make Me Tap The Sign",
+      "type": "image",
+      "file": "images/dont-make-me-tap-the-sign.jpg",
+      "width": 640,
+      "height": 947,
+      "tags": [
+        "rules",
+        "reminder",
+        "warning"
+      ],
+      "category": "announcement",
+      "slots": [
+        {
+          "name": "sign",
+          "rect": [
+            179,
+            568,
+            352,
+            189
+          ],
+          "hint": "the rule on the blank sign being tapped"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/145699196/Dont-make-me-tap-the-sign",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "dr-evil-air-quotes",
+      "name": "Dr Evil Air Quotes",
+      "type": "image",
+      "file": "images/dr-evil-air-quotes.jpg",
+      "width": 1062,
+      "height": 796,
+      "tags": [
+        "sarcasm",
+        "quotes",
+        "skepticism"
+      ],
+      "category": "irony",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            32,
+            16,
+            998,
+            159
+          ],
+          "hint": "the setup"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            32,
+            621,
+            998,
+            159
+          ],
+          "hint": "the word deserving air quotes"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/65807782/Dr-Evil-air-quotes",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "drake",
+      "name": "Drake Hotline Bling",
+      "type": "image",
+      "file": "images/drake.jpg",
+      "width": 1200,
+      "height": 1200,
+      "tags": [
+        "choice",
+        "preference",
+        "two-panel"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "no",
+          "rect": [
+            620,
+            30,
+            560,
+            540
+          ],
+          "hint": "the rejected option"
+        },
+        {
+          "name": "yes",
+          "rect": [
+            620,
+            630,
+            560,
+            540
+          ],
+          "hint": "the preferred option"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Drake-Hotline-Bling",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "elmo-fire",
+      "name": "Elmo Fire",
+      "type": "image",
+      "file": "images/elmo-fire.jpg",
+      "width": 1280,
+      "height": 720,
+      "tags": [
+        "chaos",
+        "celebration",
+        "fire"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            38,
+            14,
+            1203,
+            144
+          ],
+          "hint": "the chaotic situation"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            38,
+            562,
+            1203,
+            144
+          ],
+          "hint": "who is celebrating the chaos"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/137362128/elmo-fire",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "epic-handshake",
@@ -251,13 +1241,48 @@
       "file": "images/epic-handshake.jpg",
       "width": 900,
       "height": 645,
-      "tags": ["agreement", "common-ground", "two-actor"],
-      "slots": [
-        { "name": "left", "rect": [20, 350, 280, 270], "hint": "the first unlikely party" },
-        { "name": "right", "rect": [600, 350, 280, 270], "hint": "the second unlikely party" },
-        { "name": "handshake", "rect": [280, 20, 340, 180], "hint": "the thing they both agree on" }
+      "tags": [
+        "agreement",
+        "common-ground",
+        "two-actor"
       ],
-      "source": "https://imgflip.com/memetemplate/Epic-Handshake"
+      "slots": [
+        {
+          "name": "left",
+          "rect": [
+            20,
+            350,
+            280,
+            270
+          ],
+          "hint": "the first unlikely party"
+        },
+        {
+          "name": "right",
+          "rect": [
+            600,
+            350,
+            280,
+            270
+          ],
+          "hint": "the second unlikely party"
+        },
+        {
+          "name": "handshake",
+          "rect": [
+            280,
+            20,
+            340,
+            180
+          ],
+          "hint": "the thing they both agree on"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Epic-Handshake",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "evil-kermit",
@@ -266,12 +1291,244 @@
       "file": "images/evil-kermit.jpg",
       "width": 700,
       "height": 325,
-      "tags": ["temptation", "inner-voice", "two-actor"],
-      "slots": [
-        { "name": "me", "rect": [15, 8, 670, 60], "hint": "the sensible thought, e.g. 'me: I should...'" },
-        { "name": "inner-me", "rect": [15, 255, 670, 62], "hint": "the dark tempting counter-thought, e.g. 'inner me: ...'" }
+      "tags": [
+        "temptation",
+        "inner-voice",
+        "two-actor"
       ],
-      "source": "https://imgflip.com/memetemplate/Evil-Kermit"
+      "category": "choice",
+      "slots": [
+        {
+          "name": "me",
+          "rect": [
+            15,
+            8,
+            670,
+            60
+          ],
+          "hint": "the sensible thought, e.g. 'me: I should...'"
+        },
+        {
+          "name": "inner-me",
+          "rect": [
+            15,
+            255,
+            670,
+            62
+          ],
+          "hint": "the dark tempting counter-thought, e.g. 'inner me: ...'"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Evil-Kermit",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "expanding-brain",
+      "name": "Expanding Brain",
+      "type": "image",
+      "file": "images/expanding-brain.jpg",
+      "width": 857,
+      "height": 1202,
+      "tags": [
+        "escalation",
+        "four-panel",
+        "galaxy-brain"
+      ],
+      "category": "escalation",
+      "slots": [
+        {
+          "name": "level1",
+          "rect": [
+            15,
+            15,
+            400,
+            270
+          ],
+          "hint": "the basic idea"
+        },
+        {
+          "name": "level2",
+          "rect": [
+            15,
+            315,
+            400,
+            270
+          ],
+          "hint": "a slightly smarter idea"
+        },
+        {
+          "name": "level3",
+          "rect": [
+            15,
+            615,
+            400,
+            270
+          ],
+          "hint": "a much smarter idea"
+        },
+        {
+          "name": "level4",
+          "rect": [
+            15,
+            915,
+            400,
+            270
+          ],
+          "hint": "the transcendent galaxy-brain idea"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Expanding-Brain",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "feelings-of-power",
+      "name": "What Gives People Feelings Of Power",
+      "type": "image",
+      "file": "images/feelings-of-power.jpg",
+      "width": 960,
+      "height": 851,
+      "tags": [
+        "power",
+        "chart",
+        "money"
+      ],
+      "category": "comparison",
+      "slots": [
+        {
+          "name": "label",
+          "rect": [
+            499,
+            528,
+            432,
+            255
+          ],
+          "hint": "the surprising thing that gives power"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/177984372/What-Gives-People-Feelings-of-Power",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "first-time",
+      "name": "First Time? (James Franco)",
+      "type": "image",
+      "file": "images/first-time.jpg",
+      "width": 1000,
+      "height": 624,
+      "tags": [
+        "experience",
+        "veteran",
+        "reaction"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            12,
+            940,
+            125
+          ],
+          "hint": "who is panicking about something new"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            487,
+            940,
+            125
+          ],
+          "hint": "\"first time?\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/163080720/first-time",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "friendship-ended",
+      "name": "Friendship Ended",
+      "type": "image",
+      "file": "images/friendship-ended.jpg",
+      "width": 800,
+      "height": 600,
+      "tags": [
+        "replacement",
+        "friendship",
+        "announcement"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            24,
+            12,
+            752,
+            120
+          ],
+          "hint": "friendship ended with X"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            24,
+            468,
+            752,
+            120
+          ],
+          "hint": "now Y is my best friend"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/137501417/Friendship-ended",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "gentlemen-it-is-with-great-pleasure",
+      "name": "Gentlemen, It Is With Great Pleasure",
+      "type": "image",
+      "file": "images/gentlemen-it-is-with-great-pleasure.jpg",
+      "width": 1000,
+      "height": 1000,
+      "tags": [
+        "announcement",
+        "formal",
+        "celebration"
+      ],
+      "category": "announcement",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            760,
+            940,
+            220
+          ],
+          "hint": "the great news being announced"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/313581692/Gentlemen-it-is-with-great-pleasure-to-inform-you-that",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "grus-plan",
@@ -280,14 +1537,99 @@
       "file": "images/grus-plan.jpg",
       "width": 700,
       "height": 449,
-      "tags": ["plan-backfires", "four-panel", "realization"],
-      "slots": [
-        { "name": "step1", "rect": [190, 30, 145, 165], "hint": "step one of the plan" },
-        { "name": "step2", "rect": [545, 30, 145, 165], "hint": "step two of the plan" },
-        { "name": "step3", "rect": [190, 255, 145, 165], "hint": "the unintended consequence" },
-        { "name": "step4", "rect": [545, 255, 145, 165], "hint": "same as step3 — the horrified double-take" }
+      "tags": [
+        "plan-backfires",
+        "four-panel",
+        "realization"
       ],
-      "source": "https://imgflip.com/memetemplate/Grus-Plan"
+      "slots": [
+        {
+          "name": "step1",
+          "rect": [
+            190,
+            30,
+            145,
+            165
+          ],
+          "hint": "step one of the plan"
+        },
+        {
+          "name": "step2",
+          "rect": [
+            545,
+            30,
+            145,
+            165
+          ],
+          "hint": "step two of the plan"
+        },
+        {
+          "name": "step3",
+          "rect": [
+            190,
+            255,
+            145,
+            165
+          ],
+          "hint": "the unintended consequence"
+        },
+        {
+          "name": "step4",
+          "rect": [
+            545,
+            255,
+            145,
+            165
+          ],
+          "hint": "same as step3 — the horrified double-take"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Grus-Plan",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "hello-human-resources",
+      "name": "Hello Human Resources?!",
+      "type": "image",
+      "file": "images/hello-human-resources.jpg",
+      "width": 680,
+      "height": 855,
+      "tags": [
+        "complaint",
+        "offense",
+        "phone"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            20,
+            17,
+            639,
+            171
+          ],
+          "hint": "the offending statement"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            20,
+            667,
+            639,
+            171
+          ],
+          "hint": "the outraged HR call"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/268952187/hello-human-resources",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "hide-the-pain-harold",
@@ -296,12 +1638,223 @@
       "file": "images/hide-the-pain-harold.jpg",
       "width": 480,
       "height": 601,
-      "tags": ["suppressed-pain", "coping", "reaction"],
-      "slots": [
-        { "name": "top", "rect": [15, 8, 450, 80], "hint": "the painful situation" },
-        { "name": "bottom", "rect": [15, 510, 450, 82], "hint": "the forced-smile response" }
+      "tags": [
+        "suppressed-pain",
+        "coping",
+        "reaction"
       ],
-      "source": "https://imgflip.com/memetemplate/Hide-the-Pain-Harold"
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            15,
+            8,
+            450,
+            80
+          ],
+          "hint": "the painful situation"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            15,
+            510,
+            450,
+            82
+          ],
+          "hint": "the forced-smile response"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Hide-the-Pain-Harold",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "i-dont-want-to-play-with-you-anymore",
+      "name": "I Don't Want To Play With You Anymore",
+      "type": "image",
+      "file": "images/i-dont-want-to-play-with-you-anymore.jpg",
+      "width": 1000,
+      "height": 677,
+      "tags": [
+        "abandonment",
+        "replacement",
+        "woody"
+      ],
+      "category": "rejection",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            14,
+            940,
+            108
+          ],
+          "hint": "what is being abandoned"
+        },
+        {
+          "name": "new-toys",
+          "rect": [
+            550,
+            305,
+            420,
+            95
+          ],
+          "hint": "the shiny new replacements (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/196435636/I-dont-want-to-play-with-you-anymore",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "illusion-of-free-choice",
+      "name": "Illusion Of Free Choice",
+      "type": "image",
+      "file": "images/illusion-of-free-choice.jpg",
+      "width": 768,
+      "height": 632,
+      "tags": [
+        "choice",
+        "tunnel",
+        "manipulation"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "left",
+          "rect": [
+            38,
+            190,
+            230,
+            88
+          ],
+          "hint": "the choice you think you have"
+        },
+        {
+          "name": "right",
+          "rect": [
+            476,
+            190,
+            253,
+            88
+          ],
+          "hint": "the choice being forced"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/143600380/Illusion-of-free-choice",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "inhaling-seagull",
+      "name": "Inhaling Seagull",
+      "type": "image",
+      "file": "images/inhaling-seagull.jpg",
+      "width": 449,
+      "height": 1000,
+      "tags": [
+        "escalation",
+        "four-panel",
+        "screaming"
+      ],
+      "category": "escalation",
+      "slots": [
+        {
+          "name": "inhale",
+          "rect": [
+            224,
+            30,
+            211,
+            170
+          ],
+          "hint": "the build-up"
+        },
+        {
+          "name": "scream1",
+          "rect": [
+            224,
+            280,
+            211,
+            170
+          ],
+          "hint": "the first part of the scream"
+        },
+        {
+          "name": "scream2",
+          "rect": [
+            224,
+            530,
+            211,
+            170
+          ],
+          "hint": "the loudest part"
+        },
+        {
+          "name": "rest",
+          "rect": [
+            224,
+            780,
+            211,
+            170
+          ],
+          "hint": "the trailing off"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Inhaling-Seagull",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "inside-you-there-are-two-wolves",
+      "name": "Inside You There Are Two Wolves",
+      "type": "image",
+      "file": "images/inside-you-there-are-two-wolves.jpg",
+      "width": 720,
+      "height": 736,
+      "tags": [
+        "duality",
+        "wolves",
+        "choice"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "wolf1",
+          "rect": [
+            22,
+            184,
+            324,
+            132
+          ],
+          "hint": "the first inner wolf"
+        },
+        {
+          "name": "wolf2",
+          "rect": [
+            374,
+            184,
+            324,
+            132
+          ],
+          "hint": "the second inner wolf"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/175043930/Inside-you-there-are-two-wolves",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "is-this-a-pigeon",
@@ -310,13 +1863,130 @@
       "file": "images/is-this-a-pigeon.jpg",
       "width": 1200,
       "height": 1078,
-      "tags": ["misidentification", "confusion", "three-actor"],
-      "slots": [
-        { "name": "person", "rect": [60, 780, 420, 260], "hint": "who is confidently misidentifying" },
-        { "name": "butterfly", "rect": [820, 60, 360, 120], "hint": "the thing being misidentified" },
-        { "name": "caption", "rect": [200, 990, 800, 80], "hint": "the wrong question, e.g. 'is this a pigeon?'" }
+      "tags": [
+        "misidentification",
+        "confusion",
+        "three-actor"
       ],
-      "source": "https://imgflip.com/memetemplate/Is-This-A-Pigeon"
+      "slots": [
+        {
+          "name": "person",
+          "rect": [
+            60,
+            780,
+            420,
+            260
+          ],
+          "hint": "who is confidently misidentifying"
+        },
+        {
+          "name": "butterfly",
+          "rect": [
+            820,
+            60,
+            360,
+            120
+          ],
+          "hint": "the thing being misidentified"
+        },
+        {
+          "name": "caption",
+          "rect": [
+            200,
+            990,
+            800,
+            80
+          ],
+          "hint": "the wrong question, e.g. 'is this a pigeon?'"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Is-This-A-Pigeon",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "jim-halpert-explains",
+      "name": "Jim Halpert Explains",
+      "type": "image",
+      "file": "images/jim-halpert-explains.jpg",
+      "width": 676,
+      "height": 769,
+      "tags": [
+        "explaining",
+        "smug",
+        "two-panel"
+      ],
+      "category": "explanation",
+      "slots": [
+        {
+          "name": "setup",
+          "rect": [
+            20,
+            15,
+            635,
+            123
+          ],
+          "hint": "the whiteboard-worthy explanation"
+        },
+        {
+          "name": "punchline",
+          "rect": [
+            20,
+            400,
+            635,
+            108
+          ],
+          "hint": "the smug follow-up"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/228097860/Jim-Halpert-Explains",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "judgemental-volturi",
+      "name": "Judgemental Volturi",
+      "type": "image",
+      "file": "images/judgemental-volturi.jpg",
+      "width": 680,
+      "height": 625,
+      "tags": [
+        "judgment",
+        "disapproval",
+        "group"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            20,
+            12,
+            639,
+            125
+          ],
+          "hint": "what is being judged"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            20,
+            488,
+            639,
+            125
+          ],
+          "hint": "the collective verdict"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/316853891/Judgemental-Volturi",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "left-exit-12-off-ramp",
@@ -325,13 +1995,121 @@
       "file": "images/left-exit-12-off-ramp.jpg",
       "width": 804,
       "height": 767,
-      "tags": ["sudden-choice", "swerve", "decision"],
-      "slots": [
-        { "name": "straight", "rect": [200, 95, 190, 155], "hint": "the sensible planned path" },
-        { "name": "exit", "rect": [420, 95, 175, 155], "hint": "the impulsive swerve destination" },
-        { "name": "car", "rect": [280, 500, 250, 120], "hint": "who is making the swerve (optional)" }
+      "tags": [
+        "sudden-choice",
+        "swerve",
+        "decision"
       ],
-      "source": "https://imgflip.com/memetemplate/Left-Exit-12-Off-Ramp"
+      "category": "choice",
+      "slots": [
+        {
+          "name": "straight",
+          "rect": [
+            200,
+            95,
+            190,
+            155
+          ],
+          "hint": "the sensible planned path"
+        },
+        {
+          "name": "exit",
+          "rect": [
+            420,
+            95,
+            175,
+            155
+          ],
+          "hint": "the impulsive swerve destination"
+        },
+        {
+          "name": "car",
+          "rect": [
+            280,
+            500,
+            250,
+            120
+          ],
+          "hint": "who is making the swerve (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Left-Exit-12-Off-Ramp",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "long-day-factory",
+      "name": "Long Day At The Factory",
+      "type": "image",
+      "file": "images/long-day-factory.jpg",
+      "width": 986,
+      "height": 1000,
+      "tags": [
+        "exhaustion",
+        "work",
+        "relatable"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            20,
+            927,
+            200
+          ],
+          "hint": "after a long day of..."
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            780,
+            927,
+            200
+          ],
+          "hint": "the exhausting non-job activity"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/626639141/Long-day-factory",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "megamind-no-bitches",
+      "name": "Megamind Peeking (No Bitches?)",
+      "type": "image",
+      "file": "images/megamind-no-bitches.jpg",
+      "width": 674,
+      "height": 734,
+      "tags": [
+        "mocking",
+        "question",
+        "reaction"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            20,
+            15,
+            634,
+            147
+          ],
+          "hint": "the mocking question"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/371619279/Megamind-no-bitches",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "mocking-spongebob",
@@ -340,12 +2118,80 @@
       "file": "images/mocking-spongebob.jpg",
       "width": 502,
       "height": 353,
-      "tags": ["mockery", "sarcasm", "reaction"],
-      "slots": [
-        { "name": "top", "rect": [15, 8, 470, 70], "hint": "the statement being mocked" },
-        { "name": "bottom", "rect": [15, 275, 470, 70], "hint": "the same statement in mOcKiNg CaSe" }
+      "tags": [
+        "mockery",
+        "sarcasm",
+        "reaction"
       ],
-      "source": "https://imgflip.com/memetemplate/Mocking-Spongebob"
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            15,
+            8,
+            470,
+            70
+          ],
+          "hint": "the statement being mocked"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            15,
+            275,
+            470,
+            70
+          ],
+          "hint": "the same statement in mOcKiNg CaSe"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Mocking-Spongebob",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "moe-throws-barney",
+      "name": "Moe Throws Barney",
+      "type": "image",
+      "file": "images/moe-throws-barney.jpg",
+      "width": 587,
+      "height": 1000,
+      "tags": [
+        "rejection",
+        "ejection",
+        "two-panel"
+      ],
+      "category": "rejection",
+      "slots": [
+        {
+          "name": "barney",
+          "rect": [
+            18,
+            20,
+            552,
+            140
+          ],
+          "hint": "what is being thrown out"
+        },
+        {
+          "name": "moe",
+          "rect": [
+            18,
+            520,
+            552,
+            120
+          ],
+          "hint": "who is doing the throwing (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/188789496/Moe-throws-Barney",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "monkey-puppet",
@@ -354,11 +2200,314 @@
       "file": "images/monkey-puppet.jpg",
       "width": 923,
       "height": 768,
-      "tags": ["awkward", "side-eye", "two-panel"],
-      "slots": [
-        { "name": "top", "rect": [30, 15, 860, 230], "hint": "the awkward situation being noticed" }
+      "tags": [
+        "awkward",
+        "side-eye",
+        "two-panel"
       ],
-      "source": "https://imgflip.com/memetemplate/Monkey-Puppet"
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            15,
+            860,
+            230
+          ],
+          "hint": "the awkward situation being noticed"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Monkey-Puppet",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "mother-ignoring-kid-drowning",
+      "name": "Mother Ignoring Kid Drowning In A Pool",
+      "type": "image",
+      "file": "images/mother-ignoring-kid-drowning.jpg",
+      "width": 758,
+      "height": 1000,
+      "tags": [
+        "neglect",
+        "priorities",
+        "four-panel"
+      ],
+      "category": "priorities",
+      "slots": [
+        {
+          "name": "mother",
+          "rect": [
+            394,
+            120,
+            334,
+            140
+          ],
+          "hint": "who/what is getting all the attention"
+        },
+        {
+          "name": "drowning-kid",
+          "rect": [
+            30,
+            280,
+            303,
+            140
+          ],
+          "hint": "what is being neglected"
+        },
+        {
+          "name": "pool-kid",
+          "rect": [
+            394,
+            600,
+            334,
+            140
+          ],
+          "hint": "the even more neglected thing (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/252758727/Mother-Ignoring-Kid-Drowning-In-A-Pool",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "mr-bean-waiting",
+      "name": "Mr Bean Waiting",
+      "type": "image",
+      "file": "images/mr-bean-waiting.jpg",
+      "width": 814,
+      "height": 1000,
+      "tags": [
+        "waiting",
+        "impatience",
+        "boredom"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            24,
+            20,
+            765,
+            200
+          ],
+          "hint": "what you are waiting for"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            24,
+            780,
+            765,
+            200
+          ],
+          "hint": "how long you have waited (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/123104217/Mr-bean-waiting",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "none-of-my-business",
+      "name": "But That's None Of My Business",
+      "type": "image",
+      "file": "images/none-of-my-business.jpg",
+      "width": 600,
+      "height": 600,
+      "tags": [
+        "sassy",
+        "observation",
+        "kermit"
+      ],
+      "category": "opinion",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            18,
+            12,
+            564,
+            120
+          ],
+          "hint": "the pointed observation"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            18,
+            468,
+            564,
+            120
+          ],
+          "hint": "\"but that's none of my business\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/But-Thats-None-Of-My-Business",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "obama-medal",
+      "name": "Obama Awarding Himself A Medal",
+      "type": "image",
+      "file": "images/obama-medal.jpg",
+      "width": 1000,
+      "height": 618,
+      "tags": [
+        "self-congratulation",
+        "award",
+        "irony"
+      ],
+      "category": "success",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            494,
+            940,
+            111
+          ],
+          "hint": "the self-congratulating act"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/89853322/obama-medal",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "ol-reliable",
+      "name": "Ol' Reliable",
+      "type": "image",
+      "file": "images/ol-reliable.jpg",
+      "width": 665,
+      "height": 1000,
+      "tags": [
+        "dependable",
+        "solution",
+        "spongebob"
+      ],
+      "category": "explanation",
+      "slots": [
+        {
+          "name": "problem",
+          "rect": [
+            20,
+            20,
+            625,
+            130
+          ],
+          "hint": "the recurring problem"
+        },
+        {
+          "name": "label",
+          "rect": [
+            100,
+            560,
+            465,
+            100
+          ],
+          "hint": "the trusty solution (label on the card)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/139937960/Ol-Reliable",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "one-does-not-simply",
+      "name": "One Does Not Simply",
+      "type": "image",
+      "file": "images/one-does-not-simply.jpg",
+      "width": 568,
+      "height": 335,
+      "tags": [
+        "difficulty",
+        "warning",
+        "classic"
+      ],
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            8,
+            508,
+            80
+          ],
+          "hint": "usually 'ONE DOES NOT SIMPLY'"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            245,
+            508,
+            82
+          ],
+          "hint": "the thing that cannot simply be done"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/One-Does-Not-Simply",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "oprah-you-get-a-car",
+      "name": "Oprah: You Get A Car",
+      "type": "image",
+      "file": "images/oprah-you-get-a-car.jpg",
+      "width": 620,
+      "height": 1003,
+      "tags": [
+        "giving",
+        "generosity",
+        "excitement"
+      ],
+      "category": "announcement",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            19,
+            20,
+            583,
+            201
+          ],
+          "hint": "what everyone is getting"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            19,
+            782,
+            583,
+            201
+          ],
+          "hint": "\"everybody gets X!\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Oprah-You-Get-A-Car-Everybody-Gets-A-Car",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "panik-kalm-panik",
@@ -367,27 +2516,244 @@
       "file": "images/panik-kalm-panik.jpg",
       "width": 640,
       "height": 881,
-      "tags": ["panic", "three-panel", "rollercoaster"],
-      "slots": [
-        { "name": "panik1", "rect": [15, 20, 275, 255], "hint": "the initial alarming situation" },
-        { "name": "kalm", "rect": [15, 315, 275, 255], "hint": "the false reassurance" },
-        { "name": "panik2", "rect": [15, 615, 275, 245], "hint": "the realization that it is actually worse" }
+      "tags": [
+        "panic",
+        "three-panel",
+        "rollercoaster"
       ],
-      "source": "https://imgflip.com/memetemplate/Panik-Kalm-Panik"
+      "category": "panic",
+      "slots": [
+        {
+          "name": "panik1",
+          "rect": [
+            15,
+            20,
+            275,
+            255
+          ],
+          "hint": "the initial alarming situation"
+        },
+        {
+          "name": "kalm",
+          "rect": [
+            15,
+            315,
+            275,
+            255
+          ],
+          "hint": "the false reassurance"
+        },
+        {
+          "name": "panik2",
+          "rect": [
+            15,
+            615,
+            275,
+            245
+          ],
+          "hint": "the realization that it is actually worse"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Panik-Kalm-Panik",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "peace-sign-tombstone",
+      "name": "Peace Sign Tombstone",
+      "type": "image",
+      "file": "images/peace-sign-tombstone.jpg",
+      "width": 1000,
+      "height": 851,
+      "tags": [
+        "death",
+        "farewell",
+        "irreverent"
+      ],
+      "category": "failure",
+      "slots": [
+        {
+          "name": "tombstone",
+          "rect": [
+            300,
+            298,
+            450,
+            187
+          ],
+          "hint": "what died"
+        },
+        {
+          "name": "caption",
+          "rect": [
+            30,
+            17,
+            940,
+            119
+          ],
+          "hint": "the farewell message (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/233816164/Peace-sign-tombstone",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "really-right-in-front-of-my",
+      "name": "Right In Front Of My Salad?",
+      "type": "image",
+      "file": "images/really-right-in-front-of-my.jpg",
+      "width": 1000,
+      "height": 984,
+      "tags": [
+        "disbelief",
+        "audacity",
+        "reaction"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            50,
+            768,
+            900,
+            177
+          ],
+          "hint": "the offended thing it happened in front of"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/471686459/Really-right-in-front-of-my",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "red-pill-blue-pill",
+      "name": "Red Pill Blue Pill",
+      "type": "image",
+      "file": "images/red-pill-blue-pill.jpg",
+      "width": 1000,
+      "height": 522,
+      "tags": [
+        "choice",
+        "matrix",
+        "two-option"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "blue",
+          "rect": [
+            550,
+            31,
+            400,
+            84
+          ],
+          "hint": "the comfortable option"
+        },
+        {
+          "name": "red",
+          "rect": [
+            50,
+            31,
+            400,
+            84
+          ],
+          "hint": "the hard truth option"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/84195720/Red-pill-blue-pill",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "robotnik-button",
+      "name": "Robotnik Pressing Button",
+      "type": "image",
+      "file": "images/robotnik-button.jpg",
+      "width": 640,
+      "height": 743,
+      "tags": [
+        "choice",
+        "dilemma",
+        "buttons"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "left",
+          "rect": [
+            32,
+            30,
+            269,
+            119
+          ],
+          "hint": "first tempting button"
+        },
+        {
+          "name": "right",
+          "rect": [
+            339,
+            30,
+            269,
+            119
+          ],
+          "hint": "second tempting button"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/243879998/Robotnik-Button",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "roll-safe",
       "name": "Roll Safe Think About It",
       "type": "image",
-      "file": "images/roll-safe-think-about-it.jpg",
+      "file": "images/roll-safe.jpg",
       "width": 702,
       "height": 395,
-      "tags": ["flawed-logic", "smart", "reaction"],
-      "slots": [
-        { "name": "top", "rect": [15, 8, 670, 70], "hint": "the problem being avoided" },
-        { "name": "bottom", "rect": [15, 320, 670, 68], "hint": "the technically-true galaxy-brain solution" }
+      "tags": [
+        "flawed-logic",
+        "smart",
+        "reaction"
       ],
-      "source": "https://imgflip.com/memetemplate/Roll-Safe-Think-About-It"
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            15,
+            8,
+            670,
+            70
+          ],
+          "hint": "the problem being avoided"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            15,
+            320,
+            670,
+            68
+          ],
+          "hint": "the technically-true galaxy-brain solution"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Roll-Safe-Think-About-It",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "running-away-balloon",
@@ -396,13 +2762,665 @@
       "file": "images/running-away-balloon.jpg",
       "width": 761,
       "height": 1024,
-      "tags": ["held-back", "obstacle", "two-panel"],
-      "slots": [
-        { "name": "person", "rect": [40, 320, 250, 120], "hint": "who is reaching for the goal" },
-        { "name": "balloon", "rect": [470, 80, 260, 180], "hint": "the desired goal floating away" },
-        { "name": "holder", "rect": [30, 600, 230, 160], "hint": "the thing holding them back" }
+      "tags": [
+        "held-back",
+        "obstacle",
+        "two-panel"
       ],
-      "source": "https://imgflip.com/memetemplate/Running-Away-Balloon"
+      "slots": [
+        {
+          "name": "person",
+          "rect": [
+            40,
+            320,
+            250,
+            120
+          ],
+          "hint": "who is reaching for the goal"
+        },
+        {
+          "name": "balloon",
+          "rect": [
+            470,
+            80,
+            260,
+            180
+          ],
+          "hint": "the desired goal floating away"
+        },
+        {
+          "name": "holder",
+          "rect": [
+            30,
+            600,
+            230,
+            160
+          ],
+          "hint": "the thing holding them back"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Running-Away-Balloon",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "sad-pablo-escobar",
+      "name": "Sad Pablo Escobar",
+      "type": "image",
+      "file": "images/sad-pablo-escobar.jpg",
+      "width": 720,
+      "height": 709,
+      "tags": [
+        "waiting",
+        "sad",
+        "lonely",
+        "reaction"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            22,
+            7,
+            677,
+            113
+          ],
+          "hint": "what you are sadly waiting for"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Sad-Pablo-Escobar",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "scooby-doo-mask-reveal",
+      "name": "Scooby Doo Mask Reveal",
+      "type": "image",
+      "file": "images/scooby-doo-mask-reveal.jpg",
+      "width": 720,
+      "height": 960,
+      "tags": [
+        "reveal",
+        "unmasking",
+        "four-panel"
+      ],
+      "category": "reveal",
+      "slots": [
+        {
+          "name": "villain",
+          "rect": [
+            374,
+            77,
+            317,
+            173
+          ],
+          "hint": "the disguised thing"
+        },
+        {
+          "name": "revealed",
+          "rect": [
+            374,
+            557,
+            317,
+            173
+          ],
+          "hint": "what it really was all along"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/145139900/Scooby-doo-mask-reveal",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "scroll-of-truth",
+      "name": "The Scroll Of Truth",
+      "type": "image",
+      "file": "images/scroll-of-truth.jpg",
+      "width": 1000,
+      "height": 966,
+      "tags": [
+        "truth",
+        "rejection",
+        "two-panel"
+      ],
+      "category": "irony",
+      "slots": [
+        {
+          "name": "scroll",
+          "rect": [
+            520,
+            580,
+            360,
+            251
+          ],
+          "hint": "the unwanted truth on the scroll"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/The-Scroll-Of-Truth",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "see-nobody-cares",
+      "name": "See? Nobody Cares",
+      "type": "image",
+      "file": "images/see-nobody-cares.jpg",
+      "width": 620,
+      "height": 675,
+      "tags": [
+        "dismissive",
+        "jurassic-park",
+        "indifference"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            19,
+            14,
+            583,
+            135
+          ],
+          "hint": "the announcement nobody cares about"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            19,
+            526,
+            583,
+            135
+          ],
+          "hint": "\"see? nobody cares\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/See-Nobody-Cares",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "skinner-out-of-touch",
+      "name": "Am I Out Of Touch?",
+      "type": "image",
+      "file": "images/skinner-out-of-touch.jpg",
+      "width": 701,
+      "height": 1000,
+      "tags": [
+        "denial",
+        "self-reflection",
+        "two-panel"
+      ],
+      "category": "irony",
+      "slots": [
+        {
+          "name": "question",
+          "rect": [
+            21,
+            420,
+            659,
+            90
+          ],
+          "hint": "\"am I out of touch?\"-style doubt"
+        },
+        {
+          "name": "answer",
+          "rect": [
+            21,
+            900,
+            659,
+            90
+          ],
+          "hint": "\"no, it's everyone else who is wrong\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/93160967/Skinner-Out-Of-Touch",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "sleeping-shaq",
+      "name": "Sleeping Shaq",
+      "type": "image",
+      "file": "images/sleeping-shaq.jpg",
+      "width": 640,
+      "height": 631,
+      "tags": [
+        "indifference",
+        "excitement",
+        "two-panel"
+      ],
+      "category": "comparison",
+      "slots": [
+        {
+          "name": "sleep",
+          "rect": [
+            269,
+            32,
+            352,
+            221
+          ],
+          "hint": "the boring thing (sleeping)"
+        },
+        {
+          "name": "wake-up",
+          "rect": [
+            269,
+            347,
+            352,
+            221
+          ],
+          "hint": "the exciting thing (wide awake)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Sleeping-Shaq",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "smiling-cat",
+      "name": "Smiling Cat (Polite Cat)",
+      "type": "image",
+      "file": "images/smiling-cat.jpg",
+      "width": 620,
+      "height": 620,
+      "tags": [
+        "polite",
+        "cat",
+        "approval"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            19,
+            12,
+            583,
+            124
+          ],
+          "hint": "the setup"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            19,
+            484,
+            583,
+            124
+          ],
+          "hint": "the suspiciously polite response"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Smiling-Cat",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "something-of-a-scientist",
+      "name": "Something Of A Scientist Myself",
+      "type": "image",
+      "file": "images/something-of-a-scientist.jpg",
+      "width": 1000,
+      "height": 500,
+      "tags": [
+        "self-proclaimed",
+        "green-goblin",
+        "confidence"
+      ],
+      "category": "opinion",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            390,
+            940,
+            100
+          ],
+          "hint": "\"you know, I'm something of a X myself\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/133946291/You-know-Im-something-of-a-scientist-myself",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "soyboy-vs-yes-chad",
+      "name": "Soyboy Vs Yes Chad",
+      "type": "image",
+      "file": "images/soyboy-vs-yes-chad.jpg",
+      "width": 1000,
+      "height": 682,
+      "tags": [
+        "comparison",
+        "chad",
+        "two-actor"
+      ],
+      "category": "comparison",
+      "slots": [
+        {
+          "name": "soyboy",
+          "rect": [
+            30,
+            14,
+            450,
+            150
+          ],
+          "hint": "the overexcited take"
+        },
+        {
+          "name": "chad",
+          "rect": [
+            520,
+            14,
+            450,
+            150
+          ],
+          "hint": "the calm \"yes\" response"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/232844223/Soyboy-Vs-Yes-Chad",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "spongebob-ight-imma-head-out",
+      "name": "Ight Imma Head Out",
+      "type": "image",
+      "file": "images/spongebob-ight-imma-head-out.jpg",
+      "width": 822,
+      "height": 960,
+      "tags": [
+        "leaving",
+        "exit",
+        "done"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            25,
+            19,
+            773,
+            173
+          ],
+          "hint": "the situation that makes you leave"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Spongebob-Ight-Imma-Head-Out",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "spongebob-looking-out-window",
+      "name": "Spongebob Looking Out Window",
+      "type": "image",
+      "file": "images/spongebob-looking-out-window.jpg",
+      "width": 1000,
+      "height": 585,
+      "tags": [
+        "longing",
+        "watching",
+        "envy"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            12,
+            940,
+            117
+          ],
+          "hint": "what is happening outside"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            456,
+            940,
+            117
+          ],
+          "hint": "who is stuck watching"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/122065530/Spongebob-looking-out-window",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "squid-game",
+      "name": "Squid Game Front Man",
+      "type": "image",
+      "file": "images/squid-game.jpg",
+      "width": 648,
+      "height": 1000,
+      "tags": [
+        "decision",
+        "elimination",
+        "judgment"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            19,
+            20,
+            609,
+            200
+          ],
+          "hint": "the situation being judged"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            19,
+            780,
+            609,
+            200
+          ],
+          "hint": "the ruthless verdict"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/558880671/Squid-Game",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "squidward-chair",
+      "name": "Squidward Sitting In Chair",
+      "type": "image",
+      "file": "images/squidward-chair.jpg",
+      "width": 1000,
+      "height": 1000,
+      "tags": [
+        "boredom",
+        "indifference",
+        "waiting"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            20,
+            940,
+            200
+          ],
+          "hint": "the situation"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            780,
+            940,
+            200
+          ],
+          "hint": "what squidward-you is (not) doing about it"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/173542069/Squidward-chair",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "star-wars-yoda",
+      "name": "Star Wars Yoda",
+      "type": "image",
+      "file": "images/star-wars-yoda.jpg",
+      "width": 620,
+      "height": 713,
+      "tags": [
+        "wisdom",
+        "advice",
+        "yoda"
+      ],
+      "category": "opinion",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            19,
+            14,
+            583,
+            143
+          ],
+          "hint": "the setup"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            19,
+            556,
+            583,
+            143
+          ],
+          "hint": "the yoda-style wisdom"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Star-Wars-Yoda",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "steve-buscemi-fellow-kids",
+      "name": "How Do You Do, Fellow Kids",
+      "type": "image",
+      "file": "images/steve-buscemi-fellow-kids.jpg",
+      "width": 900,
+      "height": 720,
+      "tags": [
+        "out-of-touch",
+        "pretending",
+        "fitting-in"
+      ],
+      "category": "irony",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            27,
+            14,
+            846,
+            144
+          ],
+          "hint": "who is pretending to fit in"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            27,
+            562,
+            846,
+            144
+          ],
+          "hint": "\"how do you do, fellow kids?\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/58910635/Steve-Buscemi-Fellow-Kids",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "straight-to-jail",
+      "name": "Straight To Jail",
+      "type": "image",
+      "file": "images/straight-to-jail.jpg",
+      "width": 1000,
+      "height": 563,
+      "tags": [
+        "judgment",
+        "punishment",
+        "parks-and-rec"
+      ],
+      "category": "opinion",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            11,
+            940,
+            113
+          ],
+          "hint": "the offense"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            439,
+            940,
+            113
+          ],
+          "hint": "\"right away, straight to jail\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/154739698/Straight-to-Jail",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "success-kid",
@@ -411,12 +3429,110 @@
       "file": "images/success-kid.jpg",
       "width": 500,
       "height": 500,
-      "tags": ["victory", "small-win", "classic"],
-      "slots": [
-        { "name": "top", "rect": [15, 8, 470, 80], "hint": "the setup or situation" },
-        { "name": "bottom", "rect": [15, 410, 470, 82], "hint": "the small but satisfying victory" }
+      "tags": [
+        "victory",
+        "small-win",
+        "classic"
       ],
-      "source": "https://imgflip.com/memetemplate/Success-Kid"
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            15,
+            8,
+            470,
+            80
+          ],
+          "hint": "the setup or situation"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            15,
+            410,
+            470,
+            82
+          ],
+          "hint": "the small but satisfying victory"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Success-Kid",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "sun-tzu",
+      "name": "Sun Tzu, The Art Of War",
+      "type": "image",
+      "file": "images/sun-tzu.jpg",
+      "width": 1000,
+      "height": 563,
+      "tags": [
+        "wisdom",
+        "quote",
+        "strategy"
+      ],
+      "category": "opinion",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            11,
+            940,
+            113
+          ],
+          "hint": "the fake profound quote"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            439,
+            940,
+            113
+          ],
+          "hint": "\"— Sun Tzu, The Art of War\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/84898556/Sun-Tzu",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "surprised-pikachu",
+      "name": "Surprised Pikachu",
+      "type": "image",
+      "file": "images/surprised-pikachu.jpg",
+      "width": 1200,
+      "height": 1200,
+      "tags": [
+        "surprise",
+        "consequences",
+        "reaction"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            40,
+            25,
+            1120,
+            330
+          ],
+          "hint": "the action and its predictable consequence"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Surprised-Pikachu",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "theyre-the-same-picture",
@@ -425,12 +3541,110 @@
       "file": "images/theyre-the-same-picture.jpg",
       "width": 1073,
       "height": 1200,
-      "tags": ["equivalence", "comparison", "office"],
-      "slots": [
-        { "name": "left", "rect": [80, 200, 380, 280], "hint": "the first thing being compared" },
-        { "name": "right", "rect": [600, 200, 380, 280], "hint": "the second thing being compared" }
+      "tags": [
+        "equivalence",
+        "comparison",
+        "office"
       ],
-      "source": "https://imgflip.com/memetemplate/Theyre-The-Same-Picture"
+      "category": "comparison",
+      "slots": [
+        {
+          "name": "left",
+          "rect": [
+            80,
+            200,
+            380,
+            280
+          ],
+          "hint": "the first thing being compared"
+        },
+        {
+          "name": "right",
+          "rect": [
+            600,
+            200,
+            380,
+            280
+          ],
+          "hint": "the second thing being compared"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Theyre-The-Same-Picture",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "thinking-about-other-women",
+      "name": "I Bet He's Thinking About Other Women",
+      "type": "image",
+      "file": "images/thinking-about-other-women.jpg",
+      "width": 1654,
+      "height": 930,
+      "tags": [
+        "thoughts",
+        "couple",
+        "two-actor"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "her-thought",
+          "rect": [
+            50,
+            28,
+            744,
+            186
+          ],
+          "hint": "what she thinks he is thinking"
+        },
+        {
+          "name": "his-thought",
+          "rect": [
+            860,
+            28,
+            744,
+            279
+          ],
+          "hint": "what he is actually thinking"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/I-Bet-Hes-Thinking-About-Other-Women",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "this-is-fine",
+      "name": "This Is Fine",
+      "type": "image",
+      "file": "images/this-is-fine.jpg",
+      "width": 500,
+      "height": 436,
+      "tags": [
+        "denial",
+        "disaster",
+        "coping"
+      ],
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            10,
+            8,
+            480,
+            90
+          ],
+          "hint": "the disaster being ignored (optional caption)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/This-Is-Fine",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "trade-offer",
@@ -439,12 +3653,110 @@
       "file": "images/trade-offer.jpg",
       "width": 607,
       "height": 794,
-      "tags": ["exchange", "proposal", "negotiation"],
-      "slots": [
-        { "name": "i-receive", "rect": [30, 175, 260, 180], "hint": "what the proposer receives" },
-        { "name": "you-receive", "rect": [320, 175, 260, 180], "hint": "what the other party receives" }
+      "tags": [
+        "exchange",
+        "proposal",
+        "negotiation"
       ],
-      "source": "https://imgflip.com/memetemplate/Trade-Offer"
+      "slots": [
+        {
+          "name": "i-receive",
+          "rect": [
+            30,
+            175,
+            260,
+            180
+          ],
+          "hint": "what the proposer receives"
+        },
+        {
+          "name": "you-receive",
+          "rect": [
+            320,
+            175,
+            260,
+            180
+          ],
+          "hint": "what the other party receives"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Trade-Offer",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "truman-show",
+      "name": "Truman Show Realization",
+      "type": "image",
+      "file": "images/truman-show.jpg",
+      "width": 1000,
+      "height": 525,
+      "tags": [
+        "realization",
+        "suspicion",
+        "watched"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            10,
+            940,
+            105
+          ],
+          "hint": "the suspicious pattern"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            410,
+            940,
+            105
+          ],
+          "hint": "the dawning realization"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/554037956/truman-show",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "trump-bill-signing",
+      "name": "Trump Bill Signing",
+      "type": "image",
+      "file": "images/trump-bill-signing.jpg",
+      "width": 1000,
+      "height": 819,
+      "tags": [
+        "announcement",
+        "decree",
+        "signing"
+      ],
+      "category": "announcement",
+      "slots": [
+        {
+          "name": "bill",
+          "rect": [
+            250,
+            450,
+            500,
+            180
+          ],
+          "hint": "the absurd decree being signed"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Trump-Bill-Signing",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "tuxedo-winnie-the-pooh",
@@ -453,12 +3765,511 @@
       "file": "images/tuxedo-winnie-the-pooh.jpg",
       "width": 800,
       "height": 582,
-      "tags": ["fancy", "upgrade", "two-panel"],
-      "slots": [
-        { "name": "plain", "rect": [400, 20, 380, 250], "hint": "the ordinary way of saying it" },
-        { "name": "fancy", "rect": [400, 310, 380, 250], "hint": "the sophisticated way of saying the same thing" }
+      "tags": [
+        "fancy",
+        "upgrade",
+        "two-panel"
       ],
-      "source": "https://imgflip.com/memetemplate/Tuxedo-Winnie-The-Pooh"
+      "slots": [
+        {
+          "name": "plain",
+          "rect": [
+            400,
+            20,
+            380,
+            250
+          ],
+          "hint": "the ordinary way of saying it"
+        },
+        {
+          "name": "fancy",
+          "rect": [
+            400,
+            310,
+            380,
+            250
+          ],
+          "hint": "the sophisticated way of saying the same thing"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Tuxedo-Winnie-The-Pooh",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "two-buttons",
+      "name": "Two Buttons",
+      "type": "image",
+      "file": "images/two-buttons.jpg",
+      "width": 600,
+      "height": 908,
+      "tags": [
+        "choice",
+        "dilemma",
+        "decision"
+      ],
+      "category": "choice",
+      "slots": [
+        {
+          "name": "left",
+          "rect": [
+            55,
+            90,
+            215,
+            130
+          ],
+          "hint": "first difficult option"
+        },
+        {
+          "name": "right",
+          "rect": [
+            300,
+            55,
+            215,
+            120
+          ],
+          "hint": "second difficult option"
+        },
+        {
+          "name": "caption",
+          "rect": [
+            30,
+            770,
+            540,
+            120
+          ],
+          "hint": "who is struggling to decide (optional)"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Two-Buttons",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "two-guys-on-a-bus",
+      "name": "Two Guys On A Bus",
+      "type": "image",
+      "file": "images/two-guys-on-a-bus.jpg",
+      "width": 762,
+      "height": 675,
+      "tags": [
+        "perspective",
+        "optimism",
+        "pessimism",
+        "two-panel"
+      ],
+      "category": "comparison",
+      "slots": [
+        {
+          "name": "sad",
+          "rect": [
+            23,
+            14,
+            343,
+            122
+          ],
+          "hint": "the sad side of the same situation"
+        },
+        {
+          "name": "happy",
+          "rect": [
+            396,
+            14,
+            343,
+            122
+          ],
+          "hint": "the happy side of the same situation"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/354700819/Two-guys-on-a-bus",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "uncle-sam",
+      "name": "Uncle Sam I Want You",
+      "type": "image",
+      "file": "images/uncle-sam.jpg",
+      "width": 620,
+      "height": 833,
+      "tags": [
+        "recruitment",
+        "call-to-action",
+        "poster"
+      ],
+      "category": "announcement",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            19,
+            17,
+            583,
+            167
+          ],
+          "hint": "\"I want YOU\""
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            19,
+            650,
+            583,
+            167
+          ],
+          "hint": "to do what"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Uncle-Sam",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "undertaker-behind",
+      "name": "Undertaker Sneaking Up",
+      "type": "image",
+      "file": "images/undertaker-behind.jpg",
+      "width": 949,
+      "height": 742,
+      "tags": [
+        "ambush",
+        "doom",
+        "impending"
+      ],
+      "category": "panic",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            28,
+            15,
+            892,
+            148
+          ],
+          "hint": "who is blissfully unaware"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            28,
+            579,
+            892,
+            148
+          ],
+          "hint": "what is sneaking up on them"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/257745141/undertaker",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "vince-mcmahon-glowing-eyes",
+      "name": "Vince McMahon Escalating Reaction",
+      "type": "image",
+      "file": "images/vince-mcmahon-glowing-eyes.jpg",
+      "width": 594,
+      "height": 1000,
+      "tags": [
+        "escalation",
+        "excitement",
+        "four-panel"
+      ],
+      "category": "escalation",
+      "slots": [
+        {
+          "name": "level1",
+          "rect": [
+            309,
+            30,
+            267,
+            150
+          ],
+          "hint": "the good thing"
+        },
+        {
+          "name": "level2",
+          "rect": [
+            309,
+            280,
+            267,
+            150
+          ],
+          "hint": "the better thing"
+        },
+        {
+          "name": "level3",
+          "rect": [
+            309,
+            530,
+            267,
+            150
+          ],
+          "hint": "the amazing thing"
+        },
+        {
+          "name": "level4",
+          "rect": [
+            309,
+            780,
+            267,
+            150
+          ],
+          "hint": "the transcendent thing"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/126882756/Vince-McMahon-Reaction-wGlowing-Eyes",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "wake-up-babe",
+      "name": "Wake Up Babe",
+      "type": "image",
+      "file": "images/wake-up-babe.jpg",
+      "width": 1000,
+      "height": 562,
+      "tags": [
+        "excitement",
+        "news",
+        "announcement"
+      ],
+      "category": "announcement",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            11,
+            940,
+            112
+          ],
+          "hint": "\"babe wake up, X just dropped\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/260755514/Wake-Up-Babe",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "whisper-goosebumps",
+      "name": "Whisper and Goosebumps",
+      "type": "image",
+      "file": "images/whisper-goosebumps.jpg",
+      "width": 600,
+      "height": 600,
+      "tags": [
+        "whisper",
+        "reaction",
+        "sensation"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            18,
+            12,
+            564,
+            120
+          ],
+          "hint": "who is whispering what"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            18,
+            468,
+            564,
+            120
+          ],
+          "hint": "the goosebumps-inducing phrase"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/101956210/Whisper-and-Goosebumps",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "who-killed-hannibal",
+      "name": "Who Killed Hannibal",
+      "type": "image",
+      "file": "images/who-killed-hannibal.jpg",
+      "width": 889,
+      "height": 1000,
+      "tags": [
+        "blame",
+        "irony",
+        "two-panel"
+      ],
+      "category": "irony",
+      "slots": [
+        {
+          "name": "setup",
+          "rect": [
+            27,
+            20,
+            836,
+            140
+          ],
+          "hint": "who/what caused the problem"
+        },
+        {
+          "name": "question",
+          "rect": [
+            27,
+            840,
+            836,
+            140
+          ],
+          "hint": "\"why would X do this?\""
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Who-Killed-Hannibal",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "woman-yelling-at-cat",
+      "name": "Woman Yelling at Cat",
+      "type": "image",
+      "file": "images/woman-yelling-at-cat.jpg",
+      "width": 680,
+      "height": 438,
+      "tags": [
+        "argument",
+        "reaction",
+        "two-panel"
+      ],
+      "category": "argument",
+      "slots": [
+        {
+          "name": "woman",
+          "rect": [
+            10,
+            8,
+            320,
+            110
+          ],
+          "hint": "the angry accusation"
+        },
+        {
+          "name": "cat",
+          "rect": [
+            350,
+            8,
+            320,
+            110
+          ],
+          "hint": "the smug rebuttal"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Woman-Yelling-At-Cat",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "x-x-everywhere",
+      "name": "X, X Everywhere",
+      "type": "image",
+      "file": "images/x-x-everywhere.jpg",
+      "width": 1000,
+      "height": 680,
+      "tags": [
+        "everywhere",
+        "ubiquity",
+        "buzz-lightyear",
+        "two-panel"
+      ],
+      "category": "observation",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            30,
+            14,
+            940,
+            136
+          ],
+          "hint": "the thing that is everywhere"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            30,
+            530,
+            940,
+            136
+          ],
+          "hint": "\"X everywhere\" punchline"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/X-X-Everywhere",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "yes-honey",
+      "name": "Yes Honey",
+      "type": "image",
+      "file": "images/yes-honey.jpg",
+      "width": 750,
+      "height": 752,
+      "tags": [
+        "support",
+        "couple",
+        "resignation"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            22,
+            15,
+            705,
+            150
+          ],
+          "hint": "the questionable plan being announced"
+        },
+        {
+          "name": "bottom",
+          "rect": [
+            22,
+            587,
+            705,
+            150
+          ],
+          "hint": "\"yes honey\"-style supportive reply"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/245901889/Yes-Honey",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "blinking-white-guy",
@@ -467,11 +4278,189 @@
       "file": "gifs/blinking-white-guy.gif",
       "width": 194,
       "height": 228,
-      "tags": ["disbelief", "reaction", "animated"],
-      "slots": [
-        { "name": "top", "rect": [5, 5, 184, 55], "hint": "the statement that causes disbelief" }
+      "tags": [
+        "disbelief",
+        "reaction",
+        "animated"
       ],
-      "source": "https://imgflip.com/memetemplate/Drew-Scanlon-Reaction"
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            5,
+            5,
+            184,
+            55
+          ],
+          "hint": "the statement that causes disbelief"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Drew-Scanlon-Reaction",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "chef-skinner-letter",
+      "name": "Chef Skinner Reading A Letter",
+      "type": "gif",
+      "file": "gifs/chef-skinner-letter.gif",
+      "width": 320,
+      "height": 180,
+      "tags": [
+        "shock",
+        "reading",
+        "discovery",
+        "animated"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            10,
+            140,
+            301,
+            36
+          ],
+          "hint": "the shocking thing being read"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/300006681/Chef-Skinner-Reading-a-Letter",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "confused-monkey",
+      "name": "Confused Monkey",
+      "type": "gif",
+      "file": "gifs/confused-monkey.gif",
+      "width": 320,
+      "height": 341,
+      "tags": [
+        "confusion",
+        "side-eye",
+        "reaction",
+        "animated"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            10,
+            266,
+            301,
+            68
+          ],
+          "hint": "the confusing thing"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/511357979/Confused-Monkey",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "confused-travolta",
+      "name": "Confused John Travolta",
+      "type": "gif",
+      "file": "gifs/confused-travolta.gif",
+      "width": 320,
+      "height": 159,
+      "tags": [
+        "confusion",
+        "lost",
+        "searching",
+        "animated"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            10,
+            124,
+            301,
+            32
+          ],
+          "hint": "what you are looking for in vain"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/404513830/Confused-John-Travolta-Pulp-Fiction",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "crab-rave",
+      "name": "Crab Rave",
+      "type": "gif",
+      "file": "gifs/crab-rave.gif",
+      "width": 320,
+      "height": 180,
+      "tags": [
+        "celebration",
+        "party",
+        "crabs",
+        "animated"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            10,
+            4,
+            301,
+            36
+          ],
+          "hint": "the thing worth celebrating"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/188952964/Crab-Rave",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "dafoe-looking-up",
+      "name": "Willem Dafoe Looking Up",
+      "type": "gif",
+      "file": "gifs/dafoe-looking-up.gif",
+      "width": 320,
+      "height": 216,
+      "tags": [
+        "realization",
+        "looking-up",
+        "dramatic",
+        "animated"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            10,
+            168,
+            301,
+            43
+          ],
+          "hint": "what he suddenly notices"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/367782046/William-Dafoe-looking-up",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "deal-with-it",
@@ -480,11 +4469,60 @@
       "file": "gifs/deal-with-it.gif",
       "width": 320,
       "height": 454,
-      "tags": ["confidence", "dismissive", "animated"],
-      "slots": [
-        { "name": "bottom", "rect": [10, 380, 300, 65], "hint": "usually 'deal with it' or a variation" }
+      "tags": [
+        "confidence",
+        "dismissive",
+        "animated"
       ],
-      "source": "https://imgflip.com/memetemplate/Deal-With-It"
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            10,
+            380,
+            300,
+            65
+          ],
+          "hint": "usually 'deal with it' or a variation"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Deal-With-It",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "disappearing-kid",
+      "name": "Disappearing Kid",
+      "type": "gif",
+      "file": "gifs/disappearing-kid.gif",
+      "width": 320,
+      "height": 320,
+      "tags": [
+        "exit",
+        "vanish",
+        "awkward",
+        "animated"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            10,
+            6,
+            301,
+            64
+          ],
+          "hint": "the situation you quietly vanish from"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/222516354/Disappearing-kid-gif",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "homer-bush",
@@ -493,11 +4531,28 @@
       "file": "gifs/homer-bush.gif",
       "width": 266,
       "height": 198,
-      "tags": ["retreat", "avoidance", "animated"],
-      "slots": [
-        { "name": "top", "rect": [5, 5, 256, 50], "hint": "the awkward situation being escaped" }
+      "tags": [
+        "retreat",
+        "avoidance",
+        "animated"
       ],
-      "source": "https://imgflip.com/memetemplate/Homer-Disappears-Into-Bush"
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            5,
+            5,
+            256,
+            50
+          ],
+          "hint": "the awkward situation being escaped"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Homer-Disappears-Into-Bush",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "mind-blown",
@@ -506,11 +4561,125 @@
       "file": "gifs/mind-blown.gif",
       "width": 480,
       "height": 270,
-      "tags": ["amazement", "reaction", "animated"],
-      "slots": [
-        { "name": "top", "rect": [10, 5, 460, 60], "hint": "the mind-blowing fact or realization" }
+      "tags": [
+        "amazement",
+        "reaction",
+        "animated"
       ],
-      "source": "https://imgflip.com/memetemplate/Mind-Blown"
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            10,
+            5,
+            460,
+            60
+          ],
+          "hint": "the mind-blowing fact or realization"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Mind-Blown",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "oprah-you-get-a-car-gif",
+      "name": "Oprah You Get A Car (Animated)",
+      "type": "gif",
+      "file": "gifs/oprah-you-get-a-car-gif.gif",
+      "width": 320,
+      "height": 218,
+      "tags": [
+        "giving",
+        "excitement",
+        "generosity",
+        "animated"
+      ],
+      "category": "announcement",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            10,
+            170,
+            301,
+            44
+          ],
+          "hint": "what everybody gets"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/171270276/Oprah-You-Get-A-Car",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "rage-table-smash",
+      "name": "Rage Table Smash",
+      "type": "gif",
+      "file": "gifs/rage-table-smash.gif",
+      "width": 320,
+      "height": 180,
+      "tags": [
+        "rage",
+        "frustration",
+        "flip",
+        "animated"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            10,
+            4,
+            301,
+            36
+          ],
+          "hint": "the rage-inducing thing"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/344036397/Rage-Table-Smash",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "shrek-running",
+      "name": "Shrek Running",
+      "type": "gif",
+      "file": "gifs/shrek-running.gif",
+      "width": 320,
+      "height": 179,
+      "tags": [
+        "urgency",
+        "chasing",
+        "determination",
+        "animated"
+      ],
+      "category": "reaction",
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            10,
+            4,
+            301,
+            36
+          ],
+          "hint": "what you are running toward/from"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/577634962/Shrek-running",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     },
     {
       "id": "typing-cat",
@@ -519,11 +4688,60 @@
       "file": "gifs/typing-cat.gif",
       "width": 300,
       "height": 300,
-      "tags": ["typing", "busy", "animated"],
-      "slots": [
-        { "name": "top", "rect": [5, 5, 290, 60], "hint": "what is being furiously typed" }
+      "tags": [
+        "typing",
+        "busy",
+        "animated"
       ],
-      "source": "https://imgflip.com/memetemplate/Typing-Cat"
+      "slots": [
+        {
+          "name": "top",
+          "rect": [
+            5,
+            5,
+            290,
+            60
+          ],
+          "hint": "what is being furiously typed"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/Typing-Cat",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
+    },
+    {
+      "id": "xbox-achievement",
+      "name": "Xbox Achievement Unlocked",
+      "type": "gif",
+      "file": "gifs/xbox-achievement.gif",
+      "width": 320,
+      "height": 87,
+      "tags": [
+        "achievement",
+        "gaming",
+        "unlock",
+        "animated"
+      ],
+      "category": "success",
+      "slots": [
+        {
+          "name": "bottom",
+          "rect": [
+            10,
+            65,
+            301,
+            19
+          ],
+          "hint": "the achievement unlocked"
+        }
+      ],
+      "source": {
+        "url": "https://imgflip.com/memetemplate/404092011/Xbox-Achievement",
+        "license": "fair-use",
+        "attribution": "via Imgflip"
+      }
     }
   ]
 }

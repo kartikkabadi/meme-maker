@@ -1,0 +1,36 @@
+{
+  "name": "They're the Same Picture",
+  "tags": [
+    "equivalence",
+    "comparison",
+    "office"
+  ],
+  "category": "comparison",
+  "slots": [
+    {
+      "name": "left",
+      "rect": [
+        80,
+        200,
+        380,
+        280
+      ],
+      "hint": "the first thing being compared"
+    },
+    {
+      "name": "right",
+      "rect": [
+        600,
+        200,
+        380,
+        280
+      ],
+      "hint": "the second thing being compared"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Theyre-The-Same-Picture",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}
