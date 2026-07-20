@@ -49,8 +49,9 @@ export async function renderLayoutBase(
         .toBuffer();
     } catch (err) {
       throw new MemeError(
-        'IO_ERROR',
+        'UNREADABLE_IMAGE',
         `cannot read cell image "${cell.image}": ${(err as Error).message}`,
+        { path: cell.image, detail: (err as Error).message },
       );
     }
     composites.push({
