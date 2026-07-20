@@ -57,6 +57,7 @@ export function Editor({ spec: initial, onBack, onToast, dark, onToggleTheme }: 
   const [advanced, setAdvanced] = useState(false);
   const [activeBox, setActiveBox] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
+  const [imgWidth, setImgWidth] = useState(0);
   const lastRendered = useRef('');
   const renderSpec = useMemo(
     () => ({ ...spec, output: { ...spec.output, format: spec.output.format } }),
@@ -172,11 +173,19 @@ export function Editor({ spec: initial, onBack, onToast, dark, onToggleTheme }: 
     rect: { x: number; y: number; width: number; height: number };
   } | null>(null);
 
-  const scale = (): number => {
+  // Track the displayed image width so slot overlays stay aligned as the
+  // image loads and the window resizes.
+  useEffect(() => {
     const img = imgRef.current;
-    if (!img || !measure) return 1;
-    return img.clientWidth / measure.width;
-  };
+    if (!img) return;
+    const update = () => setImgWidth(img.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(img);
+    return () => ro.disconnect();
+  }, [render]);
+
+  const scale = (): number => (measure && imgWidth > 0 ? imgWidth / measure.width : 1);
 
   const onPointerDown = (e: PointerEvent, box: number, mode: 'move' | 'resize') => {
     if (!advanced || !measure) return;
