@@ -81,13 +81,47 @@ describe('animated GIF pipeline', () => {
     expect(meta.pages ?? 1).toBeGreaterThan(1);
   });
 
-  it('rejects non-gif output for an animated base', async () => {
+  it('rejects non-gif output for an animated base with UNSUPPORTED_OUTPUT', async () => {
     await expect(
       renderMeme({
         base: { kind: 'image', path: gifPath },
         texts: [{ text: 'X' }],
         output: { format: 'png' },
       }),
-    ).rejects.toMatchObject({ code: 'INVALID_SPEC' });
+    ).rejects.toMatchObject({ code: 'UNSUPPORTED_OUTPUT' });
+  });
+
+  it('downscales an animated GIF when maxWidth is set', async () => {
+    const result = await renderMeme({
+      base: { kind: 'image', path: gifPath },
+      texts: [{ text: 'HI' }],
+      output: { maxWidth: 60 },
+    });
+    expect(result.width).toBe(60);
+    const meta = await sharp(result.buffer, { animated: true }).metadata();
+    expect(meta.width).toBe(60);
+    expect(meta.pages).toBe(COLORS.length);
+  });
+
+  it('warns FRAMES_OUT_OF_RANGE for reversed or out-of-range frames', async () => {
+    const result = await renderMeme({
+      base: { kind: 'image', path: gifPath },
+      texts: [{ text: 'HI', frames: [5, 9] }],
+      output: {},
+    });
+    const w = result.warnings.find((x) => x.code === 'FRAMES_OUT_OF_RANGE');
+    expect(w).toBeDefined();
+    expect(w && 'frameCount' in w ? w.frameCount : 0).toBe(COLORS.length);
+  });
+
+  it('rejects GIFs with too many frames via MEME_MAX_GIF_FRAMES', async () => {
+    process.env.MEME_MAX_GIF_FRAMES = '2';
+    try {
+      await expect(
+        renderMeme({ base: { kind: 'image', path: gifPath }, texts: [], output: {} }),
+      ).rejects.toMatchObject({ code: 'RESOURCE_LIMIT' });
+    } finally {
+      delete process.env.MEME_MAX_GIF_FRAMES;
+    }
   });
 });

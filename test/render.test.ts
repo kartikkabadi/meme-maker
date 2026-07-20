@@ -1,4 +1,5 @@
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
@@ -108,10 +109,71 @@ describe('renderMeme', () => {
     ).rejects.toMatchObject({ code: 'TEMPLATE_NOT_FOUND' });
   });
 
-  it('throws IO_ERROR for a missing image path', async () => {
+  it('throws UNREADABLE_IMAGE for a missing image path', async () => {
     await expect(
       renderMeme({ base: { kind: 'image', path: '/nope/missing.png' }, texts: [], output: {} }),
-    ).rejects.toMatchObject({ code: 'IO_ERROR' });
+    ).rejects.toMatchObject({ code: 'UNREADABLE_IMAGE' });
+  });
+
+  it('warns with structured UNSUPPORTED_GLYPHS for unmapped codepoints', async () => {
+    const result = await renderMeme({
+      base: { kind: 'canvas', width: 300, height: 200 },
+      texts: [{ text: 'SHIP IT \u{1F680}' }],
+      output: {},
+    });
+    const w = result.warnings.find((x) => x.code === 'UNSUPPORTED_GLYPHS');
+    expect(w).toBeDefined();
+    expect(w && 'codepoints' in w ? w.codepoints : []).toContain('U+1F680');
+  });
+
+  it('warns EMPTY_TEXT for blank boxes', async () => {
+    const result = await renderMeme({
+      base: { kind: 'canvas', width: 100, height: 100 },
+      texts: [{ text: '   ' }],
+      output: {},
+    });
+    expect(result.warnings.some((w) => w.code === 'EMPTY_TEXT')).toBe(true);
+  });
+
+  it('strict mode turns warnings into a hard error', async () => {
+    await expect(
+      renderMeme({
+        base: { kind: 'canvas', width: 100, height: 100 },
+        texts: [{ text: '' }],
+        output: { onDegrade: 'error' },
+      }),
+    ).rejects.toMatchObject({ code: 'INVALID_SPEC' });
+  });
+
+  it('rejects over-limit canvas dimensions with RESOURCE_LIMIT', async () => {
+    await expect(
+      renderMeme({ base: { kind: 'canvas', width: 10000, height: 10000 }, texts: [], output: {} }),
+    ).rejects.toMatchObject({ code: 'RESOURCE_LIMIT' });
+  });
+
+  it('warns EXTENSION_MISMATCH when path extension differs from format', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'meme-ext-'));
+    const out = join(dir, 'out.png');
+    const result = await renderMeme({
+      base: { kind: 'canvas', width: 50, height: 50 },
+      texts: [],
+      output: { path: out, format: 'jpeg' },
+    });
+    expect(result.warnings.some((w) => w.code === 'EXTENSION_MISMATCH')).toBe(true);
+  });
+
+  it('refuses to overwrite an existing output unless overwrite is set', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'meme-ow-'));
+    const out = join(dir, 'out.png');
+    const spec = {
+      base: { kind: 'canvas', width: 40, height: 40 },
+      texts: [],
+      output: { path: out },
+    };
+    await renderMeme(spec);
+    await expect(renderMeme(spec)).rejects.toMatchObject({ code: 'PATH_DENIED' });
+    const forced = { ...spec, output: { path: out, overwrite: true } };
+    await expect(renderMeme(forced)).resolves.toBeDefined();
   });
 
   it('reports overflow warnings instead of corrupting output', async () => {

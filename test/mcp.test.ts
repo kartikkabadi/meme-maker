@@ -68,6 +68,48 @@ describe.skipIf(!built)('MCP server (stdio integration)', () => {
     expect(JSON.parse(content[0]!.text!).error.code).toBe('TEMPLATE_NOT_FOUND');
   });
 
+  it('applies a default maxWidth so results fit inline, and gates meta.base64', async () => {
+    const result = await client.callTool({
+      name: 'render_meme',
+      arguments: {
+        base: { kind: 'template', id: 'drake' },
+        texts: [{ slot: 'yes', text: 'INLINE' }],
+        output: {},
+      },
+    });
+    expect(result.isError).toBeFalsy();
+    const content = result.content as { type: string; text?: string }[];
+    const meta = JSON.parse(content.find((c) => c.type === 'text')!.text!);
+    expect(meta.width).toBeLessThanOrEqual(800);
+    expect(meta.bytes).toBeLessThanOrEqual(1_000_000);
+    if (meta.base64) expect(meta.bytes).toBeLessThanOrEqual(1_000_000);
+    expect(content.some((c) => c.type === 'image')).toBe(true);
+  });
+
+  it('denies absolute output paths with PATH_DENIED (confined surface)', async () => {
+    const result = await client.callTool({
+      name: 'render_meme',
+      arguments: {
+        base: { kind: 'template', id: 'drake' },
+        texts: [],
+        output: { path: '/tmp/clobber.png' },
+      },
+    });
+    expect(result.isError).toBe(true);
+    const content = result.content as { type: string; text?: string }[];
+    expect(JSON.parse(content[0]!.text!).error.code).toBe('PATH_DENIED');
+  });
+
+  it('denies filesystem image reads by default with PATH_DENIED', async () => {
+    const result = await client.callTool({
+      name: 'render_meme',
+      arguments: { base: { kind: 'image', path: 'photo.png' }, texts: [], output: {} },
+    });
+    expect(result.isError).toBe(true);
+    const content = result.content as { type: string; text?: string }[];
+    expect(JSON.parse(content[0]!.text!).error.code).toBe('PATH_DENIED');
+  });
+
   it('preview_template returns the blank template image', async () => {
     const result = await client.callTool({
       name: 'preview_template',
