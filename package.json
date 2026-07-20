@@ -1,6 +1,6 @@
 {
   "name": "agent-meme-maker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A meme editor for agents: template catalog, text overlay engine, CLI, and MCP server.",
   "license": "MIT",
   "type": "module",

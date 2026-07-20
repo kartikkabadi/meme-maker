@@ -16,7 +16,7 @@ process.stdout.on('error', (err: NodeJS.ErrnoException) => {
 const jsonMode = process.argv.includes('--json');
 
 const program = new Command();
-program.name('meme').description('Meme maker for agents').version('0.1.0');
+program.name('meme').description('Meme maker for agents').version('0.2.0');
 program.option('--templates-dir <dir>', 'load templates from a custom directory');
 program.exitOverride();
 program.configureOutput({ writeErr: () => {} });

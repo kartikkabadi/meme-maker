@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0
+
+- Template catalog expanded to 118 templates (103 static images, 15 animated GIFs) with per-template provenance in `assets/templates/CREDITS.md`.
+- Generated catalog: `<id>.meta.json` sidecars + `npm run build:manifest` produce `manifest.json`; `npm run build:thumbs` renders webp thumbnails and the contact sheet.
+- Font engine swapped to opentype.js with a per-codepoint fallback chain (Anton → Noto Sans → Noto Emoji) and kerning.
+- `meme ui`: local web app (Vite + Preact SPA) — template gallery, editor with live preview and slot tuner, render history, and batch rendering; JSON API at `/api/templates`, `/api/measure`, `/api/render`, `/api/history`.
+- Core hardening: path confinement (`MEME_INPUT_ROOT`/`MEME_OUTPUT_ROOT`, `MEME_ALLOW_FS`), resource limits (`MEME_MAX_*`, render timeout, concurrency caps), and `--strict` to fail on degraded renders.
+- `measureMeme` for text-fit measurement without rendering.
+
 ## 0.1.0
 
 Initial release.

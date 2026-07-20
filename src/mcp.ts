@@ -24,7 +24,7 @@ const DEFAULT_MAX_WIDTH = (() => {
 
 const semaphore = new Semaphore(limits.maxConcurrency());
 
-const server = new McpServer({ name: 'meme-maker', version: '0.1.0' });
+const server = new McpServer({ name: 'meme-maker', version: '0.2.0' });
 
 type ToolResult = {
   content: ({ type: 'text'; text: string } | { type: 'image'; data: string; mimeType: string })[];
