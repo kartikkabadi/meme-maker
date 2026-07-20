@@ -1,0 +1,77 @@
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import sharp from 'sharp';
+import { beforeAll, describe, expect, it } from 'vitest';
+import { renderMeme } from '../src/render/renderer.js';
+
+const WIDTH = 120;
+const HEIGHT = 90;
+const COLORS = ['#ff0000', '#00aa00', '#0000ff'];
+
+let gifPath: string;
+
+beforeAll(async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'meme-gif-'));
+  gifPath = join(dir, 'anim.gif');
+  const frames = await Promise.all(
+    COLORS.map((background) =>
+      sharp({ create: { width: WIDTH, height: HEIGHT, channels: 4, background } })
+        .png()
+        .toBuffer(),
+    ),
+  );
+  await sharp(frames, { join: { animated: true } })
+    .gif({ delay: [40, 60, 80] })
+    .toFile(gifPath);
+});
+
+describe('animated GIF pipeline', () => {
+  it('captions all frames, preserving frame count and timing', async () => {
+    const out = join(mkdtempSync(join(tmpdir(), 'meme-gif-out-')), 'out.gif');
+    const result = await renderMeme({
+      base: { kind: 'image', path: gifPath },
+      texts: [{ text: 'HI', y: 0, height: 40 }],
+      output: { path: out },
+    });
+    expect(result.format).toBe('gif');
+    const meta = await sharp(out, { animated: true }).metadata();
+    expect(meta.pages).toBe(COLORS.length);
+    expect(meta.delay).toEqual([40, 60, 80]);
+    expect(meta.width).toBe(WIDTH);
+    expect(meta.pageHeight).toBe(HEIGHT);
+  });
+
+  it('captions only a frame range when frames is given', async () => {
+    const out = join(mkdtempSync(join(tmpdir(), 'meme-gif-out-')), 'out.gif');
+    await renderMeme({
+      base: { kind: 'image', path: gifPath },
+      texts: [{ text: 'HI', y: 0, height: 40, frames: [1, 1] }],
+      output: { path: out },
+    });
+    const raw = await sharp(out, { animated: true }).ensureAlpha().raw().toBuffer({
+      resolveWithObject: true,
+    });
+    const frameBytes = WIDTH * HEIGHT * 4;
+    // Frame 0 should be untouched (pure red-ish), frame 1 should contain white pixels.
+    const hasWhite = (frame: number): boolean => {
+      for (let i = 0; i < frameBytes; i += 4) {
+        const o = frame * frameBytes + i;
+        if (raw.data[o]! > 200 && raw.data[o + 1]! > 200 && raw.data[o + 2]! > 200) return true;
+      }
+      return false;
+    };
+    expect(hasWhite(0)).toBe(false);
+    expect(hasWhite(1)).toBe(true);
+  });
+
+  it('rejects non-gif output for an animated base', async () => {
+    await expect(
+      renderMeme({
+        base: { kind: 'image', path: gifPath },
+        texts: [{ text: 'X' }],
+        output: { format: 'png' },
+      }),
+    ).rejects.toMatchObject({ code: 'INVALID_SPEC' });
+  });
+});
