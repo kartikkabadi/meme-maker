@@ -1,0 +1,130 @@
+# Template Credits
+
+All bundled templates are widely-circulated internet meme templates included at
+reduced resolution under the fair-use posture described in [NOTICE](../../NOTICE).
+Each entry records the template's provenance. If you are a rights holder and would
+like a template removed, please open an issue.
+
+## Images
+
+- **Afraid To Ask Andy** (`afraid-to-ask-andy`) — [https://imgflip.com/memetemplate/Afraid-To-Ask-Andy](https://imgflip.com/memetemplate/Afraid-To-Ask-Andy) — fair-use, via Imgflip
+- **All My Homies Hate** (`all-my-homies-hate`) — [https://imgflip.com/memetemplate/216523697/All-My-Homies-Hate](https://imgflip.com/memetemplate/216523697/All-My-Homies-Hate) — fair-use, via Imgflip
+- **Always Has Been** (`always-has-been`) — [https://imgflip.com/memetemplate/Always-Has-Been](https://imgflip.com/memetemplate/Always-Has-Been) — fair-use, via Imgflip
+- **American Chopper Argument** (`american-chopper-argument`) — [https://imgflip.com/memetemplate/American-Chopper-Argument](https://imgflip.com/memetemplate/American-Chopper-Argument) — fair-use, via Imgflip
+- **Anakin Padme 4 Panel** (`anakin-padme-4-panel`) — [https://imgflip.com/memetemplate/Anakin-Padme-4-Panel](https://imgflip.com/memetemplate/Anakin-Padme-4-Panel) — fair-use, via Imgflip
+- **And Just Like That** (`and-just-like-that`) — [https://imgflip.com/memetemplate/And-Just-Like-That](https://imgflip.com/memetemplate/And-Just-Like-That) — fair-use, via Imgflip
+- **Anthony Adams Rubbing Hands** (`anthony-adams-rubbing-hands`) — [https://imgflip.com/memetemplate/196595107/Anthony-Adams-Rubbing-Hands](https://imgflip.com/memetemplate/196595107/Anthony-Adams-Rubbing-Hands) — fair-use, via Imgflip
+- **Aragorn "For Frodo"** (`aragorn-black-gate`) — [https://imgflip.com/memetemplate/73966654/Aragorn-Black-Gate-for-Frodo](https://imgflip.com/memetemplate/73966654/Aragorn-Black-Gate-for-Frodo) — fair-use, via Imgflip
+- **Avatar Guy (Everything Changed)** (`avatar-guy`) — [https://imgflip.com/memetemplate/443188629/Avatar-guy](https://imgflip.com/memetemplate/443188629/Avatar-guy) — fair-use, via Imgflip
+- **Batman Slapping Robin** (`batman-slapping-robin`) — [https://imgflip.com/memetemplate/Batman-Slapping-Robin](https://imgflip.com/memetemplate/Batman-Slapping-Robin) — fair-use, via Imgflip
+- **Bell Curve (Midwit)** (`bell-curve`) — [https://imgflip.com/memetemplate/Bell-Curve](https://imgflip.com/memetemplate/Bell-Curve) — fair-use, via Imgflip
+- **Ben Affleck Smoking** (`ben-affleck-smoking`) — [https://imgflip.com/memetemplate/166152128/Ben-affleck-smoking](https://imgflip.com/memetemplate/166152128/Ben-affleck-smoking) — fair-use, via Imgflip
+- **Bernie I Am Once Again Asking** (`bernie-once-again-asking`) — [https://imgflip.com/memetemplate/Bernie-I-Am-Once-Again-Asking-For-Your-Support](https://imgflip.com/memetemplate/Bernie-I-Am-Once-Again-Asking-For-Your-Support) — fair-use, via Imgflip
+- **Big Thumb Guy** (`big-thumb-guy`) — [https://imgflip.com/memetemplate/373007204/Big-thumb-guy](https://imgflip.com/memetemplate/373007204/Big-thumb-guy) — fair-use, via Imgflip
+- **Bike Fall** (`bike-fall`) — [https://imgflip.com/memetemplate/Bike-Fall](https://imgflip.com/memetemplate/Bike-Fall) — fair-use, via Imgflip
+- **Both Buttons Pressed** (`both-buttons-pressed`) — [https://imgflip.com/memetemplate/286646496/Both-Buttons-Pressed](https://imgflip.com/memetemplate/286646496/Both-Buttons-Pressed) — fair-use, via Imgflip
+- **Buff Doge vs Cheems** (`buff-doge-vs-cheems`) — [https://imgflip.com/memetemplate/Buff-Doge-vs-Cheems](https://imgflip.com/memetemplate/Buff-Doge-vs-Cheems) — fair-use, via Imgflip
+- **Change My Mind** (`change-my-mind`) — [https://imgflip.com/memetemplate/Change-My-Mind](https://imgflip.com/memetemplate/Change-My-Mind) — fair-use, via Imgflip
+- **Charlie Conspiracy Board** (`charlie-conspiracy`) — [https://imgflip.com/memetemplate/92084495/Charlie-Conspiracy-Always-Sunny-in-Philidelphia](https://imgflip.com/memetemplate/92084495/Charlie-Conspiracy-Always-Sunny-in-Philidelphia) — fair-use, via Imgflip
+- **Clown Applying Makeup** (`clown-applying-makeup`) — [https://imgflip.com/memetemplate/Clown-Applying-Makeup](https://imgflip.com/memetemplate/Clown-Applying-Makeup) — fair-use, via Imgflip
+- **When I'm In A Competition And My Opponent Is** (`competition-opponent`) — [https://imgflip.com/memetemplate/360597639/whe-im-in-a-competition-and-my-opponent-is](https://imgflip.com/memetemplate/360597639/whe-im-in-a-competition-and-my-opponent-is) — fair-use, via Imgflip
+- **Disappointed Black Guy** (`disappointed-black-guy`) — [https://imgflip.com/memetemplate/50421420/Disappointed-Black-Guy](https://imgflip.com/memetemplate/50421420/Disappointed-Black-Guy) — fair-use, via Imgflip
+- **Disaster Girl** (`disaster-girl`) — [https://imgflip.com/memetemplate/Disaster-Girl](https://imgflip.com/memetemplate/Disaster-Girl) — fair-use, via Imgflip
+- **Distracted Boyfriend** (`distracted-boyfriend`) — [https://imgflip.com/memetemplate/Distracted-Boyfriend](https://imgflip.com/memetemplate/Distracted-Boyfriend) — fair-use, via Imgflip
+- **Doge** (`doge`) — [https://imgflip.com/memetemplate/Doge](https://imgflip.com/memetemplate/Doge) — fair-use, via Imgflip
+- **Don't Make Me Tap The Sign** (`dont-make-me-tap-the-sign`) — [https://imgflip.com/memetemplate/145699196/Dont-make-me-tap-the-sign](https://imgflip.com/memetemplate/145699196/Dont-make-me-tap-the-sign) — fair-use, via Imgflip
+- **Dr Evil Air Quotes** (`dr-evil-air-quotes`) — [https://imgflip.com/memetemplate/65807782/Dr-Evil-air-quotes](https://imgflip.com/memetemplate/65807782/Dr-Evil-air-quotes) — fair-use, via Imgflip
+- **Drake Hotline Bling** (`drake`) — [https://imgflip.com/memetemplate/Drake-Hotline-Bling](https://imgflip.com/memetemplate/Drake-Hotline-Bling) — fair-use, via Imgflip
+- **Elmo Fire** (`elmo-fire`) — [https://imgflip.com/memetemplate/137362128/elmo-fire](https://imgflip.com/memetemplate/137362128/elmo-fire) — fair-use, via Imgflip
+- **Epic Handshake** (`epic-handshake`) — [https://imgflip.com/memetemplate/Epic-Handshake](https://imgflip.com/memetemplate/Epic-Handshake) — fair-use, via Imgflip
+- **Evil Kermit** (`evil-kermit`) — [https://imgflip.com/memetemplate/Evil-Kermit](https://imgflip.com/memetemplate/Evil-Kermit) — fair-use, via Imgflip
+- **Expanding Brain** (`expanding-brain`) — [https://imgflip.com/memetemplate/Expanding-Brain](https://imgflip.com/memetemplate/Expanding-Brain) — fair-use, via Imgflip
+- **What Gives People Feelings Of Power** (`feelings-of-power`) — [https://imgflip.com/memetemplate/177984372/What-Gives-People-Feelings-of-Power](https://imgflip.com/memetemplate/177984372/What-Gives-People-Feelings-of-Power) — fair-use, via Imgflip
+- **First Time? (James Franco)** (`first-time`) — [https://imgflip.com/memetemplate/163080720/first-time](https://imgflip.com/memetemplate/163080720/first-time) — fair-use, via Imgflip
+- **Friendship Ended** (`friendship-ended`) — [https://imgflip.com/memetemplate/137501417/Friendship-ended](https://imgflip.com/memetemplate/137501417/Friendship-ended) — fair-use, via Imgflip
+- **Gentlemen, It Is With Great Pleasure** (`gentlemen-it-is-with-great-pleasure`) — [https://imgflip.com/memetemplate/313581692/Gentlemen-it-is-with-great-pleasure-to-inform-you-that](https://imgflip.com/memetemplate/313581692/Gentlemen-it-is-with-great-pleasure-to-inform-you-that) — fair-use, via Imgflip
+- **Gru's Plan** (`grus-plan`) — [https://imgflip.com/memetemplate/Grus-Plan](https://imgflip.com/memetemplate/Grus-Plan) — fair-use, via Imgflip
+- **Hello Human Resources?!** (`hello-human-resources`) — [https://imgflip.com/memetemplate/268952187/hello-human-resources](https://imgflip.com/memetemplate/268952187/hello-human-resources) — fair-use, via Imgflip
+- **Hide the Pain Harold** (`hide-the-pain-harold`) — [https://imgflip.com/memetemplate/Hide-the-Pain-Harold](https://imgflip.com/memetemplate/Hide-the-Pain-Harold) — fair-use, via Imgflip
+- **I Don't Want To Play With You Anymore** (`i-dont-want-to-play-with-you-anymore`) — [https://imgflip.com/memetemplate/196435636/I-dont-want-to-play-with-you-anymore](https://imgflip.com/memetemplate/196435636/I-dont-want-to-play-with-you-anymore) — fair-use, via Imgflip
+- **Illusion Of Free Choice** (`illusion-of-free-choice`) — [https://imgflip.com/memetemplate/143600380/Illusion-of-free-choice](https://imgflip.com/memetemplate/143600380/Illusion-of-free-choice) — fair-use, via Imgflip
+- **Inhaling Seagull** (`inhaling-seagull`) — [https://imgflip.com/memetemplate/Inhaling-Seagull](https://imgflip.com/memetemplate/Inhaling-Seagull) — fair-use, via Imgflip
+- **Inside You There Are Two Wolves** (`inside-you-there-are-two-wolves`) — [https://imgflip.com/memetemplate/175043930/Inside-you-there-are-two-wolves](https://imgflip.com/memetemplate/175043930/Inside-you-there-are-two-wolves) — fair-use, via Imgflip
+- **Is This a Pigeon?** (`is-this-a-pigeon`) — [https://imgflip.com/memetemplate/Is-This-A-Pigeon](https://imgflip.com/memetemplate/Is-This-A-Pigeon) — fair-use, via Imgflip
+- **Jim Halpert Explains** (`jim-halpert-explains`) — [https://imgflip.com/memetemplate/228097860/Jim-Halpert-Explains](https://imgflip.com/memetemplate/228097860/Jim-Halpert-Explains) — fair-use, via Imgflip
+- **Judgemental Volturi** (`judgemental-volturi`) — [https://imgflip.com/memetemplate/316853891/Judgemental-Volturi](https://imgflip.com/memetemplate/316853891/Judgemental-Volturi) — fair-use, via Imgflip
+- **Left Exit 12 Off Ramp** (`left-exit-12-off-ramp`) — [https://imgflip.com/memetemplate/Left-Exit-12-Off-Ramp](https://imgflip.com/memetemplate/Left-Exit-12-Off-Ramp) — fair-use, via Imgflip
+- **Long Day At The Factory** (`long-day-factory`) — [https://imgflip.com/memetemplate/626639141/Long-day-factory](https://imgflip.com/memetemplate/626639141/Long-day-factory) — fair-use, via Imgflip
+- **Megamind Peeking (No Bitches?)** (`megamind-no-bitches`) — [https://imgflip.com/memetemplate/371619279/Megamind-no-bitches](https://imgflip.com/memetemplate/371619279/Megamind-no-bitches) — fair-use, via Imgflip
+- **Mocking SpongeBob** (`mocking-spongebob`) — [https://imgflip.com/memetemplate/Mocking-Spongebob](https://imgflip.com/memetemplate/Mocking-Spongebob) — fair-use, via Imgflip
+- **Moe Throws Barney** (`moe-throws-barney`) — [https://imgflip.com/memetemplate/188789496/Moe-throws-Barney](https://imgflip.com/memetemplate/188789496/Moe-throws-Barney) — fair-use, via Imgflip
+- **Monkey Puppet (Awkward Look)** (`monkey-puppet`) — [https://imgflip.com/memetemplate/Monkey-Puppet](https://imgflip.com/memetemplate/Monkey-Puppet) — fair-use, via Imgflip
+- **Mother Ignoring Kid Drowning In A Pool** (`mother-ignoring-kid-drowning`) — [https://imgflip.com/memetemplate/252758727/Mother-Ignoring-Kid-Drowning-In-A-Pool](https://imgflip.com/memetemplate/252758727/Mother-Ignoring-Kid-Drowning-In-A-Pool) — fair-use, via Imgflip
+- **Mr Bean Waiting** (`mr-bean-waiting`) — [https://imgflip.com/memetemplate/123104217/Mr-bean-waiting](https://imgflip.com/memetemplate/123104217/Mr-bean-waiting) — fair-use, via Imgflip
+- **But That's None Of My Business** (`none-of-my-business`) — [https://imgflip.com/memetemplate/But-Thats-None-Of-My-Business](https://imgflip.com/memetemplate/But-Thats-None-Of-My-Business) — fair-use, via Imgflip
+- **Obama Awarding Himself A Medal** (`obama-medal`) — [https://imgflip.com/memetemplate/89853322/obama-medal](https://imgflip.com/memetemplate/89853322/obama-medal) — fair-use, via Imgflip
+- **Ol' Reliable** (`ol-reliable`) — [https://imgflip.com/memetemplate/139937960/Ol-Reliable](https://imgflip.com/memetemplate/139937960/Ol-Reliable) — fair-use, via Imgflip
+- **One Does Not Simply** (`one-does-not-simply`) — [https://imgflip.com/memetemplate/One-Does-Not-Simply](https://imgflip.com/memetemplate/One-Does-Not-Simply) — fair-use, via Imgflip
+- **Oprah: You Get A Car** (`oprah-you-get-a-car`) — [https://imgflip.com/memetemplate/Oprah-You-Get-A-Car-Everybody-Gets-A-Car](https://imgflip.com/memetemplate/Oprah-You-Get-A-Car-Everybody-Gets-A-Car) — fair-use, via Imgflip
+- **Panik Kalm Panik** (`panik-kalm-panik`) — [https://imgflip.com/memetemplate/Panik-Kalm-Panik](https://imgflip.com/memetemplate/Panik-Kalm-Panik) — fair-use, via Imgflip
+- **Peace Sign Tombstone** (`peace-sign-tombstone`) — [https://imgflip.com/memetemplate/233816164/Peace-sign-tombstone](https://imgflip.com/memetemplate/233816164/Peace-sign-tombstone) — fair-use, via Imgflip
+- **Right In Front Of My Salad?** (`really-right-in-front-of-my`) — [https://imgflip.com/memetemplate/471686459/Really-right-in-front-of-my](https://imgflip.com/memetemplate/471686459/Really-right-in-front-of-my) — fair-use, via Imgflip
+- **Red Pill Blue Pill** (`red-pill-blue-pill`) — [https://imgflip.com/memetemplate/84195720/Red-pill-blue-pill](https://imgflip.com/memetemplate/84195720/Red-pill-blue-pill) — fair-use, via Imgflip
+- **Robotnik Pressing Button** (`robotnik-button`) — [https://imgflip.com/memetemplate/243879998/Robotnik-Button](https://imgflip.com/memetemplate/243879998/Robotnik-Button) — fair-use, via Imgflip
+- **Roll Safe Think About It** (`roll-safe`) — [https://imgflip.com/memetemplate/Roll-Safe-Think-About-It](https://imgflip.com/memetemplate/Roll-Safe-Think-About-It) — fair-use, via Imgflip
+- **Running Away Balloon** (`running-away-balloon`) — [https://imgflip.com/memetemplate/Running-Away-Balloon](https://imgflip.com/memetemplate/Running-Away-Balloon) — fair-use, via Imgflip
+- **Sad Pablo Escobar** (`sad-pablo-escobar`) — [https://imgflip.com/memetemplate/Sad-Pablo-Escobar](https://imgflip.com/memetemplate/Sad-Pablo-Escobar) — fair-use, via Imgflip
+- **Scooby Doo Mask Reveal** (`scooby-doo-mask-reveal`) — [https://imgflip.com/memetemplate/145139900/Scooby-doo-mask-reveal](https://imgflip.com/memetemplate/145139900/Scooby-doo-mask-reveal) — fair-use, via Imgflip
+- **The Scroll Of Truth** (`scroll-of-truth`) — [https://imgflip.com/memetemplate/The-Scroll-Of-Truth](https://imgflip.com/memetemplate/The-Scroll-Of-Truth) — fair-use, via Imgflip
+- **See? Nobody Cares** (`see-nobody-cares`) — [https://imgflip.com/memetemplate/See-Nobody-Cares](https://imgflip.com/memetemplate/See-Nobody-Cares) — fair-use, via Imgflip
+- **Am I Out Of Touch?** (`skinner-out-of-touch`) — [https://imgflip.com/memetemplate/93160967/Skinner-Out-Of-Touch](https://imgflip.com/memetemplate/93160967/Skinner-Out-Of-Touch) — fair-use, via Imgflip
+- **Sleeping Shaq** (`sleeping-shaq`) — [https://imgflip.com/memetemplate/Sleeping-Shaq](https://imgflip.com/memetemplate/Sleeping-Shaq) — fair-use, via Imgflip
+- **Smiling Cat (Polite Cat)** (`smiling-cat`) — [https://imgflip.com/memetemplate/Smiling-Cat](https://imgflip.com/memetemplate/Smiling-Cat) — fair-use, via Imgflip
+- **Something Of A Scientist Myself** (`something-of-a-scientist`) — [https://imgflip.com/memetemplate/133946291/You-know-Im-something-of-a-scientist-myself](https://imgflip.com/memetemplate/133946291/You-know-Im-something-of-a-scientist-myself) — fair-use, via Imgflip
+- **Soyboy Vs Yes Chad** (`soyboy-vs-yes-chad`) — [https://imgflip.com/memetemplate/232844223/Soyboy-Vs-Yes-Chad](https://imgflip.com/memetemplate/232844223/Soyboy-Vs-Yes-Chad) — fair-use, via Imgflip
+- **Ight Imma Head Out** (`spongebob-ight-imma-head-out`) — [https://imgflip.com/memetemplate/Spongebob-Ight-Imma-Head-Out](https://imgflip.com/memetemplate/Spongebob-Ight-Imma-Head-Out) — fair-use, via Imgflip
+- **Spongebob Looking Out Window** (`spongebob-looking-out-window`) — [https://imgflip.com/memetemplate/122065530/Spongebob-looking-out-window](https://imgflip.com/memetemplate/122065530/Spongebob-looking-out-window) — fair-use, via Imgflip
+- **Squid Game Front Man** (`squid-game`) — [https://imgflip.com/memetemplate/558880671/Squid-Game](https://imgflip.com/memetemplate/558880671/Squid-Game) — fair-use, via Imgflip
+- **Squidward Sitting In Chair** (`squidward-chair`) — [https://imgflip.com/memetemplate/173542069/Squidward-chair](https://imgflip.com/memetemplate/173542069/Squidward-chair) — fair-use, via Imgflip
+- **Star Wars Yoda** (`star-wars-yoda`) — [https://imgflip.com/memetemplate/Star-Wars-Yoda](https://imgflip.com/memetemplate/Star-Wars-Yoda) — fair-use, via Imgflip
+- **How Do You Do, Fellow Kids** (`steve-buscemi-fellow-kids`) — [https://imgflip.com/memetemplate/58910635/Steve-Buscemi-Fellow-Kids](https://imgflip.com/memetemplate/58910635/Steve-Buscemi-Fellow-Kids) — fair-use, via Imgflip
+- **Straight To Jail** (`straight-to-jail`) — [https://imgflip.com/memetemplate/154739698/Straight-to-Jail](https://imgflip.com/memetemplate/154739698/Straight-to-Jail) — fair-use, via Imgflip
+- **Success Kid** (`success-kid`) — [https://imgflip.com/memetemplate/Success-Kid](https://imgflip.com/memetemplate/Success-Kid) — fair-use, via Imgflip
+- **Sun Tzu, The Art Of War** (`sun-tzu`) — [https://imgflip.com/memetemplate/84898556/Sun-Tzu](https://imgflip.com/memetemplate/84898556/Sun-Tzu) — fair-use, via Imgflip
+- **Surprised Pikachu** (`surprised-pikachu`) — [https://imgflip.com/memetemplate/Surprised-Pikachu](https://imgflip.com/memetemplate/Surprised-Pikachu) — fair-use, via Imgflip
+- **They're the Same Picture** (`theyre-the-same-picture`) — [https://imgflip.com/memetemplate/Theyre-The-Same-Picture](https://imgflip.com/memetemplate/Theyre-The-Same-Picture) — fair-use, via Imgflip
+- **I Bet He's Thinking About Other Women** (`thinking-about-other-women`) — [https://imgflip.com/memetemplate/I-Bet-Hes-Thinking-About-Other-Women](https://imgflip.com/memetemplate/I-Bet-Hes-Thinking-About-Other-Women) — fair-use, via Imgflip
+- **This Is Fine** (`this-is-fine`) — [https://imgflip.com/memetemplate/This-Is-Fine](https://imgflip.com/memetemplate/This-Is-Fine) — fair-use, via Imgflip
+- **Trade Offer** (`trade-offer`) — [https://imgflip.com/memetemplate/Trade-Offer](https://imgflip.com/memetemplate/Trade-Offer) — fair-use, via Imgflip
+- **Truman Show Realization** (`truman-show`) — [https://imgflip.com/memetemplate/554037956/truman-show](https://imgflip.com/memetemplate/554037956/truman-show) — fair-use, via Imgflip
+- **Trump Bill Signing** (`trump-bill-signing`) — [https://imgflip.com/memetemplate/Trump-Bill-Signing](https://imgflip.com/memetemplate/Trump-Bill-Signing) — fair-use, via Imgflip
+- **Tuxedo Winnie the Pooh** (`tuxedo-winnie-the-pooh`) — [https://imgflip.com/memetemplate/Tuxedo-Winnie-The-Pooh](https://imgflip.com/memetemplate/Tuxedo-Winnie-The-Pooh) — fair-use, via Imgflip
+- **Two Buttons** (`two-buttons`) — [https://imgflip.com/memetemplate/Two-Buttons](https://imgflip.com/memetemplate/Two-Buttons) — fair-use, via Imgflip
+- **Two Guys On A Bus** (`two-guys-on-a-bus`) — [https://imgflip.com/memetemplate/354700819/Two-guys-on-a-bus](https://imgflip.com/memetemplate/354700819/Two-guys-on-a-bus) — fair-use, via Imgflip
+- **Uncle Sam I Want You** (`uncle-sam`) — [https://imgflip.com/memetemplate/Uncle-Sam](https://imgflip.com/memetemplate/Uncle-Sam) — fair-use, via Imgflip
+- **Undertaker Sneaking Up** (`undertaker-behind`) — [https://imgflip.com/memetemplate/257745141/undertaker](https://imgflip.com/memetemplate/257745141/undertaker) — fair-use, via Imgflip
+- **Vince McMahon Escalating Reaction** (`vince-mcmahon-glowing-eyes`) — [https://imgflip.com/memetemplate/126882756/Vince-McMahon-Reaction-wGlowing-Eyes](https://imgflip.com/memetemplate/126882756/Vince-McMahon-Reaction-wGlowing-Eyes) — fair-use, via Imgflip
+- **Wake Up Babe** (`wake-up-babe`) — [https://imgflip.com/memetemplate/260755514/Wake-Up-Babe](https://imgflip.com/memetemplate/260755514/Wake-Up-Babe) — fair-use, via Imgflip
+- **Whisper and Goosebumps** (`whisper-goosebumps`) — [https://imgflip.com/memetemplate/101956210/Whisper-and-Goosebumps](https://imgflip.com/memetemplate/101956210/Whisper-and-Goosebumps) — fair-use, via Imgflip
+- **Who Killed Hannibal** (`who-killed-hannibal`) — [https://imgflip.com/memetemplate/Who-Killed-Hannibal](https://imgflip.com/memetemplate/Who-Killed-Hannibal) — fair-use, via Imgflip
+- **Woman Yelling at Cat** (`woman-yelling-at-cat`) — [https://imgflip.com/memetemplate/Woman-Yelling-At-Cat](https://imgflip.com/memetemplate/Woman-Yelling-At-Cat) — fair-use, via Imgflip
+- **X, X Everywhere** (`x-x-everywhere`) — [https://imgflip.com/memetemplate/X-X-Everywhere](https://imgflip.com/memetemplate/X-X-Everywhere) — fair-use, via Imgflip
+- **Yes Honey** (`yes-honey`) — [https://imgflip.com/memetemplate/245901889/Yes-Honey](https://imgflip.com/memetemplate/245901889/Yes-Honey) — fair-use, via Imgflip
+
+## GIFs
+
+- **Blinking White Guy** (`blinking-white-guy`) — [https://imgflip.com/memetemplate/Drew-Scanlon-Reaction](https://imgflip.com/memetemplate/Drew-Scanlon-Reaction) — fair-use, via Imgflip
+- **Chef Skinner Reading A Letter** (`chef-skinner-letter`) — [https://imgflip.com/memetemplate/300006681/Chef-Skinner-Reading-a-Letter](https://imgflip.com/memetemplate/300006681/Chef-Skinner-Reading-a-Letter) — fair-use, via Imgflip
+- **Confused Monkey** (`confused-monkey`) — [https://imgflip.com/memetemplate/511357979/Confused-Monkey](https://imgflip.com/memetemplate/511357979/Confused-Monkey) — fair-use, via Imgflip
+- **Confused John Travolta** (`confused-travolta`) — [https://imgflip.com/memetemplate/404513830/Confused-John-Travolta-Pulp-Fiction](https://imgflip.com/memetemplate/404513830/Confused-John-Travolta-Pulp-Fiction) — fair-use, via Imgflip
+- **Crab Rave** (`crab-rave`) — [https://imgflip.com/memetemplate/188952964/Crab-Rave](https://imgflip.com/memetemplate/188952964/Crab-Rave) — fair-use, via Imgflip
+- **Willem Dafoe Looking Up** (`dafoe-looking-up`) — [https://imgflip.com/memetemplate/367782046/William-Dafoe-looking-up](https://imgflip.com/memetemplate/367782046/William-Dafoe-looking-up) — fair-use, via Imgflip
+- **Deal With It** (`deal-with-it`) — [https://imgflip.com/memetemplate/Deal-With-It](https://imgflip.com/memetemplate/Deal-With-It) — fair-use, via Imgflip
+- **Disappearing Kid** (`disappearing-kid`) — [https://imgflip.com/memetemplate/222516354/Disappearing-kid-gif](https://imgflip.com/memetemplate/222516354/Disappearing-kid-gif) — fair-use, via Imgflip
+- **Homer Backs Into Bushes** (`homer-bush`) — [https://imgflip.com/memetemplate/Homer-Disappears-Into-Bush](https://imgflip.com/memetemplate/Homer-Disappears-Into-Bush) — fair-use, via Imgflip
+- **Mind Blown** (`mind-blown`) — [https://imgflip.com/memetemplate/Mind-Blown](https://imgflip.com/memetemplate/Mind-Blown) — fair-use, via Imgflip
+- **Oprah You Get A Car (Animated)** (`oprah-you-get-a-car-gif`) — [https://imgflip.com/memetemplate/171270276/Oprah-You-Get-A-Car](https://imgflip.com/memetemplate/171270276/Oprah-You-Get-A-Car) — fair-use, via Imgflip
+- **Rage Table Smash** (`rage-table-smash`) — [https://imgflip.com/memetemplate/344036397/Rage-Table-Smash](https://imgflip.com/memetemplate/344036397/Rage-Table-Smash) — fair-use, via Imgflip
+- **Shrek Running** (`shrek-running`) — [https://imgflip.com/memetemplate/577634962/Shrek-running](https://imgflip.com/memetemplate/577634962/Shrek-running) — fair-use, via Imgflip
+- **Typing Cat** (`typing-cat`) — [https://imgflip.com/memetemplate/Typing-Cat](https://imgflip.com/memetemplate/Typing-Cat) — fair-use, via Imgflip
+- **Xbox Achievement Unlocked** (`xbox-achievement`) — [https://imgflip.com/memetemplate/404092011/Xbox-Achievement](https://imgflip.com/memetemplate/404092011/Xbox-Achievement) — fair-use, via Imgflip
