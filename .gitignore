@@ -4,3 +4,4 @@ dist/
 out*.png
 /tmp
 test/output/
+.memes/
