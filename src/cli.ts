@@ -194,7 +194,7 @@ templates
             `  ${s.name.padEnd(14)} rect=[${s.rect.join(', ')}]  ${s.hint ?? ''}\n`,
           );
         }
-        if (t.source) process.stdout.write(`source: ${t.source}\n`);
+        if (t.source) process.stdout.write(`source: ${t.source.url} (${t.source.license})\n`);
       });
     } catch (err) {
       fail(err, opts.json ?? false);
