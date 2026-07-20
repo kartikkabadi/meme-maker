@@ -9,3 +9,7 @@ issue and it will be removed promptly.
 Bundled fonts:
 - Anton (assets/fonts/Anton-Regular.ttf) — SIL Open Font License 1.1,
   see assets/fonts/OFL-Anton.txt.
+- Noto Sans (assets/fonts/NotoSans-Regular.ttf) — SIL Open Font License 1.1,
+  see assets/fonts/OFL-NotoSans.txt.
+- Noto Emoji (assets/fonts/NotoEmoji-Regular.ttf) — SIL Open Font License 1.1,
+  see assets/fonts/OFL-NotoEmoji.txt.

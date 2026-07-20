@@ -116,3 +116,7 @@ npm run lint    # eslint + prettier
 ```
 
 See [DESIGN.md](DESIGN.md) for the full design: architecture, CLI spec, MCP tool spec, template strategy, and implementation plan. Template provenance is documented per-entry in `assets/templates/manifest.json` and in [NOTICE](NOTICE).
+
+## Fonts
+
+Text is rendered with a per-codepoint fallback chain via [opentype.js](https://github.com/opentypejs/opentype.js): [Anton](https://fonts.google.com/specimen/Anton) (display) → [Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans) → [Noto Emoji](https://fonts.google.com/noto/specimen/Noto+Emoji) (monochrome). All bundled fonts are licensed under the SIL Open Font License 1.1 (see `assets/fonts/OFL-*.txt` and [NOTICE](NOTICE)).
