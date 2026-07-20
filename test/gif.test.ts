@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { beforeAll, describe, expect, it } from 'vitest';
+import { getTemplate } from '../src/catalog.js';
 import { renderMeme } from '../src/render/renderer.js';
 
 const WIDTH = 120;
@@ -63,6 +64,21 @@ describe('animated GIF pipeline', () => {
     };
     expect(hasWhite(0)).toBe(false);
     expect(hasWhite(1)).toBe(true);
+  });
+
+  it('renders a real catalog GIF template', async () => {
+    const template = getTemplate('mind-blown');
+    const out = join(mkdtempSync(join(tmpdir(), 'meme-gif-out-')), 'out.gif');
+    const result = await renderMeme({
+      base: { kind: 'template', id: 'mind-blown' },
+      texts: [{ slot: 'top', text: 'WOW' }],
+      output: { path: out },
+    });
+    expect(result.format).toBe('gif');
+    const meta = await sharp(out, { animated: true }).metadata();
+    expect(meta.width).toBe(template.width);
+    expect(meta.pageHeight).toBe(template.height);
+    expect(meta.pages ?? 1).toBeGreaterThan(1);
   });
 
   it('rejects non-gif output for an animated base', async () => {
