@@ -1,0 +1,56 @@
+{
+  "name": "Clown Applying Makeup",
+  "tags": [
+    "escalation",
+    "four-panel",
+    "self-deception"
+  ],
+  "category": "escalation",
+  "slots": [
+    {
+      "name": "step1",
+      "rect": [
+        385,
+        15,
+        350,
+        170
+      ],
+      "hint": "the first questionable decision"
+    },
+    {
+      "name": "step2",
+      "rect": [
+        385,
+        215,
+        350,
+        170
+      ],
+      "hint": "doubling down"
+    },
+    {
+      "name": "step3",
+      "rect": [
+        385,
+        415,
+        350,
+        170
+      ],
+      "hint": "getting worse"
+    },
+    {
+      "name": "step4",
+      "rect": [
+        385,
+        615,
+        350,
+        170
+      ],
+      "hint": "the full clown moment"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Clown-Applying-Makeup",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}

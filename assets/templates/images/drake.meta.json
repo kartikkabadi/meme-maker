@@ -1,0 +1,36 @@
+{
+  "name": "Drake Hotline Bling",
+  "tags": [
+    "choice",
+    "preference",
+    "two-panel"
+  ],
+  "category": "choice",
+  "slots": [
+    {
+      "name": "no",
+      "rect": [
+        620,
+        30,
+        560,
+        540
+      ],
+      "hint": "the rejected option"
+    },
+    {
+      "name": "yes",
+      "rect": [
+        620,
+        630,
+        560,
+        540
+      ],
+      "hint": "the preferred option"
+    }
+  ],
+  "source": {
+    "url": "https://imgflip.com/memetemplate/Drake-Hotline-Bling",
+    "license": "fair-use",
+    "attribution": "via Imgflip"
+  }
+}
