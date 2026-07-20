@@ -1,4 +1,5 @@
 import sharp from 'sharp';
+import { limits } from '../limits.js';
 import { MemeError } from '../spec.js';
 
 export interface TextOverlay {
@@ -12,16 +13,38 @@ export interface TextOverlay {
  * canvas of pages, so each overlay is composited once per applicable frame
  * at that frame's vertical offset.
  */
-export async function renderGif(inputPath: string, overlays: TextOverlay[]): Promise<Buffer> {
+export async function renderGif(
+  inputPath: string,
+  overlays: TextOverlay[],
+  maxWidth?: number,
+): Promise<Buffer> {
   let image: sharp.Sharp;
   let meta: sharp.Metadata;
   try {
-    image = sharp(inputPath, { animated: true });
+    image = sharp(inputPath, { animated: true, limitInputPixels: limits.maxPixels() });
     meta = await image.metadata();
   } catch (err) {
-    throw new MemeError('IO_ERROR', `cannot read GIF "${inputPath}": ${(err as Error).message}`);
+    throw new MemeError(
+      'UNREADABLE_IMAGE',
+      `cannot read GIF "${inputPath}": ${(err as Error).message}`,
+      {
+        path: inputPath,
+        detail: (err as Error).message,
+      },
+    );
   }
   const frameCount = meta.pages ?? 1;
+  if (frameCount > limits.maxGifFrames()) {
+    throw new MemeError(
+      'RESOURCE_LIMIT',
+      `GIF has ${frameCount} frames (max ${limits.maxGifFrames()})`,
+      {
+        limit: limits.maxGifFrames(),
+        requested: frameCount,
+        kind: 'gif_frames',
+      },
+    );
+  }
   const frameHeight = meta.pageHeight ?? meta.height ?? 0;
 
   const composites: sharp.OverlayOptions[] = [];
@@ -33,7 +56,14 @@ export async function renderGif(inputPath: string, overlays: TextOverlay[]): Pro
   }
   if (composites.length > 0) image = image.composite(composites);
 
-  return image.gif({ loop: meta.loop ?? 0, delay: meta.delay }).toBuffer();
+  const encoded = await image.gif({ loop: meta.loop ?? 0, delay: meta.delay }).toBuffer();
+  const width = meta.width ?? 0;
+  if (maxWidth === undefined || maxWidth >= width) return encoded;
+  // sharp applies resize before composite in a single pipeline, so downscale in a second pass.
+  return sharp(encoded, { animated: true, limitInputPixels: limits.maxPixels() })
+    .resize({ width: maxWidth })
+    .gif({ loop: meta.loop ?? 0, delay: meta.delay })
+    .toBuffer();
 }
 
 export async function gifFrameInfo(
