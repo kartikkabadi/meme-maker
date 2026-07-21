@@ -67,7 +67,11 @@ meme ui              # starts the local web app; auto-picks a free port
 meme ui --port 8787  # or pin one
 ```
 
-The first stdout line is machine-readable JSON — `{"url":"http://127.0.0.1:PORT"}` — so hosts and agents can discover the URL; a human-readable line follows on stderr. The SPA has four surfaces:
+The first stdout line is machine-readable JSON — `{"url":"http://127.0.0.1:PORT"}` — so hosts and agents can discover the URL; a human-readable line follows on stderr.
+
+Prefer a stable named URL over a random port? Run `npx portless` from the repo root to serve the UI at `https://meme.localhost` — see [docs/PORTLESS.md](docs/PORTLESS.md).
+
+The SPA has four surfaces:
 
 - **Gallery** — browse/search all 118 templates with thumbnails
 - **Editor** — pick a template, fill slots, live preview, tune slot rects
