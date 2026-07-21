@@ -8,8 +8,17 @@ permissions:
   contents: write
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux-x64
+          - os: macos-13
+            target: macos-x64
+          - os: macos-14
+            target: macos-arm64
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,11 +29,31 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm test
-      - name: Build release tarball
+      - run: npm prune --omit=dev --no-audit --no-fund
+      - name: Build platform tarball
+        run: |
+          STAGE=$(mktemp -d)
+          mkdir "$STAGE/meme-maker"
+          cp -R dist assets node_modules package.json LICENSE NOTICE README.md CHANGELOG.md install.sh "$STAGE/meme-maker/"
+          tar -czf "meme-maker-${{ matrix.target }}.tar.gz" -C "$STAGE" meme-maker
+      - uses: actions/upload-artifact@v4
+        with:
+          name: meme-maker-${{ matrix.target }}
+          path: meme-maker-${{ matrix.target }}.tar.gz
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - name: Build source tarball
         run: |
           STAGE="agent-meme-maker-$GITHUB_REF_NAME"
           mkdir "$STAGE"
-          cp -r dist assets package.json package-lock.json LICENSE NOTICE README.md CHANGELOG.md "$STAGE/"
+          cp -r src assets scripts ui test package.json package-lock.json tsconfig.json vitest.config.ts eslint.config.js LICENSE NOTICE README.md CHANGELOG.md install.sh "$STAGE/"
           tar -czf "$STAGE.tar.gz" "$STAGE"
       - name: Extract release notes from CHANGELOG.md
         run: |
@@ -42,7 +71,10 @@ jobs:
           gh release create "$GITHUB_REF_NAME" \
             --title "$GITHUB_REF_NAME" \
             --notes-file release-notes.md \
+            meme-maker-linux-x64.tar.gz \
+            meme-maker-macos-x64.tar.gz \
+            meme-maker-macos-arm64.tar.gz \
             "agent-meme-maker-$GITHUB_REF_NAME.tar.gz" \
-            scripts/install.sh
+            install.sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
