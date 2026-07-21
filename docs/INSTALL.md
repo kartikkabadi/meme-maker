@@ -25,9 +25,11 @@ What it does:
 2. Verifies Node.js >= 20 is available (npm is never required from you; the
    installer only uses it internally when it has to build from source).
 3. Prefers a pre-built, self-contained release tarball
-   (`meme-maker-<platform>-<arch>.tar.gz`) from GitHub Releases. If none is
-   published for your platform, it downloads the source for the latest tagged
-   release (falling back to `main`) and builds it. Either way the app —
+   (`meme-maker-<platform>-<arch>.tar.gz`) from GitHub Releases — CI publishes
+   `linux-x64`, `macos-x64`, and `macos-arm64` tarballs for every tag, so on
+   those platforms npm is never used. If none matches your platform, it
+   downloads the source for the latest tagged release (falling back to `main`)
+   and builds it with npm (a note is printed when this happens). Either way the app —
    including the template library from `assets/templates` — lands in
    `~/.meme-maker`.
 4. Writes thin `meme` and `meme-maker-mcp` wrappers into `<prefix>/bin` and
@@ -40,6 +42,7 @@ Configuration via environment variables:
 | `PREFIX`          | `~/.local` (non-root) / `/usr/local`   | where wrappers are installed   |
 | `MEME_MAKER_HOME` | `~/.meme-maker`                        | where the app itself lives     |
 | `MEME_MAKER_REF`  | latest release tag, else `main`        | git tag/branch to install      |
+| `MEME_MAKER_TARBALL` | (unset)                             | local pre-built tarball to install from |
 
 Example — install a specific ref system-wide:
 
@@ -69,11 +72,19 @@ node dist/cli.js templates list   # or: npm link, then use `meme` directly
 
 ## For maintainers: publishing a release tarball
 
-`scripts/package-release.sh` builds the self-contained
-`meme-maker-<platform>-<arch>.tar.gz` (dist + assets + production
-node_modules) for the current machine. Attach it to the GitHub Release for the
-tag and the installer will pick it up automatically — users then need no npm
-at all, only Node.
+The Release workflow (`.github/workflows/release.yml`) builds and attaches
+`meme-maker-linux-x64.tar.gz`, `meme-maker-macos-x64.tar.gz`, and
+`meme-maker-macos-arm64.tar.gz` (dist + assets + production node_modules,
+including sharp's platform-native libvips binaries) to every `v*` tag's
+GitHub Release automatically — users then need no npm at all, only Node.
+
+`scripts/package-release.sh` builds the same tarball locally for the current
+machine. To test the installer against it:
+
+```sh
+sh scripts/package-release.sh
+MEME_MAKER_TARBALL=$PWD/meme-maker-linux-x64.tar.gz sh install.sh
+```
 
 ## Verifying an install
 
