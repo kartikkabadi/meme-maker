@@ -363,6 +363,8 @@ program
       const { startServer } = await import('./http.js');
       const { url } = await startServer({
         port: opts.port ? parseInt(opts.port, 10) : undefined,
+        log: true,
+        handleSignals: true,
       });
       // Machine-readable first line so agents/hosts can discover the port.
       process.stdout.write(JSON.stringify({ url }) + '\n');
