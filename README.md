@@ -16,8 +16,7 @@
 - **Built for agents** — `--json` everywhere, structured errors, machine-readable schemas, sandboxed filesystem access
 - **Local-first** — no cloud, no accounts, no telemetry; runs entirely on your machine
 
-<!-- TODO: replace with a real screenshot of the web UI editor -->
-![Screenshot placeholder — web UI editor](docs/contact-sheet.webp)
+![Web UI editor with live preview](docs/assets/screenshots/ui-editor-drake.webp)
 
 ## What is this?
 
