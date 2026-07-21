@@ -2,7 +2,7 @@
   "name": "agent-meme-maker",
   "version": "0.3.0",
   "private": true,
-  "description": "Headless meme editor for agents: 118-template catalog (images + GIFs), deterministic text-overlay engine, CLI, MCP server, and local web UI.",
+  "description": "Headless meme editor for agents: 609-template catalog (images + GIFs), deterministic text-overlay engine, CLI, MCP server, and local web UI.",
   "keywords": [
     "meme",
     "meme-generator",
