@@ -43,19 +43,36 @@ export function MyMemes({
     load();
   };
 
-  if (entries && entries.length === 0) {
+  if (!entries) {
     return (
-      <div class="empty">
+      <main id="main">
+        <div class="card-grid" aria-hidden="true">
+          {Array.from({ length: 4 }, (_, i) => (
+            <div key={i} class="tcard skeleton-card">
+              <span class="thumb skeleton" />
+              <span class="meta">
+                <span class="skeleton skeleton-line" />
+              </span>
+            </div>
+          ))}
+        </div>
+      </main>
+    );
+  }
+
+  if (entries.length === 0) {
+    return (
+      <main id="main" class="empty">
         <div class="anton shout">NO MEMES YET</div>
         <div>Renders you save land here, as re-editable spec + image pairs.</div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <main>
+    <main id="main">
       <div class="card-grid">
-        {(entries ?? []).map((e) => (
+        {entries.map((e) => (
           <div key={e.id} class="tcard" style={{ cursor: 'default' }}>
             <span class="thumb">
               <img
@@ -78,7 +95,11 @@ export function MyMemes({
               <a class="btn" href={`/api/history/${e.id}.png`} download={`${e.id}.png`}>
                 Download
               </a>
-              <button class="btn btn-danger" onClick={() => void remove(e.id)}>
+              <button
+                class="btn btn-danger"
+                aria-label={`Delete ${e.template ?? 'meme'}`}
+                onClick={() => void remove(e.id)}
+              >
                 Delete
               </button>
             </div>
