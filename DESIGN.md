@@ -124,7 +124,7 @@ Defaults produce the classic look: Anton, auto-size (fit box, capped), uppercase
 
 ## 5. CLI Spec (`meme`)
 
-Installed via `curl -fsSL https://github.com/kartikkabadi/meme-maker/releases/latest/download/install.sh | sh`. All commands support `--json` for machine-readable output on stdout; exit code 0/1; errors as `{ "error": { "code", "message" } }`.
+Installed via `curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh` (see [docs/INSTALL.md](docs/INSTALL.md)). All commands support `--json` for machine-readable output on stdout; exit code 0/1; errors as `{ "error": { "code", "message" } }`.
 
 ```
 meme templates list [--tag <tag>] [--type image|gif] [--search <q>] [--json]

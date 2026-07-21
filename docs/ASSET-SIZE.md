@@ -1,6 +1,6 @@
 # Asset size analysis (2026-07)
 
-Measured on `main` at v0.2.0.
+Measured on `main` at v0.3.0 (609-template catalog).
 
 ## npm package
 
