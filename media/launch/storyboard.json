@@ -4,7 +4,7 @@
   "scenes": [
     {
       "id": "title",
-      "duration": 2.5,
+      "duration": 2.4,
       "template": null,
       "image": null,
       "text": [
@@ -15,7 +15,7 @@
     },
     {
       "id": "drake",
-      "duration": 2.5,
+      "duration": 2.4,
       "template": "drake",
       "image": "assets/scene2-drake.png",
       "text": [{ "content": "one JSON spec in, pixels out", "role": "caption" }],
@@ -23,7 +23,7 @@
     },
     {
       "id": "expanding-brain",
-      "duration": 3,
+      "duration": 2.8,
       "template": "expanding-brain",
       "image": "assets/scene3-expanding-brain.png",
       "text": [{ "content": "evolve your meme pipeline", "role": "caption" }],
@@ -31,7 +31,7 @@
     },
     {
       "id": "two-buttons",
-      "duration": 2.5,
+      "duration": 2.4,
       "template": "two-buttons",
       "image": "assets/scene4-two-buttons.png",
       "text": [{ "content": "CLI · MCP · HTTP · Web UI — one engine", "role": "caption" }],
@@ -39,7 +39,7 @@
     },
     {
       "id": "always-has-been",
-      "duration": 2.5,
+      "duration": 2.4,
       "template": "always-has-been",
       "image": "assets/scene5-always-has-been.png",
       "text": [{ "content": "deterministic. reproducible. testable.", "role": "caption" }],
@@ -47,7 +47,7 @@
     },
     {
       "id": "success-kid",
-      "duration": 2.5,
+      "duration": 2.4,
       "template": "success-kid",
       "image": "assets/scene6-success-kid.png",
       "text": [{ "content": "609 templates. zero cloud.", "role": "caption" }],
@@ -55,7 +55,7 @@
     },
     {
       "id": "outro",
-      "duration": 2.5,
+      "duration": 3.5,
       "template": null,
       "image": null,
       "text": [
