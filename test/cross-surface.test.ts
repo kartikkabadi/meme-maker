@@ -36,9 +36,11 @@ describe('output root consistency across surfaces', () => {
     const dir = mkdtempSync(join(tmpdir(), 'meme-cwd-'));
     process.chdir(dir);
     try {
+      // process.cwd() resolves symlinks (e.g. /var -> /private/var on macOS)
+      const realDir = process.cwd();
       process.env.MEME_OUTPUT_ROOT = 'outdir';
       const name = defaultOutputName(canvasSpec, 'png');
-      expect(resolveOutputPath(name, false)).toBe(join(dir, name));
+      expect(resolveOutputPath(name, false)).toBe(join(realDir, name));
     } finally {
       process.chdir(cwd);
     }
