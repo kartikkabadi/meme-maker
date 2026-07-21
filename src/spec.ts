@@ -149,6 +149,7 @@ export const TemplateSchema = z
     height: z.number().int().positive(),
     tags: z.array(z.string()),
     category: z.string().optional(),
+    pack: z.string().optional(),
     slots: z.array(TemplateSlotSchema),
     source: TemplateSourceSchema.optional(),
   })
