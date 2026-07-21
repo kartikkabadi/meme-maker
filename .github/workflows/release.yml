@@ -14,8 +14,8 @@ jobs:
         include:
           - os: ubuntu-latest
             target: linux-x64
-          # macos-13 is the last GitHub-hosted x64 runner; use macos-15 for arm64.
-          - os: macos-13
+          # GitHub deprecated macos-13; macos-15-intel is the current x64 runner.
+          - os: macos-15-intel
             target: macos-x64
           - os: macos-15
             target: macos-arm64
