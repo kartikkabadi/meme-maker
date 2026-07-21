@@ -7,9 +7,8 @@ Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent 
 ## 60-second quick start
 
 ```sh
-npm i -g agent-meme-maker        # installs the `meme` and `meme-maker-mcp` binaries
-# or run without installing:
-npx agent-meme-maker templates list
+# installs the `meme` and `meme-maker-mcp` binaries
+curl -fsSL https://github.com/kartikkabadi/meme-maker/releases/latest/download/install.sh | sh
 
 meme templates list                                   # browse the catalog
 meme render --template drake \
@@ -99,7 +98,7 @@ command = "meme-maker-mcp"
 
 ACP hosts (e.g. Synara): register `meme-maker-mcp` as a stdio MCP server in the agent's MCP configuration; rendered files land under the output root (`SYNARA_ARTIFACTS_DIR` is respected automatically).
 
-If installed from a clone rather than npm, use `"command": "node", "args": ["/path/to/meme-maker/dist/mcp.js"]`.
+If running from a clone rather than the installer, use `"command": "node", "args": ["/path/to/meme-maker/dist/mcp.js"]`.
 
 `render_meme` takes a full `MemeSpec` and returns the rendered image inline (≤ 1 MB) plus the file path when `output.path` is given.
 
