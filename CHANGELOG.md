@@ -9,7 +9,8 @@
   - HTTP: bounded preview cache memory, 404 for unknown `/api` routes, hardened static-root path check.
   - Web UI: fixed key handler race, mobile overflow, and added a11y landmarks.
 - CI now runs on a Node 20/22 matrix across Ubuntu, macOS, and Windows.
-- Release workflow creates a GitHub Release with notes extracted from `CHANGELOG.md` on `v*` tags.
+- Release workflow on `v*` tags creates a GitHub Release with notes extracted from `CHANGELOG.md` and attaches a self-contained tarball plus `install.sh`.
+- New install path: `curl -fsSL .../releases/latest/download/install.sh | sh` (no npm registry distribution).
 
 ## 0.2.0
 

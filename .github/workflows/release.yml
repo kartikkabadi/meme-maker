@@ -6,28 +6,26 @@ on:
 
 permissions:
   contents: write
-  id-token: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
       - run: npm run lint
       - run: npm test
-      - run: npm publish --provenance --access public
-        if: env.NPM_TOKEN != ''
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Build release tarball
+        run: |
+          STAGE="agent-meme-maker-$GITHUB_REF_NAME"
+          mkdir "$STAGE"
+          cp -r dist assets package.json package-lock.json LICENSE NOTICE README.md CHANGELOG.md "$STAGE/"
+          tar -czf "$STAGE.tar.gz" "$STAGE"
       - name: Extract release notes from CHANGELOG.md
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
@@ -40,6 +38,11 @@ jobs:
             echo "No CHANGELOG.md section found for $VERSION" > release-notes.md
           fi
       - name: Create GitHub Release
-        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file release-notes.md
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release-notes.md \
+            "agent-meme-maker-$GITHUB_REF_NAME.tar.gz" \
+            scripts/install.sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
