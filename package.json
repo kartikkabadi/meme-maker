@@ -1,8 +1,33 @@
 {
   "name": "agent-meme-maker",
   "version": "0.2.0",
-  "description": "A meme editor for agents: template catalog, text overlay engine, CLI, and MCP server.",
+  "description": "Headless meme editor for agents: 118-template catalog (images + GIFs), deterministic text-overlay engine, CLI, MCP server, and local web UI.",
+  "keywords": [
+    "meme",
+    "meme-generator",
+    "mcp",
+    "mcp-server",
+    "cli",
+    "agent",
+    "ai",
+    "image",
+    "gif",
+    "sharp",
+    "headless"
+  ],
+  "author": "Kartik Kabadi",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kartikkabadi/meme-maker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kartikkabadi/meme-maker/issues"
+  },
+  "homepage": "https://github.com/kartikkabadi/meme-maker#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +37,9 @@
   },
   "files": [
     "dist",
-    "assets"
+    "assets",
+    "NOTICE",
+    "CHANGELOG.md"
   ],
   "engines": {
     "node": ">=20"
