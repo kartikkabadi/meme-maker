@@ -4,7 +4,7 @@
   "scenes": [
     {
       "id": "hook",
-      "duration": 3.0,
+      "duration": 4.0,
       "template": null,
       "image": null,
       "text": [
@@ -15,18 +15,18 @@
     },
     {
       "id": "reveal",
-      "duration": 3.0,
+      "duration": 1.8,
       "template": null,
       "image": null,
       "text": [
         { "content": "MEME-MAKER", "role": "title" },
         { "content": "deterministic memes for agents", "role": "subtitle" }
       ],
-      "transition": "crossfade"
+      "transition": "fade"
     },
     {
       "id": "demo",
-      "duration": 5.0,
+      "duration": 4.5,
       "template": "drake",
       "image": "assets/scene2-drake.png",
       "text": [
@@ -37,40 +37,40 @@
     },
     {
       "id": "surfaces",
-      "duration": 3.0,
+      "duration": 2.7,
       "template": "two-buttons",
       "image": "assets/scene4-two-buttons.png",
       "text": [
         { "content": "ONE ENGINE. FOUR SURFACES.", "role": "title" },
         { "content": "CLI · MCP · HTTP · WEB UI", "role": "subtitle" }
       ],
-      "transition": "crossfade"
+      "transition": "fade"
     },
     {
       "id": "deterministic",
-      "duration": 3.0,
+      "duration": 2.5,
       "template": "always-has-been",
       "image": "assets/scene5-always-has-been.png",
       "text": [
         { "content": "SAME SPEC. SAME PIXELS.", "role": "title" },
         { "content": "deterministic · reproducible · CI-friendly", "role": "subtitle" }
       ],
-      "transition": "crossfade"
+      "transition": "fade"
     },
     {
       "id": "templates",
-      "duration": 3.0,
+      "duration": 4.0,
       "template": "success-kid",
       "image": "assets/scene6-success-kid.png",
       "text": [
         { "content": "609", "role": "countup" },
         { "content": "TEMPLATES. ZERO CLOUD.", "role": "title" }
       ],
-      "transition": "crossfade"
+      "transition": "fade"
     },
     {
       "id": "proof",
-      "duration": 2.5,
+      "duration": 3.5,
       "template": null,
       "image": null,
       "text": [{ "content": "RENDERED BY MEME-MAKER ITSELF", "role": "title" }],
@@ -78,7 +78,7 @@
     },
     {
       "id": "cta",
-      "duration": 4.5,
+      "duration": 4.0,
       "template": null,
       "image": null,
       "text": [
@@ -86,7 +86,7 @@
         { "content": "curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh", "role": "code" },
         { "content": "github.com/kartikkabadi/meme-maker", "role": "subtitle" }
       ],
-      "transition": "crossfade"
+      "transition": "cut"
     }
   ]
 }
