@@ -31,7 +31,8 @@ const DIM = "#8b949e";
 const MONO = "'SFMono-Regular', 'Menlo', 'Consolas', 'Liberation Mono', monospace";
 const BRAND_FONT = "Anton, 'Arial Black', sans-serif";
 
-const XFADE = 8; // crossfade frames between scenes
+const FADE = 5; // fade-through-black frames on "fade" transitions
+const END_FADE = 15; // final picture+audio fade (0.5s)
 
 let antonPromise: Promise<void> | null = null;
 const loadAnton = (): Promise<void> => {
@@ -158,7 +159,7 @@ const HUD: React.FC = () => {
     fontFamily: MONO,
     fontSize: 22,
     letterSpacing: 2,
-    color: "rgba(242,239,233,0.72)",
+    color: "rgba(242,239,233,0.88)",
   };
   return (
     <>
@@ -228,17 +229,30 @@ const PopTitle: React.FC<{
   fontSize?: number;
   color?: string;
   style?: React.CSSProperties;
-}> = ({ text, startFrame, fontSize = 96, color = INK, style }) => {
+  snap?: boolean; // fully visible from startFrame, snap 1.14 -> 1
+}> = ({ text, startFrame, fontSize = 96, color = INK, style, snap }) => {
   const frame = useCurrentFrame();
   const s = spring({
     frame: frame - startFrame,
     fps: FPS,
     config: { damping: 12, stiffness: 160, mass: 0.8 },
   });
-  const opacity = interpolate(frame - startFrame, [0, 4], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const opacity = snap
+    ? frame >= startFrame
+      ? 1
+      : 0
+    : interpolate(frame - startFrame, [0, 4], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      });
+  const scale = snap
+    ? interpolate(frame - startFrame, [0, 5], [1.14, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.back(1.6)),
+      })
+    : 0.8 + 0.2 * s;
+  const ty = snap ? 0 : (1 - s) * 30;
   return (
     <div
       style={{
@@ -248,7 +262,7 @@ const PopTitle: React.FC<{
         letterSpacing: 2,
         lineHeight: 1.1,
         textAlign: "center",
-        transform: `scale(${0.8 + 0.2 * s}) translateY(${(1 - s) * 30}px)`,
+        transform: `scale(${scale}) translateY(${ty}px)`,
         opacity,
         textShadow: "0 4px 20px rgba(0,0,0,0.6)",
         ...style,
@@ -273,6 +287,12 @@ const CountUp: React.FC<{
       easing: Easing.out(Easing.cubic),
     })
   );
+  // landing pop when the counter hits its target
+  const landed = startFrame + durationFrames;
+  const pop = interpolate(frame, [landed, landed + 2, landed + 6], [1, 1.08, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
   return (
     <div
       style={{
@@ -280,6 +300,8 @@ const CountUp: React.FC<{
         fontSize,
         color: ACCENT,
         lineHeight: 1,
+        transform: `scale(${pop})`,
+        transformOrigin: "left center",
         textShadow: "0 6px 30px rgba(0,0,0,0.7)",
       }}
     >
@@ -297,29 +319,59 @@ const MemeProp: React.FC<{
   width: number;
   tilt?: number;
   kenBurnsFrames: number;
-}> = ({ src, startFrame, width, tilt = -2, kenBurnsFrames }) => {
+  backing?: boolean; // light card frame for dark source images
+  slideIn?: boolean; // slide in from the right instead of scale-pop
+  popFrame?: number; // extra pop accent (e.g. on the 609 landing)
+}> = ({ src, startFrame, width, tilt = -2, kenBurnsFrames, backing, slideIn, popFrame }) => {
   const frame = useCurrentFrame();
   const s = spring({
     frame: frame - startFrame,
     fps: FPS,
     config: { damping: 13, stiffness: 140, mass: 0.9 },
   });
-  const kb = interpolate(frame, [startFrame, startFrame + kenBurnsFrames], [1, 1.03], {
+  // Ken Burns: slow drift in scale + slight rotation so holds never freeze
+  const kb = interpolate(frame, [startFrame, startFrame + kenBurnsFrames], [1, 1.035], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+  const rotDrift = interpolate(
+    frame,
+    [startFrame, startFrame + kenBurnsFrames],
+    [0, 0.8],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
   const opacity = interpolate(frame - startFrame, [0, 5], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+  const slideX = slideIn ? (1 - s) * 140 : 0;
+  const pop =
+    popFrame !== undefined
+      ? interpolate(frame, [popFrame, popFrame + 2, popFrame + 7], [1, 1.07, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+        })
+      : 1;
   return (
     <div
       style={{
         width,
         borderRadius: 18,
         overflow: "hidden",
-        boxShadow: "0 24px 70px rgba(0,0,0,0.65), 0 0 0 1px rgba(242,239,233,0.12)",
-        transform: `rotate(${tilt}deg) scale(${0.85 + 0.15 * s})`,
+        ...(backing
+          ? {
+              padding: 12,
+              backgroundColor: "#e8e4dc",
+              boxShadow:
+                "0 24px 70px rgba(0,0,0,0.75), 0 0 0 2px rgba(242,239,233,0.4)",
+            }
+          : {
+              boxShadow:
+                "0 24px 70px rgba(0,0,0,0.65), 0 0 0 1px rgba(242,239,233,0.12)",
+            }),
+        transform: `translateX(${slideX}px) rotate(${tilt + rotDrift}deg) scale(${
+          (slideIn ? 0.9 + 0.1 * s : 0.85 + 0.15 * s) * pop
+        })`,
         opacity,
       }}
     >
@@ -328,6 +380,7 @@ const MemeProp: React.FC<{
         style={{
           width: "100%",
           display: "block",
+          borderRadius: backing ? 8 : 0,
           transform: `scale(${kb})`,
         }}
       />
@@ -338,28 +391,32 @@ const MemeProp: React.FC<{
 // ---------------------------------------------------------------------------
 // Scene wrapper: unified bg + crossfade in/out
 // ---------------------------------------------------------------------------
+// Scenes never overlap: a "fade" transition fades the outgoing scene fully
+// to the background, then fades the incoming one in (no text-on-text mush).
 const SceneShell: React.FC<{
   durationInFrames: number;
   transitionIn: string;
-  nextIsCrossfade: boolean;
+  nextIsFade: boolean;
   isLast: boolean;
   children: React.ReactNode;
-}> = ({ durationInFrames, transitionIn, nextIsCrossfade, isLast, children }) => {
+}> = ({ durationInFrames, transitionIn, nextIsFade, isLast, children }) => {
   const frame = useCurrentFrame();
   const fadeIn =
-    transitionIn === "crossfade"
-      ? interpolate(frame, [0, XFADE], [0, 1], {
+    transitionIn === "fade"
+      ? interpolate(frame, [0, FADE], [0, 1], {
           extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
         })
       : 1;
   const fadeOut = isLast
-    ? interpolate(frame, [durationInFrames - 5, durationInFrames - 1], [1, 0], {
-        extrapolateLeft: "clamp",
-        extrapolateRight: "clamp",
-      })
-    : nextIsCrossfade
-    ? interpolate(frame, [durationInFrames - XFADE, durationInFrames], [1, 0], {
+    ? interpolate(
+        frame,
+        [durationInFrames - END_FADE, durationInFrames - 1],
+        [1, 0],
+        { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+      )
+    : nextIsFade
+    ? interpolate(frame, [durationInFrames - FADE, durationInFrames], [1, 0], {
         extrapolateLeft: "clamp",
         extrapolateRight: "clamp",
       })
@@ -372,37 +429,93 @@ const SceneShell: React.FC<{
 // ---------------------------------------------------------------------------
 // Scenes
 // ---------------------------------------------------------------------------
-const HookScene: React.FC<{ scene: Scene }> = ({ scene }) => (
-  <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 110 }}>
-    <div style={{ textAlign: "center", maxWidth: 860 }}>
-      <Typewriter
-        text={textFor(scene, "body")}
-        startFrame={2}
-        charsPerFrame={2.4}
-        hideCursorWhenDone
-        style={{
-          fontFamily: MONO,
-          fontSize: 40,
-          color: DIM,
-          lineHeight: 1.6,
-        }}
-      />
-      <div style={{ height: 48 }} />
-      <PopTitle text={textFor(scene, "title")} startFrame={26} fontSize={104} color={ACCENT} />
-    </div>
-  </AbsoluteFill>
-);
+// Pre-computed line breaks so the typewriter never reflows mid-word
+// ("file PRs" stays together).
+const HOOK_LINES = ["your agent can write code,", "file PRs, book flights."];
+const HOOK_CPF = 1.7;
+const HOOK_TYPE_START = 18; // punchline flash holds frames 0-17
+const HOOK_LINE_STARTS = HOOK_LINES.reduce<number[]>((acc, _, i) => {
+  const prev = HOOK_LINES.slice(0, i).reduce((a, l) => a + l.length, 0);
+  acc.push(HOOK_TYPE_START + Math.ceil(prev / HOOK_CPF));
+  return acc;
+}, []);
+const HOOK_PUNCH = 70; // punchline snap-in (2.33s, on the music accent)
 
-const RevealScene: React.FC<{ scene: Scene }> = ({ scene }) => {
+const HookScene: React.FC<{ scene: Scene }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const subOpacity = interpolate(frame, [10, 16], [0, 1], {
+  const flash = frame < HOOK_TYPE_START;
+  return (
+    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 110 }}>
+      {flash ? (
+        // frame 0: bold yellow punchline fills the thumbnail
+        <PopTitle
+          text={textFor(scene, "title")}
+          startFrame={0}
+          fontSize={118}
+          color={ACCENT}
+          snap
+        />
+      ) : (
+        <div style={{ textAlign: "center", maxWidth: 900 }}>
+          <div
+            style={{
+              fontFamily: MONO,
+              fontSize: 40,
+              color: "rgba(242,239,233,0.85)",
+              lineHeight: 1.6,
+            }}
+          >
+            {HOOK_LINES.map((line, i) => (
+              <div key={i} style={{ whiteSpace: "pre", minHeight: "1.6em" }}>
+                {frame >= HOOK_LINE_STARTS[i] ? (
+                  <Typewriter
+                    text={line}
+                    startFrame={HOOK_LINE_STARTS[i]}
+                    charsPerFrame={HOOK_CPF}
+                    hideCursorWhenDone={i < HOOK_LINES.length - 1 || frame >= HOOK_PUNCH}
+                  />
+                ) : null}
+              </div>
+            ))}
+          </div>
+          <div style={{ height: 48 }} />
+          {frame >= HOOK_PUNCH ? (
+            <PopTitle
+              text={textFor(scene, "title")}
+              startFrame={HOOK_PUNCH}
+              fontSize={104}
+              color={ACCENT}
+              snap
+            />
+          ) : null}
+        </div>
+      )}
+    </AbsoluteFill>
+  );
+};
+
+const RevealScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
+  scene,
+  durationInFrames,
+}) => {
+  const frame = useCurrentFrame();
+  const subOpacity = interpolate(frame, [8, 14], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
   const glitch = frame >= 2 && frame <= 10 && frame % 3 !== 0;
+  // idle life: slow scale drift + letter tracking-in on the wordmark
+  const drift = interpolate(frame, [0, durationInFrames], [1, 1.03]);
+  const tracking = interpolate(frame, [0, durationInFrames], [9, 3]);
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
-      <div style={{ textAlign: "center", position: "relative" }}>
+      <div
+        style={{
+          textAlign: "center",
+          position: "relative",
+          transform: `scale(${drift})`,
+        }}
+      >
         {glitch ? (
           <div
             style={{
@@ -419,7 +532,12 @@ const RevealScene: React.FC<{ scene: Scene }> = ({ scene }) => {
             {textFor(scene, "title")}
           </div>
         ) : null}
-        <PopTitle text={textFor(scene, "title")} startFrame={2} fontSize={150} />
+        <PopTitle
+          text={textFor(scene, "title")}
+          startFrame={2}
+          fontSize={150}
+          style={{ letterSpacing: tracking }}
+        />
         <div
           style={{
             fontFamily: MONO,
@@ -504,6 +622,7 @@ const DemoScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
           </div>
           {DEMO_JSON.map((line, i) => {
             const lineStart = DEMO_STARTS[i];
+            const isLastLine = i === DEMO_JSON.length - 1;
             return (
               <div key={i} style={{ whiteSpace: "pre", minHeight: "1.5em" }}>
                 {frame >= lineStart ? (
@@ -511,7 +630,8 @@ const DemoScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
                     text={line}
                     startFrame={lineStart}
                     charsPerFrame={DEMO_CPF}
-                    hideCursorWhenDone
+                    // cursor keeps blinking on the last line: terminal stays alive
+                    hideCursorWhenDone={!isLastLine}
                     cursorColor={ACCENT}
                   />
                 ) : null}
@@ -531,10 +651,10 @@ const DemoScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
         </div>
         <MemeProp
           src={staticFile("scene2-drake.png")}
-          startFrame={DEMO_TYPING_END - 6}
+          startFrame={DEMO_TYPING_END + 2}
           width={380}
           tilt={2.5}
-          kenBurnsFrames={durationInFrames - (DEMO_TYPING_END - 6)}
+          kenBurnsFrames={durationInFrames - (DEMO_TYPING_END + 2)}
         />
       </div>
     </AbsoluteFill>
@@ -546,12 +666,21 @@ const FeatureScene: React.FC<{
   durationInFrames: number;
   tilt: number;
   cardWidth?: number;
-}> = ({ scene, durationInFrames, tilt, cardWidth = 400 }) => {
+  backing?: boolean;
+}> = ({ scene, durationInFrames, tilt, cardWidth = 400, backing }) => {
   const frame = useCurrentFrame();
   const isCount = scene.text.some((t) => t.role === "countup");
   const img = scene.image ? staticFile(scene.image.replace(/^assets\//, "")) : null;
-  // meme card waits for the counter to land so captions never spoil the count
-  const imgStart = isCount ? 46 : 8;
+  // count-up: card slides in during the count and pops on the 609 landing
+  const imgStart = isCount ? 14 : 8;
+  const countLand = 4 + 40; // CountUp startFrame + durationFrames
+  // dimmed label visible from the first frame, full strength on landing
+  const labelOpacity = isCount
+    ? interpolate(frame, [countLand - 2, countLand + 4], [0.4, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : 1;
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
       <div
@@ -568,9 +697,9 @@ const FeatureScene: React.FC<{
           ) : null}
           <PopTitle
             text={textFor(scene, "title")}
-            startFrame={isCount ? 14 : 3}
+            startFrame={isCount ? 0 : 3}
             fontSize={isCount ? 64 : 72}
-            style={{ textAlign: "left" }}
+            style={{ textAlign: "left", opacity: labelOpacity }}
           />
           {textFor(scene, "subtitle") ? (
             <div
@@ -614,6 +743,9 @@ const FeatureScene: React.FC<{
             width={cardWidth}
             tilt={tilt}
             kenBurnsFrames={durationInFrames - imgStart}
+            backing={backing}
+            slideIn={isCount}
+            popFrame={isCount ? countLand : undefined}
           />
         ) : null}
       </div>
@@ -621,121 +753,157 @@ const FeatureScene: React.FC<{
   );
 };
 
+// Six unique templates (none reused from earlier scenes), all with 1-2 large
+// captions and similar aspect ratios so cover-fit crops almost nothing.
 const PROOF_IMAGES = [
-  "scene2-drake.png",
-  "scene3-expanding-brain.png",
-  "scene4-two-buttons.png",
-  "scene5-always-has-been.png",
-  "scene6-success-kid.png",
+  "proof-this-is-fine.png",
+  "proof-disaster-girl.png",
+  "proof-futurama-fry.png",
+  "proof-buff-doge.png",
+  "proof-tuxedo-pooh.png",
   "scene7-change-my-mind.png",
 ];
 
-const ProofScene: React.FC<{ scene: Scene }> = ({ scene }) => {
+const ProofScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
+  scene,
+  durationInFrames,
+}) => {
   const frame = useCurrentFrame();
+  // subtle drift keeps the held grid alive
+  const drift = interpolate(frame, [0, durationInFrames], [1, 1.02]);
   return (
-    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+    <AbsoluteFill>
       <div style={{ position: "absolute", top: 96, width: "100%", textAlign: "center" }}>
-        <PopTitle text={textFor(scene, "title")} startFrame={2} fontSize={52} color={ACCENT} />
+        <PopTitle text={textFor(scene, "title")} startFrame={2} fontSize={52} />
       </div>
-      <div
+      {/* grid vertically centered between headline (~180px) and footer (~90px) */}
+      <AbsoluteFill
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 280px)",
-          gap: 26,
           justifyContent: "center",
-          marginTop: 90,
+          alignItems: "center",
+          paddingTop: 180,
+          paddingBottom: 90,
+          boxSizing: "border-box",
         }}
       >
-        {PROOF_IMAGES.map((name, i) => {
-          const s = spring({
-            frame: frame - (2 + i * 2),
-            fps: FPS,
-            config: { damping: 12, stiffness: 170, mass: 0.7 },
-          });
-          return (
-            <div
-              key={i}
-              style={{
-                width: 280,
-                height: 250,
-                borderRadius: 14,
-                overflow: "hidden",
-                backgroundColor: "#161b22",
-                boxShadow: "0 14px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(242,239,233,0.1)",
-                transform: `rotate(${i % 2 === 0 ? -2 : 2}deg) scale(${0.7 + 0.3 * s})`,
-                opacity: Math.min(1, s * 1.4),
-              }}
-            >
-              <Img
-                src={staticFile(name)}
-                style={{ width: "100%", height: "100%", objectFit: "contain", padding: 8, boxSizing: "border-box" }}
-              />
-            </div>
-          );
-        })}
-      </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 296px)",
+            gap: 26,
+            justifyContent: "center",
+            transform: `scale(${drift})`,
+          }}
+        >
+          {PROOF_IMAGES.map((name, i) => {
+            const s = spring({
+              frame: frame - (2 + i * 2),
+              fps: FPS,
+              config: { damping: 12, stiffness: 170, mass: 0.7 },
+            });
+            return (
+              <div
+                key={i}
+                style={{
+                  width: 296,
+                  height: 222,
+                  borderRadius: 14,
+                  overflow: "hidden",
+                  backgroundColor: "#161b22",
+                  boxShadow: "0 14px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(242,239,233,0.1)",
+                  transform: `rotate(${i % 2 === 0 ? -2 : 2}deg) scale(${0.7 + 0.3 * s})`,
+                  opacity: Math.min(1, s * 1.4),
+                }}
+              >
+                <Img
+                  src={staticFile(name)}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
 
 const CTA_CURL =
-  "curl -fsSL https://raw.githubusercontent.com/\n  kartikkabadi/meme-maker/main/install.sh | sh";
+  "curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh";
 
-const CtaScene: React.FC<{ scene: Scene }> = ({ scene }) => {
+const CtaScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
+  scene,
+  durationInFrames,
+}) => {
   const frame = useCurrentFrame();
-  const urlOpacity = interpolate(frame, [46, 56], [0, 1], {
+  const urlOpacity = interpolate(frame, [24, 32], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const curlLines = CTA_CURL.split("\n");
+  const actionOpacity = interpolate(frame, [32, 40], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  // wordmark shimmer: slow tracking drift keeps the hold alive
+  const tracking = interpolate(frame, [0, durationInFrames], [2, 5]);
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
       <div style={{ textAlign: "center", width: "100%" }}>
-        <PopTitle text={textFor(scene, "title")} startFrame={2} fontSize={120} />
+        <PopTitle
+          text={textFor(scene, "title")}
+          startFrame={0}
+          fontSize={120}
+          snap
+          style={{ letterSpacing: tracking }}
+        />
+        {/* one clean line: mono sized to fit the full curl command */}
         <div
           style={{
-            margin: "44px auto 0",
-            width: 870,
+            margin: "40px auto 0",
+            width: 1000,
             borderRadius: 14,
             backgroundColor: "#161b22",
             boxShadow: "0 18px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,212,0,0.35)",
-            padding: "30px 36px",
+            padding: "28px 22px",
             fontFamily: MONO,
-            fontSize: 31,
-            lineHeight: 1.65,
+            fontSize: 17,
+            lineHeight: 1.6,
             color: ACCENT,
-            textAlign: "left",
+            textAlign: "center",
+            whiteSpace: "pre",
           }}
         >
-          {curlLines.map((line, i) => {
-            const lineStart = 6 + i * 16;
-            return (
-              <div key={i} style={{ whiteSpace: "pre", minHeight: "1.65em" }}>
-                {i === 0 ? <span style={{ color: DIM }}>$ </span> : null}
-                {frame >= lineStart ? (
-                  <Typewriter
-                    text={line}
-                    startFrame={lineStart}
-                    charsPerFrame={3}
-                    hideCursorWhenDone
-                    cursorColor={ACCENT}
-                  />
-                ) : null}
-              </div>
-            );
-          })}
+          <span style={{ color: DIM }}>$ </span>
+          <Typewriter
+            text={CTA_CURL}
+            startFrame={4}
+            charsPerFrame={6}
+            cursorColor={ACCENT}
+          />
         </div>
         <div
           style={{
             fontFamily: MONO,
             fontSize: 34,
             color: INK,
-            marginTop: 40,
+            marginTop: 36,
             letterSpacing: 1.5,
             opacity: urlOpacity,
           }}
         >
           {textFor(scene, "subtitle")}
+        </div>
+        <div
+          style={{
+            fontFamily: MONO,
+            fontSize: 26,
+            color: ACCENT,
+            marginTop: 18,
+            letterSpacing: 2,
+            opacity: actionOpacity,
+          }}
+        >
+          one curl. no npm. link below ↓
         </div>
       </div>
     </AbsoluteFill>
@@ -747,19 +915,27 @@ const renderScene = (scene: Scene, durationInFrames: number): React.ReactNode =>
     case "hook":
       return <HookScene scene={scene} />;
     case "reveal":
-      return <RevealScene scene={scene} />;
+      return <RevealScene scene={scene} durationInFrames={durationInFrames} />;
     case "demo":
       return <DemoScene scene={scene} durationInFrames={durationInFrames} />;
     case "surfaces":
       return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={-3} />;
     case "deterministic":
-      return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={2.5} cardWidth={460} />;
+      return (
+        <FeatureScene
+          scene={scene}
+          durationInFrames={durationInFrames}
+          tilt={2.5}
+          cardWidth={540}
+          backing
+        />
+      );
     case "templates":
       return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={-2} />;
     case "proof":
-      return <ProofScene scene={scene} />;
+      return <ProofScene scene={scene} durationInFrames={durationInFrames} />;
     case "cta":
-      return <CtaScene scene={scene} />;
+      return <CtaScene scene={scene} durationInFrames={durationInFrames} />;
     default:
       return null;
   }
@@ -772,37 +948,31 @@ const Launch: React.FC = () => {
   useBrandFont();
   const { durationInFrames: total } = useVideoConfig();
   const frame = useCurrentFrame();
-  const musicVolume = interpolate(
-    frame,
-    [0, 12, total - 8, total - 2],
-    [0, 0.9, 0.9, 0],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
+  // track is mastered to -14 LUFS with its own 0.5s ending fade; play at
+  // full volume and only mirror the final picture fade
+  const musicVolume = interpolate(frame, [0, total - END_FADE, total - 1], [1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
   let offset = 0;
   return (
     <AbsoluteFill style={{ backgroundColor: BG }}>
-      <Audio src={staticFile("music-v2.mp3")} volume={() => musicVolume} />
+      <Audio src={staticFile("music-v3.mp3")} volume={() => musicVolume} />
       <BackgroundTexture />
       {scenes.map((scene, i) => {
         const durationInFrames = sceneFrames[i];
         const from = offset;
         offset += durationInFrames;
         const isLast = i === scenes.length - 1;
-        // crossfading scenes start XFADE frames early, overlapping the previous
-        const overlap = i > 0 && scene.transition === "crossfade" ? XFADE : 0;
         return (
-          <Sequence
-            key={scene.id}
-            from={from - overlap}
-            durationInFrames={durationInFrames + overlap}
-          >
+          <Sequence key={scene.id} from={from} durationInFrames={durationInFrames}>
             <SceneShell
-              durationInFrames={durationInFrames + overlap}
+              durationInFrames={durationInFrames}
               transitionIn={i > 0 ? scene.transition : "cut"}
-              nextIsCrossfade={!isLast && scenes[i + 1].transition === "crossfade"}
+              nextIsFade={!isLast && scenes[i + 1].transition === "fade"}
               isLast={isLast}
             >
-              {renderScene(scene, durationInFrames + overlap)}
+              {renderScene(scene, durationInFrames)}
             </SceneShell>
           </Sequence>
         );
