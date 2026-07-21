@@ -6,6 +6,7 @@ import { getTemplate, listTemplates } from './catalog.js';
 import { limits, Semaphore } from './limits.js';
 import { setPathPolicy } from './paths.js';
 import { renderMeme } from './render/renderer.js';
+import { VERSION } from './version.js';
 import {
   BaseSchema,
   MemeError,
@@ -31,7 +32,7 @@ const DEFAULT_MAX_WIDTH = (() => {
 
 const semaphore = new Semaphore(limits.maxConcurrency());
 
-const server = new McpServer({ name: 'meme-maker', version: '0.3.0' });
+const server = new McpServer({ name: 'meme-maker', version: VERSION });
 
 type ToolResult = {
   content: ({ type: 'text'; text: string } | { type: 'image'; data: string; mimeType: string })[];

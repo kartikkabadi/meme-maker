@@ -6,6 +6,7 @@ import { parseTextArgs } from './cli-args.js';
 import { BUILTIN_FONTS } from './render/font.js';
 import { defaultOutputName, renderMeme } from './render/renderer.js';
 import { MemeError, type MemeSpec, type TextBox } from './spec.js';
+import { VERSION } from './version.js';
 
 // Exit cleanly when a downstream consumer closes stdout (e.g. `meme ... | head`).
 process.stdout.on('error', (err: NodeJS.ErrnoException) => {
@@ -23,7 +24,7 @@ program
     'Headless meme maker for agents: render classic meme templates, custom images,\n' +
       'blank canvases, and grid layouts to PNG/JPEG/GIF/WebP — no GUI required.',
   )
-  .version('0.3.0');
+  .version(VERSION);
 program.option('--templates-dir <dir>', 'load templates from a custom directory');
 program.option('--verbose', 'print extra diagnostics and full warning details on stderr');
 program.addHelpText(
