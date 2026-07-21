@@ -43,6 +43,14 @@ Full authoring guide (sidecar format, `pack.json`, adding a pack): [TEMPLATES.md
 4. Run `npm run build:thumbs` to regenerate `assets/templates/thumbs/` and `docs/contact-sheet.webp`.
 5. Record the source and license in `assets/templates/CREDITS.md`.
 
+## Releases
+
+Releases are cut by tagging `vX.Y.Z`; the Release workflow
+(`.github/workflows/release.yml`) then builds per-platform tarballs and
+publishes the GitHub Release. Before tagging, bump the version in
+`package.json`, `src/cli.ts`, `src/mcp.ts`, and add a `## X.Y.Z` section to
+`CHANGELOG.md`. Full checklist: [RELEASE.md](./RELEASE.md).
+
 ## Pull requests
 
 Prefer many small, focused PRs over one large one. Keep commits granular.
