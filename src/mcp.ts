@@ -6,7 +6,14 @@ import { getTemplate, listTemplates } from './catalog.js';
 import { limits, Semaphore } from './limits.js';
 import { setPathPolicy } from './paths.js';
 import { renderMeme } from './render/renderer.js';
-import { BaseSchema, MemeError, OutputSchema, TextBoxSchema, type MemeSpec } from './spec.js';
+import {
+  BaseSchema,
+  MemeError,
+  type MemeErrorCode,
+  OutputSchema,
+  TextBoxSchema,
+  type MemeSpec,
+} from './spec.js';
 
 // MCP is an untrusted surface: confine all file reads/writes (DESIGN-v2 §3.5).
 setPathPolicy('confined');
@@ -31,12 +38,23 @@ type ToolResult = {
   isError?: boolean;
 };
 
+const FIX_HINTS: Partial<Record<MemeErrorCode, string>> = {
+  TEMPLATE_NOT_FOUND: 'Call list_templates to see valid template ids.',
+  SLOT_NOT_FOUND: 'Call get_template with this template id to see its slot names.',
+  INVALID_SPEC: 'Check the field paths in details.issues against the tool input schema.',
+  RESOURCE_LIMIT: 'Reduce the value below the limit shown in details.',
+  PATH_DENIED:
+    'Use a relative output path (written under the output root), or omit output.path to get the image inline.',
+  UNSUPPORTED_OUTPUT: 'Animated (gif) bases require output.format "gif"; omit format to use it.',
+};
+
 function errorResult(err: unknown): ToolResult {
   const code = err instanceof MemeError ? err.code : 'IO_ERROR';
   const message = err instanceof Error ? err.message : String(err);
   const details = err instanceof MemeError ? err.details : undefined;
+  const fix = FIX_HINTS[code];
   return {
-    content: [{ type: 'text', text: JSON.stringify({ error: { code, message, details } }) }],
+    content: [{ type: 'text', text: JSON.stringify({ error: { code, message, details, fix } }) }],
     isError: true,
   };
 }
@@ -81,11 +99,14 @@ async function renderTool(spec: {
 
 server.tool(
   'list_templates',
-  'List available meme templates, optionally filtered by type, tag, or search query.',
+  'List available meme templates. Returns a JSON array of { id, name, type, width, height, tags, slots } where slots is [{ name, hint }]. Use a slot name in render_meme texts[].slot to place text in that region. Call get_template for full slot rects and a ready-to-use example.',
   {
-    type: z.enum(['image', 'gif']).optional(),
-    tag: z.string().optional(),
-    search: z.string().optional(),
+    type: z.enum(['image', 'gif']).optional().describe('Filter by template type.'),
+    tag: z.string().optional().describe('Filter to templates carrying this tag (exact match).'),
+    search: z
+      .string()
+      .optional()
+      .describe('Case-insensitive substring match on template id, name, and tags.'),
   },
   async (args) => {
     try {
@@ -107,15 +128,18 @@ server.tool(
 
 server.tool(
   'get_template',
-  'Get full metadata for a template: slot rects, hints, and example usage.',
-  { id: z.string() },
+  'Get full metadata for one template: slot rects ([x, y, width, height] in pixels), per-slot hints/styles, and an example. The example is a complete, copy-paste-ready render_meme argument object — replace each texts[].text placeholder with your caption and call render_meme.',
+  { id: z.string().describe('Template id from list_templates (e.g. "drake").') },
   async ({ id }) => {
     try {
       const t = getTemplate(id);
       const example = {
         base: { kind: 'template', id: t.id },
-        texts: t.slots.map((s) => ({ slot: s.name, text: `<${s.hint ?? s.name}>` })),
-        output: { path: `${t.id}.${t.type === 'gif' ? 'gif' : 'png'}` },
+        texts: t.slots.map((s) => ({
+          slot: s.name,
+          text: `REPLACE WITH ${(s.hint ?? s.name).toUpperCase()}`,
+        })),
+        output: {},
       };
       return { content: [{ type: 'text', text: JSON.stringify({ ...t, example }) }] };
     } catch (err) {
@@ -126,26 +150,42 @@ server.tool(
 
 server.tool(
   'render_meme',
-  'Render a meme from a MemeSpec: template/image/canvas base plus text boxes. For template bases, use slot names from get_template. For non-template bases, the band slots "top", "middle", "bottom" position text automatically. Filesystem image paths are confined to MEME_INPUT_ROOT and disabled unless MEME_ALLOW_FS=1; outputs are confined under the output root (default ./.memes). Returns the file path (if output.path given) and the image inline when small enough (output.maxWidth defaults to 800 so results fit inline).',
+  'Render a meme from a MemeSpec: template/image/canvas base plus text boxes. For template bases, use slot names from get_template (e.g. texts: [{ "slot": "top", "text": "MY CAPTION" }]); get_template returns a copy-paste-ready example. For non-template bases, the band slots "top", "middle", "bottom" position text automatically. Filesystem image paths are confined to MEME_INPUT_ROOT and disabled unless MEME_ALLOW_FS=1; relative output paths are written under the output root (default ./.memes). Returns JSON metadata { path, mimeType, width, height, bytes, warnings } plus the rendered image inline when small enough (output.maxWidth defaults to 800 so results fit inline).',
   {
-    base: BaseSchema,
-    texts: z.array(TextBoxSchema).default([]),
-    output: OutputSchema.default({}),
+    base: BaseSchema.describe(
+      'What to draw on: { kind: "template", id } | { kind: "image", path } | { kind: "canvas", width, height, color? } | { kind: "layout", grid, cells, ... }.',
+    ),
+    texts: z
+      .array(TextBoxSchema)
+      .default([])
+      .describe(
+        'Text overlays. Each needs text plus either a slot name (preferred) or explicit x/y/width/height (numbers or "%" strings).',
+      ),
+    output: OutputSchema.default({}).describe(
+      'Output options: format (png|jpeg|gif|webp), path (relative; omit to get the image inline only), quality, maxWidth, overwrite, onDegrade.',
+    ),
   },
   async (args) => renderTool(args),
 );
 
 server.tool(
   'render_layout',
-  'Render a grid layout of images (cover-fit cells) with optional text overlays (band slots "top", "middle", "bottom" are supported). Cell image paths require MEME_ALLOW_FS=1 and are confined to MEME_INPUT_ROOT.',
+  'Render a grid layout of images (cover-fit cells) with optional text overlays (band slots "top", "middle", "bottom" are supported). Cell image paths require MEME_ALLOW_FS=1 and are confined to MEME_INPUT_ROOT. Returns the same metadata + inline image as render_meme.',
   {
-    grid: z.tuple([z.number().int().positive(), z.number().int().positive()]),
-    cells: z.array(z.object({ image: z.string() })),
-    width: z.number().int().positive().optional(),
-    gutter: z.number().int().min(0).optional(),
-    color: z.string().optional(),
-    texts: z.array(TextBoxSchema).default([]),
-    output: OutputSchema.default({}),
+    grid: z
+      .tuple([z.number().int().positive(), z.number().int().positive()])
+      .describe('[columns, rows], e.g. [2, 2] for a 2x2 grid.'),
+    cells: z
+      .array(z.object({ image: z.string() }))
+      .describe('Images filling the grid left-to-right, top-to-bottom; each cover-fits its cell.'),
+    width: z.number().int().positive().optional().describe('Total layout width in pixels.'),
+    gutter: z.number().int().min(0).optional().describe('Spacing between cells in pixels.'),
+    color: z.string().optional().describe('Background/gutter color.'),
+    texts: z
+      .array(TextBoxSchema)
+      .default([])
+      .describe('Text overlays; use band slots "top", "middle", "bottom" or explicit coordinates.'),
+    output: OutputSchema.default({}).describe('Output options; same as render_meme.'),
   },
   async ({ grid, cells, width, gutter, color, texts, output }) =>
     renderTool({ base: { kind: 'layout', grid, cells, width, gutter, color }, texts, output }),
@@ -153,10 +193,14 @@ server.tool(
 
 server.tool(
   'preview_template',
-  'Render a template with no text so the agent can see it before captioning.',
-  { id: z.string() },
+  'Render a template with no text so the agent can see it before captioning. Returns the blank template as an inline image.',
+  { id: z.string().describe('Template id from list_templates.') },
   async ({ id }) => renderTool({ base: { kind: 'template', id }, texts: [], output: {} }),
 );
 
 const transport = new StdioServerTransport();
+// Malformed JSON on stdin surfaces here via the transport; log and keep serving.
+server.server.onerror = (err) => {
+  console.error(`[meme-maker-mcp] ${err instanceof Error ? err.message : String(err)}`);
+};
 await server.connect(transport);
