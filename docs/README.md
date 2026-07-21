@@ -6,6 +6,7 @@ All project documentation lives here (plus the top-level [README](../README.md) 
 
 - **Agent consumer** (you drive meme-maker from an agent, MCP host, or script): read the top-level [README](../README.md) for the CLI/MCP/HTTP quick starts, then [ARCHITECTURE.md](./ARCHITECTURE.md) for how the surfaces and `MemeSpec` fit together.
 - **Contributor** (you want to change code or add templates): read [CONTRIBUTING.md](./CONTRIBUTING.md), then [ARCHITECTURE.md](./ARCHITECTURE.md) for the code map and [ROADMAP.md](./ROADMAP.md) for what is planned.
+- **Maintainer** (you want to cut a release): follow [RELEASE.md](./RELEASE.md) — version bumps, tagging, the release workflow, and post-release verification.
 - **Template author** (you want to add or curate templates): follow the template workflow in [CONTRIBUTING.md](./CONTRIBUTING.md) — sidecar `*.meta.json` files, template packs, and the generated manifest.
 
 ## Documents
@@ -16,6 +17,7 @@ All project documentation lives here (plus the top-level [README](../README.md) 
 | --- | --- |
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Concise, up-to-date summary of `src/` structure, the four adapters (CLI/MCP/HTTP/UI), and the render pipeline |
 | [CONTRIBUTING.md](./CONTRIBUTING.md) | Dev setup, install from source, template/pack workflow, tests and lint |
+| [RELEASE.md](./RELEASE.md) | Release process: version bump checklist, tagging, release workflow, and install verification |
 | [PR-AUDIT.md](./PR-AUDIT.md) | Merge-readiness audit of open PRs (point-in-time report) |
 
 ### Design & planning
