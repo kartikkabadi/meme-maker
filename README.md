@@ -105,7 +105,8 @@ curl -s http://127.0.0.1:8787/api/render \
     ],
     "output": { "format": "png" }
   }'
-# → { "path": ..., "base64": "<png bytes>", "width": ..., "height": ..., "warnings": [] }
+# → { "base64": "<png bytes>", "width": ..., "height": ..., "warnings": [] }
+#   (a "path" field is included when the spec sets output.path)
 ```
 
 **Web UI** — start the local app (auto-picks a free port), or serve it at a stable named URL with portless:
