@@ -18,6 +18,22 @@
 
 ![Web UI editor with live preview](docs/assets/screenshots/ui-editor-drake.webp)
 
+## Table of contents
+
+- [What is this?](#what-is-this)
+- [60-second quick start](#60-second-quick-start)
+- [Examples](#examples)
+- [Templates](#templates)
+- [CLI](#cli)
+- [Web UI](#web-ui)
+- [MCP server](#mcp-server)
+- [Distribution size & slim installs](#distribution-size--slim-installs)
+- [Environment variables](#environment-variables)
+- [MemeSpec for agents](#memespec-for-agents)
+- [Library](#library)
+- [Development](#development)
+- [Fonts](#fonts)
+
 ## What is this?
 
 meme-maker is a headless meme generator. You describe a meme as a small JSON document (a **MemeSpec**) — which template, what text in which slot — and it renders a finished PNG, WebP, or GIF.
@@ -46,6 +62,58 @@ That's it — `out.png` is a finished meme. Add `--json` to any command for mach
 ![Expanding brain meme rendered from the CLI](docs/assets/screenshots/cli-expanding-brain.webp)
 
 Working from a clone instead? Run `npm install && npm run build`, then use `node dist/cli.js` wherever the examples say `meme`.
+
+## Examples
+
+Copy-pasteable one-liners for each surface.
+
+**CLI with machine-readable output** — `--json` prints a structured result (path, dimensions, warnings) on stdout:
+
+```sh
+meme render --template drake \
+  --text no="MANUAL MEME EDITORS" --text yes="A CLI FOR AGENTS" \
+  -o drake.png --json
+# → { "path": "drake.png", "width": 1200, "height": 1200, "format": "png", ... }
+```
+
+**MCP tool call** — send this `tools/call` request to `meme-maker-mcp` (stdio); the `render_meme` arguments are a full [MemeSpec](#memespec-for-agents):
+
+```json
+{
+  "name": "render_meme",
+  "arguments": {
+    "base": { "kind": "template", "id": "drake" },
+    "texts": [
+      { "slot": "no", "text": "MANUAL MEME EDITORS" },
+      { "slot": "yes", "text": "AN MCP TOOL FOR AGENTS" }
+    ],
+    "output": { "path": "drake.png", "format": "png" }
+  }
+}
+```
+
+**HTTP API** — `meme ui` also serves a JSON API; POST the same MemeSpec to `/api/render`:
+
+```sh
+curl -s http://127.0.0.1:8787/api/render \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "base": { "kind": "template", "id": "drake" },
+    "texts": [
+      { "slot": "no", "text": "MANUAL MEME EDITORS" },
+      { "slot": "yes", "text": "AN HTTP API FOR AGENTS" }
+    ],
+    "output": { "format": "png" }
+  }'
+# → { "path": ..., "base64": "<png bytes>", "width": ..., "height": ..., "warnings": [] }
+```
+
+**Web UI** — start the local app (auto-picks a free port), or serve it at a stable named URL with portless:
+
+```sh
+meme ui --port 8787        # http://127.0.0.1:8787
+npx portless               # https://meme.localhost (see docs/PORTLESS.md)
+```
 
 ## Templates
 
