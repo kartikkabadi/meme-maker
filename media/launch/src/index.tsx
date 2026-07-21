@@ -444,7 +444,7 @@ const DEMO_JSON = [
   '    { "slot": "no",',
   '      "text": "manual editors" },',
   '    { "slot": "yes",',
-  '      "text": "a CLI for agents" }',
+  '      "text": "a tool for agents" }',
   "  ]",
   "}",
 ];
