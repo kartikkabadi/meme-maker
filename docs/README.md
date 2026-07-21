@@ -4,9 +4,10 @@ All project documentation lives here (plus the top-level [README](../README.md) 
 
 ## Start here, by reader
 
-- **Agent consumer** (you drive meme-maker from an agent, MCP host, or script): read the top-level [README](../README.md) for the CLI/MCP/HTTP quick starts, then [ARCHITECTURE.md](./ARCHITECTURE.md) for how the surfaces and `MemeSpec` fit together.
+- **Agent consumer** (you drive meme-maker from an agent, MCP host, or script): read the top-level [README](../README.md) for the CLI/MCP/HTTP quick starts, then [API-SURFACES.md](./API-SURFACES.md) for the cross-surface feature/error contract and [ARCHITECTURE.md](./ARCHITECTURE.md) for how the surfaces and `MemeSpec` fit together.
 - **Contributor** (you want to change code or add templates): read [CONTRIBUTING.md](./CONTRIBUTING.md), then [ARCHITECTURE.md](./ARCHITECTURE.md) for the code map and [ROADMAP.md](./ROADMAP.md) for what is planned.
-- **Template author** (you want to add or curate templates): follow the template workflow in [CONTRIBUTING.md](./CONTRIBUTING.md) — sidecar `*.meta.json` files, template packs, and the generated manifest.
+- **Template author** (you want to add or curate templates): read the full authoring guide in [TEMPLATES.md](./TEMPLATES.md) — sidecar `*.meta.json` files, template packs, and the generated manifest — plus the workflow summary in [CONTRIBUTING.md](./CONTRIBUTING.md).
+- **Operator** (you want to install or deploy meme-maker): [INSTALL.md](./INSTALL.md) for the curl installer and release tarballs, [DOCKER.md](./DOCKER.md) for containers, [PORTLESS.md](./PORTLESS.md) for a stable local URL.
 
 ## Documents
 
@@ -15,7 +16,14 @@ All project documentation lives here (plus the top-level [README](../README.md) 
 | Doc | What it covers |
 | --- | --- |
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Concise, up-to-date summary of `src/` structure, the four adapters (CLI/MCP/HTTP/UI), and the render pipeline |
+| [API-SURFACES.md](./API-SURFACES.md) | Feature map across CLI/HTTP/MCP, shared result/error contracts, environment variables |
+| [INSTALL.md](./INSTALL.md) | Installing via the curl one-liner, release tarballs, building from source, uninstall |
+| [DOCKER.md](./DOCKER.md) | Running the CLI, MCP server, and web UI in a container; docker-compose |
+| [PORTLESS.md](./PORTLESS.md) | Optional stable local URL (`https://meme.localhost`) for `meme ui` via portless |
+| [TEMPLATES.md](./TEMPLATES.md) | Template authoring guide: sidecar format, `pack.json`, adding a template pack |
 | [CONTRIBUTING.md](./CONTRIBUTING.md) | Dev setup, install from source, template/pack workflow, tests and lint |
+| [PERFORMANCE.md](./PERFORMANCE.md) | Render benchmark and HTTP load-test scripts, with reference results |
+| [ASSET-SIZE.md](./ASSET-SIZE.md) | Asset size breakdown and the slim-tarball + runtime-fetch distribution strategy |
 | [PR-AUDIT.md](./PR-AUDIT.md) | Merge-readiness audit of open PRs (point-in-time report) |
 
 ### Design & planning
