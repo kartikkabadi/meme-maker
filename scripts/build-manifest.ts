@@ -1,12 +1,14 @@
 /**
- * Manifest generator (DESIGN-v2 §6.2): scans assets/templates/{images,gifs},
- * reads each template's `<id>.meta.json` sidecar (name, tags, category, slots,
- * source), derives file path and dimensions from the media file, and emits the
- * merged, schema-validated assets/templates/manifest.json.
+ * Manifest generator (DESIGN-v2 §6.2): scans assets/templates/{images,gifs}
+ * and assets/templates/packs/<pack>/{images,gifs}, reads each template's
+ * `<id>.meta.json` sidecar (name, tags, category, slots, source), derives
+ * file path and dimensions from the media file, and emits the merged,
+ * schema-validated assets/templates/manifest.json. Pack templates get ids
+ * prefixed with the pack id (`<pack>-<filename>`).
  *
  * Usage: npm run build:manifest
  */
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -27,6 +29,20 @@ const SidecarSchema = z
   })
   .strict();
 
+const PackJsonSchema = z
+  .object({
+    id: z.string(),
+    name: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+  })
+  .strict();
+
+interface Pack {
+  id: string;
+  dirName: string;
+  tags: string[];
+}
+
 const MEDIA_EXT: Record<string, 'image' | 'gif'> = {
   '.jpg': 'image',
   '.jpeg': 'image',
@@ -35,21 +51,26 @@ const MEDIA_EXT: Record<string, 'image' | 'gif'> = {
   '.gif': 'gif',
 };
 
-async function collect(subdir: 'images' | 'gifs'): Promise<Template[]> {
-  const dir = join(TEMPLATES_DIR, subdir);
+async function collect(subdir: 'images' | 'gifs', pack?: Pack): Promise<Template[]> {
+  const dir = pack
+    ? join(TEMPLATES_DIR, 'packs', pack.dirName, subdir)
+    : join(TEMPLATES_DIR, subdir);
+  if (!existsSync(dir)) return [];
   const entries = readdirSync(dir).sort();
   const templates: Template[] = [];
   for (const entry of entries) {
     const ext = entry.slice(entry.lastIndexOf('.')).toLowerCase();
     const type = MEDIA_EXT[ext];
     if (!type) continue;
-    const id = entry.slice(0, entry.lastIndexOf('.'));
-    const metaPath = join(dir, `${id}.meta.json`);
+    const base = entry.slice(0, entry.lastIndexOf('.'));
+    const id = pack ? `${pack.id}-${base}` : base;
+    const relDir = pack ? `packs/${pack.dirName}/${subdir}` : subdir;
+    const metaPath = join(dir, `${base}.meta.json`);
     let sidecarRaw: string;
     try {
       sidecarRaw = readFileSync(metaPath, 'utf8');
     } catch {
-      throw new Error(`missing sidecar ${subdir}/${id}.meta.json for ${subdir}/${entry}`);
+      throw new Error(`missing sidecar ${relDir}/${base}.meta.json for ${relDir}/${entry}`);
     }
     const sidecar = SidecarSchema.parse(JSON.parse(sidecarRaw));
     const meta = await sharp(join(dir, entry)).metadata();
@@ -58,11 +79,12 @@ async function collect(subdir: 'images' | 'gifs'): Promise<Template[]> {
       id,
       name: sidecar.name,
       type,
-      file: `${subdir}/${entry}`,
+      file: `${relDir}/${entry}`,
       width: meta.width,
       height: meta.height,
-      tags: sidecar.tags,
+      tags: [...new Set([...sidecar.tags, ...(pack?.tags ?? [])])],
       ...(sidecar.category ? { category: sidecar.category } : {}),
+      ...(pack ? { pack: pack.id } : {}),
       slots: sidecar.slots,
       ...(sidecar.source ? { source: sidecar.source } : {}),
     });
@@ -70,8 +92,25 @@ async function collect(subdir: 'images' | 'gifs'): Promise<Template[]> {
   return templates;
 }
 
+function discoverPacks(): Pack[] {
+  const packsDir = join(TEMPLATES_DIR, 'packs');
+  if (!existsSync(packsDir)) return [];
+  return readdirSync(packsDir, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => {
+      const packJsonPath = join(packsDir, e.name, 'pack.json');
+      if (!existsSync(packJsonPath)) return { id: e.name, dirName: e.name, tags: [] };
+      const parsed = PackJsonSchema.parse(JSON.parse(readFileSync(packJsonPath, 'utf8')));
+      return { id: parsed.id, dirName: e.name, tags: parsed.tags ?? [] };
+    })
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
+
 async function main(): Promise<void> {
   const templates = [...(await collect('images')), ...(await collect('gifs'))];
+  for (const pack of discoverPacks()) {
+    templates.push(...(await collect('images', pack)), ...(await collect('gifs', pack)));
+  }
   const ids = new Set<string>();
   for (const t of templates) {
     if (ids.has(t.id)) throw new Error(`duplicate template id "${t.id}"`);
