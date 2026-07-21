@@ -5,7 +5,7 @@ Copyright-free by construction: every sound is synthesized from scratch
 with numpy (no samples). Deterministic — same parameters, same output.
 
 Usage:
-    python3 scripts/generate-music.py            # writes public/music.mp3
+    python3 scripts/generate-music.py            # writes assets/music.mp3
     python3 scripts/generate-music.py out.mp3    # custom output path
 
 Requires: numpy, ffmpeg (for the MP3 encode).
@@ -167,7 +167,7 @@ def build():
 
 def main():
     out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public", "music.mp3"
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "music.mp3"
     )
     os.makedirs(os.path.dirname(out), exist_ok=True)
     pcm = build()
