@@ -750,7 +750,7 @@ const Launch: React.FC = () => {
   let offset = 0;
   return (
     <AbsoluteFill style={{ backgroundColor: BG }}>
-      <Audio src={staticFile("music.mp3")} volume={() => musicVolume} />
+      <Audio src={staticFile("music.mp3")} volume={() => musicVolume} loop />
       {scenes.map((scene, i) => {
         const durationInFrames = sceneFrames[i];
         const from = offset;
