@@ -27,7 +27,7 @@ export function getPathPolicy(): PathPolicy {
   return policy;
 }
 
-/** Default output root: SYNARA_ARTIFACTS_DIR > MEME_OUTPUT_ROOT > ./.memes */
+/** Default output root: MEME_OUTPUT_ROOT > SYNARA_ARTIFACTS_DIR > ./.memes */
 export function outputRootDir(): string {
   return process.env.MEME_OUTPUT_ROOT ?? process.env.SYNARA_ARTIFACTS_DIR ?? './.memes';
 }
@@ -84,12 +84,30 @@ export function resolveInputPath(p: string): string {
 }
 
 /**
+ * Confine an output path under the root. Paths that already resolve inside
+ * the root (e.g. names from `defaultOutputName`, which prefix the root) are
+ * accepted as-is instead of being re-prefixed or rejected as absolute.
+ */
+function confineOutput(p: string, root: string): string {
+  const resolvedRoot = resolve(root);
+  const resolved = resolve(p);
+  if (resolved === resolvedRoot || resolved.startsWith(resolvedRoot + sep)) {
+    assertNoSymlink(resolved, resolvedRoot);
+    return resolved;
+  }
+  return confine(p, root);
+}
+
+/**
  * Resolve an output path under the policy, refuse overwrite unless allowed,
  * and create the parent directory.
  */
 export function resolveOutputPath(p: string, overwrite: boolean): string {
-  const root = policy === 'confined' || process.env.MEME_OUTPUT_ROOT ? outputRootDir() : undefined;
-  const resolved = root ? confine(p, root) : resolve(p);
+  const root =
+    policy === 'confined' || process.env.MEME_OUTPUT_ROOT || process.env.SYNARA_ARTIFACTS_DIR
+      ? outputRootDir()
+      : undefined;
+  const resolved = root ? confineOutput(p, root) : resolve(p);
   if (!overwrite && existsSync(resolved)) {
     throw new MemeError(
       'PATH_DENIED',

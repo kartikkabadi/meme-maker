@@ -75,6 +75,7 @@ async function renderTool(spec: {
     const inline = result.bytes <= MAX_INLINE_BYTES;
     const meta = {
       path: result.path,
+      format: result.format,
       mimeType: mimeType(result.format),
       width: result.width,
       height: result.height,
