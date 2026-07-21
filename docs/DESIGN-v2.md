@@ -1,6 +1,11 @@
 # meme-maker — DESIGN v2
 
-**Status:** Design / recommendation phase. No code in this document is implemented.
+> This is the **v2 architecture doc** — the design that drove the v2 implementation now on
+> `main`. Much of it has since been implemented; for the current implementation status see
+> [`ARCHITECTURE.md`](./ARCHITECTURE.md) (as-built summary) and [`ROADMAP.md`](./ROADMAP.md)
+> (sequencing / remaining items). Kept intact as the design record.
+
+**Status:** Design / recommendation phase at time of writing. No code in this document was implemented when written.
 **Author:** design-synthesis sub-agent (synthesis of 8 parallel review reports + code read).
 **Base under review:** `kartikkabadi/meme-maker` implementation branch `devin/polish` (v0.1.0);
 default branch `devin/design` currently holds docs only. Cross-referenced against
