@@ -32,7 +32,7 @@ Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent 
 
 ```sh
 curl -fsSL https://github.com/kartikkabadi/meme-maker/releases/latest/download/install.sh | sh
-# installs the `meme` and `meme-maker-mcp` binaries
+# installs the `meme` and `meme-maker-mcp` binaries (requires Node >= 20)
 
 meme templates list                                   # browse the catalog
 meme render --template drake \

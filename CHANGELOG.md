@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0
+
+- Template catalog expanded to 609 templates via themed template packs: animals & objects, animated GIFs, characters & celebrities, choices & decisions, gaming, reactions, work & tech, and multi-panel compositions.
+- Template packs: parallel pack directories under `assets/templates/` with prefixed ids, merged into a single manifest.
+- Stress-test hardening across all surfaces:
+  - CLI: hardened error handling for malformed specs, bad paths, and invalid flags.
+  - HTTP: bounded preview cache memory, 404 for unknown `/api` routes, hardened static-root path check.
+  - Web UI: fixed key handler race, mobile overflow, and added a11y landmarks.
+- CI now runs on a Node 20/22 matrix across Ubuntu, macOS, and Windows.
+- Release workflow on `v*` tags creates a GitHub Release with notes extracted from `CHANGELOG.md` and attaches a self-contained tarball plus `install.sh`.
+- New install path: `curl -fsSL .../releases/latest/download/install.sh | sh` (no npm registry distribution).
+
 ## 0.2.0
 
 - Template catalog expanded to 118 templates (103 static images, 15 animated GIFs) with per-template provenance in `assets/templates/CREDITS.md`.
