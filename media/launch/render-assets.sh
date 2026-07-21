@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 # Re-renders the static meme frames used by the launch video via the repo CLI.
+# Scenes with text that would auto-fit too close to a template slot edge use
+# explicit MemeSpec files (specs/*.json) with fixed font sizes.
 set -euo pipefail
 cd "$(dirname "$0")"
 CLI="node ../../dist/cli.js"
 mkdir -p assets
 
 $CLI render --template drake --force \
-  --text no="MANUAL MEME EDITORS" --text yes="A CLI FOR AGENTS" \
+  --text-file specs/scene2-drake.json \
   -o assets/scene2-drake.png
 
 $CLI render --template expanding-brain --force \
-  --text level1="COPY-PASTING TEMPLATES" --text level2="ONLINE MEME EDITORS" \
-  --text level3="A DETERMINISTIC CLI" --text level4="AGENTS RENDERING MEMES VIA MCP" \
+  --text-file specs/scene3-expanding-brain.json \
   -o assets/scene3-expanding-brain.png
 
 $CLI render --template two-buttons --force \
-  --text left="CLI" --text right="MCP SERVER" \
-  --text caption="WHY NOT BOTH? (+ HTTP API + WEB UI)" \
+  --text-file specs/scene4-two-buttons.json \
   -o assets/scene4-two-buttons.png
 
 $CLI render --template always-has-been --force \
