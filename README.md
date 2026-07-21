@@ -129,7 +129,7 @@ Everything renders from one declarative JSON spec — ideal for programmatic gen
 }
 ```
 
-Render it with `meme spec render examples/drake.json` or pass the same shape to the `render_meme` MCP tool.
+Render it with `meme spec render examples/drake.json` or pass the same shape to the `render_meme` MCP tool. The [examples/](examples/) directory has ready-to-render specs for every base kind (templates, GIFs, custom images, blank canvases, grid layouts) plus a `render-all.mjs` script that renders and verifies them all.
 
 ## Library
 
