@@ -16,6 +16,7 @@ export const limits = {
   maxTotalTextLen: (): number => envInt('MEME_MAX_TOTAL_TEXT_LEN', 8_000),
   renderTimeoutMs: (): number => envInt('MEME_RENDER_TIMEOUT_MS', 15_000),
   maxConcurrency: (): number => envInt('MEME_MAX_CONCURRENCY', 4),
+  maxBodyBytes: (): number => envInt('MEME_MAX_BODY_BYTES', 5_000_000),
   sharpCacheMb: (): number => envInt('MEME_SHARP_CACHE_MB', 200),
   sharpConcurrency: (): number => envInt('MEME_SHARP_CONCURRENCY', 4),
 };
