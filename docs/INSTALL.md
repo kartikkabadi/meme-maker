@@ -81,6 +81,23 @@ curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/instal
   | sudo PREFIX=/usr/local MEME_MAKER_REF=v0.3.0 sh
 ```
 
+## Upgrade
+
+```sh
+meme update
+```
+
+`meme update` checks the latest tagged release and, if it's newer than the
+installed version, re-runs the curl installer in place (targeting the current
+install directory). `meme update --check` only reports whether an update is
+available; add `--json` for machine-readable output. Re-running the install
+one-liner does exactly the same thing: it resolves the latest release, wipes
+and replaces `$MEME_MAKER_HOME`, and rewrites the wrappers in `$PREFIX/bin`.
+
+If you installed with a custom `PREFIX`, use the same one when updating
+(`PREFIX=... meme update`) so the wrappers are rewritten in the right place.
+Source checkouts are not updated this way — use `git pull && npm run build`.
+
 ## Uninstall
 
 ```sh
