@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { homedir } from 'node:os';
-import { dirname, extname, join, normalize, resolve } from 'node:path';
+import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { getTemplate, listTemplates, templateImagePath } from './catalog.js';
@@ -16,6 +16,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const MAX_SPEC_BODY_BYTES = 1_000_000;
 const THUMB_WIDTH = 320;
+const PREVIEW_CACHE_MAX_BYTES = 64_000_000;
 
 const MIME: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -38,6 +39,7 @@ export function historyDir(): string {
 }
 
 const previewCache = new Map<string, { buffer: Buffer; mime: string }>();
+let previewCacheBytes = 0;
 const thumbCache = new Map<string, Buffer>();
 const semaphore = new Semaphore(limits.maxConcurrency());
 
@@ -100,7 +102,13 @@ async function previewTemplate(id: string): Promise<{ buffer: Buffer; mime: stri
     buffer: result.buffer,
     mime: t.type === 'gif' ? 'image/gif' : 'image/png',
   };
+  previewCacheBytes += entry.buffer.length;
   previewCache.set(id, entry);
+  for (const [k, v] of previewCache) {
+    if (previewCacheBytes <= PREVIEW_CACHE_MAX_BYTES) break;
+    previewCache.delete(k);
+    previewCacheBytes -= v.buffer.length;
+  }
   return entry;
 }
 
@@ -180,8 +188,8 @@ function historyFile(name: string): string {
 async function serveStatic(res: ServerResponse, uiDir: string, pathname: string): Promise<void> {
   const rel = pathname === '/' ? 'index.html' : pathname.slice(1);
   const file = resolve(uiDir, normalize(rel));
-  const target =
-    file.startsWith(resolve(uiDir)) && existsSync(file) ? file : join(uiDir, 'index.html');
+  const base = resolve(uiDir);
+  const target = file.startsWith(base + sep) && existsSync(file) ? file : join(uiDir, 'index.html');
   if (!existsSync(target)) {
     sendJson(res, 404, {
       error: { code: 'IO_ERROR', message: 'UI not built; run `npm run build:ui`' },
@@ -315,7 +323,7 @@ async function handle(req: IncomingMessage, res: ServerResponse, uiDir: string):
     }
   }
 
-  if (method === 'GET') {
+  if (method === 'GET' && !pathname.startsWith('/api/')) {
     await serveStatic(res, uiDir, pathname);
     return;
   }
