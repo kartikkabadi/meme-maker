@@ -2,9 +2,10 @@ name: Install Test
 
 on:
   push:
-    branches: [main, devin/windows-install]
+    branches: [main, devin/windows-install, devin/install-combined]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read

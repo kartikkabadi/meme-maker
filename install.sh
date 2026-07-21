@@ -190,18 +190,6 @@ EOF
 }
 write_wrapper meme cli.js
 write_wrapper meme-maker-mcp mcp.js
-if [ "$PLATFORM" = win32 ]; then
-  WIN_HOME=$(cygpath -w "$MEME_MAKER_HOME" 2>/dev/null || printf '%s' "$MEME_MAKER_HOME")
-  write_cmd_wrapper() { # name, entry
-    cat > "$BIN_DIR/$1.cmd" <<EOF
-@echo off
-if exist "$WIN_HOME\\node\\node.exe" ("$WIN_HOME\\node\\node.exe" "$WIN_HOME\\dist\\$2" %*) else (node "$WIN_HOME\\dist\\$2" %*)
-EOF
-  }
-  write_cmd_wrapper meme cli.js
-  write_cmd_wrapper meme-maker-mcp mcp.js
-fi
-
 if [ "$PLATFORM" = "win32" ]; then
   if command -v cygpath >/dev/null 2>&1; then
     MEME_MAKER_HOME_WIN=$(cygpath -w "$MEME_MAKER_HOME")
@@ -212,8 +200,8 @@ if [ "$PLATFORM" = "win32" ]; then
     MEME_MAKER_HOME_WIN='%USERPROFILE%\.meme-maker'
   fi
   write_cmd_wrapper() { # name, entry
-    printf '@echo off\r\nsetlocal\r\nset "MEME_MAKER_HOME=%s"\r\nnode "%%MEME_MAKER_HOME%%\\dist\\%s" %%*\r\n' \
-      "$MEME_MAKER_HOME_WIN" "$2" > "$BIN_DIR/$1.cmd"
+    printf '@echo off\r\nsetlocal\r\nset "MEME_MAKER_HOME=%s"\r\nif exist "%%MEME_MAKER_HOME%%\\node\\node.exe" ("%%MEME_MAKER_HOME%%\\node\\node.exe" "%%MEME_MAKER_HOME%%\\dist\\%s" %%*) else (node "%%MEME_MAKER_HOME%%\\dist\\%s" %%*)\r\n' \
+      "$MEME_MAKER_HOME_WIN" "$2" "$2" > "$BIN_DIR/$1.cmd"
   }
   write_cmd_wrapper meme cli.js
   write_cmd_wrapper meme-maker-mcp mcp.js
