@@ -3,7 +3,9 @@
 #
 #   curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh
 #
-# Installs the `meme` CLI and `meme-maker-mcp` server. Requires Node.js >= 20.
+# Installs the `meme` CLI and `meme-maker-mcp` server. Uses Node.js >= 20 from
+# your PATH if present; otherwise downloads an official Node runtime into
+# $MEME_MAKER_HOME/node so no pre-installed Node or npm is needed.
 # Prefers a pre-built self-contained tarball from GitHub Releases
 # (meme-maker-<platform>-<arch>.tar.gz); falls back to building from source.
 # The app itself lives in $MEME_MAKER_HOME (default ~/.meme-maker); thin
@@ -26,6 +28,7 @@ set -eu
 
 REPO="kartikkabadi/meme-maker"
 NODE_MIN_MAJOR=20
+NODE_VERSION=20.20.2
 
 info() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 err()  { printf '\033[1;31merror:\033[0m %s\n' "$*" >&2; }
@@ -37,9 +40,13 @@ ARCH=$(uname -m 2>/dev/null || echo unknown)
 case "$OS" in
   Linux)  PLATFORM=linux ;;
   Darwin) PLATFORM=macos ;;
-  MINGW*|MSYS*|CYGWIN*)
-    die "native Windows is not supported; please install inside WSL (https://learn.microsoft.com/windows/wsl/)" ;;
+  MINGW*|MSYS*|CYGWIN*) PLATFORM=win32 ;;
   *) die "unsupported OS: $OS" ;;
+esac
+case "$ARCH" in
+  x86_64|amd64) ASSET_ARCH=x64 ;;
+  aarch64|arm64) ASSET_ARCH=arm64 ;;
+  *) ASSET_ARCH="$ARCH" ;;
 esac
 info "Detected $PLATFORM/$ARCH"
 
@@ -50,22 +57,7 @@ fi
 BIN_DIR="$PREFIX/bin"
 MEME_MAKER_HOME="${MEME_MAKER_HOME:-$HOME/.meme-maker}"
 
-# --- node check -------------------------------------------------------------
-if ! command -v node >/dev/null 2>&1; then
-  err "Node.js is required but was not found on your PATH."
-  err "Install Node.js >= $NODE_MIN_MAJOR first, e.g.:"
-  err "  - https://nodejs.org/en/download"
-  err "  - macOS:  brew install node"
-  err "  - Linux:  curl -fsSL https://install-node.vercel.app/lts | bash"
-  exit 1
-fi
-NODE_MAJOR=$(node -p 'process.versions.node.split(".")[0]')
-if [ "$NODE_MAJOR" -lt "$NODE_MIN_MAJOR" ]; then
-  die "Node.js >= $NODE_MIN_MAJOR required, found $(node -v). Please upgrade Node."
-fi
-info "Using Node $(node -v)"
-
-# --- fetch source -----------------------------------------------------------
+# --- helpers ----------------------------------------------------------------
 fetch() { # url, dest
   if command -v curl >/dev/null 2>&1; then curl -fsSL "$1" -o "$2"
   elif command -v wget >/dev/null 2>&1; then wget -q "$1" -O "$2"
@@ -74,6 +66,50 @@ fetch() { # url, dest
 
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
+
+# --- node runtime -------------------------------------------------------------
+# Use Node >= NODE_MIN_MAJOR from PATH if available; otherwise download the
+# official Node binary for this platform into $MEME_MAKER_HOME/node.
+NODE_CMD=
+BUNDLE_NODE=no
+if command -v node >/dev/null 2>&1; then
+  NODE_MAJOR=$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)
+  if [ "$NODE_MAJOR" -ge "$NODE_MIN_MAJOR" ]; then
+    NODE_CMD=node
+  else
+    info "Node $(node -v) found but >= $NODE_MIN_MAJOR is required"
+  fi
+fi
+if [ -z "$NODE_CMD" ]; then
+  case "$PLATFORM-$ASSET_ARCH" in
+    linux-x64|linux-arm64) NODE_ASSET="node-v$NODE_VERSION-linux-$ASSET_ARCH.tar.gz" ;;
+    macos-x64|macos-arm64) NODE_ASSET="node-v$NODE_VERSION-darwin-$ASSET_ARCH.tar.gz" ;;
+    win32-x64)             NODE_ASSET="node-v$NODE_VERSION-win-x64.zip" ;;
+    *) die "Node.js >= $NODE_MIN_MAJOR is required and no bundled Node is available for $PLATFORM/$ARCH; install Node first (https://nodejs.org/en/download)" ;;
+  esac
+  info "Node.js >= $NODE_MIN_MAJOR not found; downloading Node v$NODE_VERSION ($NODE_ASSET)"
+  fetch "https://nodejs.org/dist/v$NODE_VERSION/$NODE_ASSET" "$TMP_DIR/$NODE_ASSET" \
+    || die "failed to download Node from nodejs.org; install Node >= $NODE_MIN_MAJOR manually and re-run"
+  mkdir -p "$TMP_DIR/node"
+  case "$NODE_ASSET" in
+    *.tar.gz) tar -xzf "$TMP_DIR/$NODE_ASSET" -C "$TMP_DIR/node" --strip-components=1 ;;
+    *.zip)
+      command -v unzip >/dev/null 2>&1 || die "unzip is required to extract the Node runtime on Windows"
+      unzip -q "$TMP_DIR/$NODE_ASSET" -d "$TMP_DIR/node-zip"
+      mv "$TMP_DIR/node-zip/node-v$NODE_VERSION-win-x64"/* "$TMP_DIR/node/"
+      ;;
+  esac
+  if [ "$PLATFORM" = win32 ]; then
+    NODE_CMD="$TMP_DIR/node/node.exe"
+    PATH="$TMP_DIR/node:$PATH"
+  else
+    NODE_CMD="$TMP_DIR/node/bin/node"
+    PATH="$TMP_DIR/node/bin:$PATH"
+  fi
+  export PATH
+  BUNDLE_NODE=yes
+fi
+info "Using Node $("$NODE_CMD" -v)"
 
 REF="${MEME_MAKER_REF:-}"
 if [ -z "$REF" ]; then
@@ -86,12 +122,6 @@ if [ -z "$REF" ]; then
   [ -n "$REF" ] || REF=main
 fi
 info "Installing $REPO@$REF"
-
-case "$ARCH" in
-  x86_64|amd64) ASSET_ARCH=x64 ;;
-  aarch64|arm64) ASSET_ARCH=arm64 ;;
-  *) ASSET_ARCH="$ARCH" ;;
-esac
 
 SRC_DIR="$TMP_DIR/src"
 mkdir -p "$SRC_DIR"
@@ -143,17 +173,34 @@ mkdir -p "$MEME_MAKER_HOME"
 for item in dist assets node_modules package.json LICENSE NOTICE README.md CHANGELOG.md; do
   if [ -e "$item" ]; then cp -R "$item" "$MEME_MAKER_HOME/"; fi
 done
+if [ "$BUNDLE_NODE" = yes ]; then
+  info "Bundling Node v$NODE_VERSION into $MEME_MAKER_HOME/node"
+  cp -R "$TMP_DIR/node" "$MEME_MAKER_HOME/node"
+fi
 
 mkdir -p "$BIN_DIR"
+if [ "$PLATFORM" = win32 ]; then BUNDLED_NODE_BIN="$MEME_MAKER_HOME/node/node.exe"; else BUNDLED_NODE_BIN="$MEME_MAKER_HOME/node/bin/node"; fi
 write_wrapper() { # name, entry
   cat > "$BIN_DIR/$1" <<EOF
 #!/bin/sh
+if [ -x "$BUNDLED_NODE_BIN" ]; then exec "$BUNDLED_NODE_BIN" "$MEME_MAKER_HOME/dist/$2" "\$@"; fi
 exec node "$MEME_MAKER_HOME/dist/$2" "\$@"
 EOF
   chmod +x "$BIN_DIR/$1"
 }
 write_wrapper meme cli.js
 write_wrapper meme-maker-mcp mcp.js
+if [ "$PLATFORM" = win32 ]; then
+  WIN_HOME=$(cygpath -w "$MEME_MAKER_HOME" 2>/dev/null || printf '%s' "$MEME_MAKER_HOME")
+  write_cmd_wrapper() { # name, entry
+    cat > "$BIN_DIR/$1.cmd" <<EOF
+@echo off
+if exist "$WIN_HOME\\node\\node.exe" ("$WIN_HOME\\node\\node.exe" "$WIN_HOME\\dist\\$2" %*) else (node "$WIN_HOME\\dist\\$2" %*)
+EOF
+  }
+  write_cmd_wrapper meme cli.js
+  write_cmd_wrapper meme-maker-mcp mcp.js
+fi
 
 # --- verify -----------------------------------------------------------------
 "$BIN_DIR/meme" --version >/dev/null 2>&1 || die "installed binary failed to run"
