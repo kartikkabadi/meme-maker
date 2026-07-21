@@ -1,5 +1,8 @@
 #!/usr/bin/env node
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Command, CommanderError } from 'commander';
 import { getTemplate, listTemplates } from './catalog.js';
 import { parseTextArgs } from './cli-args.js';
@@ -496,6 +499,75 @@ Examples:
       if (!jsonMode) process.stderr.write(`meme ui listening at ${url} (Ctrl+C to stop)\n`);
     } catch (err) {
       fail(err, jsonMode);
+    }
+  });
+
+const REPO = 'kartikkabadi/meme-maker';
+const INSTALL_URL = `https://raw.githubusercontent.com/${REPO}/main/install.sh`;
+
+async function latestReleaseTag(): Promise<string | undefined> {
+  try {
+    const res = await fetch(`https://github.com/${REPO}/releases/latest`, { redirect: 'follow' });
+    const tag = res.url.split('/tag/')[1];
+    return tag || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+program
+  .command('update')
+  .description('update meme-maker to the latest release (re-runs the curl installer)')
+  .option('--check', 'only check for a newer release; do not install')
+  .option('--json', 'machine-readable JSON output')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme update            # install the latest release
+  $ meme update --check    # just report whether an update is available`,
+  )
+  .action(async (opts: { check?: boolean; json?: boolean }) => {
+    const json = opts.json ?? false;
+    const current = `v${VERSION}`;
+    const latest = await latestReleaseTag();
+    if (!latest) {
+      fail(
+        new MemeError('IO_ERROR', 'could not determine the latest release from github.com'),
+        json,
+      );
+    }
+    const upToDate = latest === current;
+    if (opts.check || upToDate) {
+      output({ current, latest, upToDate }, json, () =>
+        process.stdout.write(
+          upToDate
+            ? `meme-maker ${current} is up to date\n`
+            : `update available: ${current} -> ${latest} (run 'meme update' to install)\n`,
+        ),
+      );
+      return;
+    }
+    // Root of the current install (dist/cli.js lives one level below it).
+    const appRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
+    if (existsSync(join(appRoot, '.git')) || existsSync(join(appRoot, 'src'))) {
+      fail(
+        new MemeError(
+          'IO_ERROR',
+          `this looks like a source checkout (${appRoot}); update it with 'git pull' instead`,
+        ),
+        json,
+      );
+    }
+    process.stderr.write(`updating meme-maker ${current} -> ${latest}...\n`);
+    const env = { ...process.env, MEME_MAKER_HOME: process.env.MEME_MAKER_HOME ?? appRoot };
+    const cmd = `(command -v curl >/dev/null 2>&1 && curl -fsSL '${INSTALL_URL}' || wget -qO- '${INSTALL_URL}') | sh`;
+    const res = spawnSync('sh', ['-c', cmd], { stdio: 'inherit', env });
+    if (res.status !== 0) {
+      fail(
+        new MemeError('IO_ERROR', `installer exited with status ${res.status ?? 'unknown'}`),
+        json,
+      );
     }
   });
 

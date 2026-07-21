@@ -57,7 +57,7 @@ meme render --template drake \
   --text no="MANUAL MEME EDITORS" --text yes="A CLI FOR AGENTS" -o out.png
 ```
 
-That's it — `out.png` is a finished meme. Add `--json` to any command for machine-readable output. See [docs/INSTALL.md](docs/INSTALL.md) for env-var options (`PREFIX`, `MEME_MAKER_HOME`, `MEME_MAKER_REF`), per-platform details, uninstalling, and troubleshooting.
+That's it — `out.png` is a finished meme. Add `--json` to any command for machine-readable output. Already installed? `meme update` upgrades in place to the latest release (`meme update --check` just reports). See [docs/INSTALL.md](docs/INSTALL.md) for env-var options (`PREFIX`, `MEME_MAKER_HOME`, `MEME_MAKER_REF`), per-platform details, upgrading, uninstalling, and troubleshooting.
 
 ![Expanding brain meme rendered from the CLI](docs/assets/screenshots/cli-expanding-brain.webp)
 
