@@ -1,6 +1,30 @@
 # meme-maker
 
-A meme editor built for **agents**, not humans. Premade image/GIF meme templates plus a deterministic text-overlay engine, driven through a CLI, an MCP server, and a local web UI — no cloud, no accounts.
+> Deterministic meme generation for autonomous agents — 609 templates, one JSON spec, zero cloud.
+
+[![npm version](https://img.shields.io/npm/v/agent-meme-maker)](https://www.npmjs.com/package/agent-meme-maker)
+[![CI](https://github.com/kartikkabadi/meme-maker/actions/workflows/ci.yml/badge.svg)](https://github.com/kartikkabadi/meme-maker/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/kartikkabadi/meme-maker?style=social)](https://github.com/kartikkabadi/meme-maker/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/kartikkabadi/meme-maker?style=social)](https://github.com/kartikkabadi/meme-maker/network/members)
+
+**Key features**
+
+- **609 curated templates** — 546 static images and 63 animated GIFs, each with named text slots and provenance tracking
+- **Deterministic rendering** — the same MemeSpec always produces the same pixels; ideal for tests and reproducible pipelines
+- **Four surfaces, one engine** — CLI, MCP server, HTTP/JSON API, and a local web UI, all driven by the same declarative spec
+- **Built for agents** — `--json` everywhere, structured errors, machine-readable schemas, sandboxed filesystem access
+- **Local-first** — no cloud, no accounts, no telemetry; runs entirely on your machine
+
+<!-- TODO: replace with a real screenshot of the web UI editor -->
+![Screenshot placeholder — web UI editor](docs/contact-sheet.webp)
+
+## What is this?
+
+meme-maker is a headless meme generator. You describe a meme as a small JSON document (a **MemeSpec**) — which template, what text in which slot — and it renders a finished PNG, WebP, or GIF.
+
+- **For agents**: call it via the MCP server (`meme-maker-mcp`), the HTTP API, or the CLI with `--json`. Every input is schema-validated (Zod) and every output is machine-readable, so LLMs can discover templates, fill slots, and render without ever seeing a GUI.
+- **For humans**: the same engine powers a one-line CLI and a local web UI with a gallery, live-preview editor, render history, and batch mode.
 
 Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent workflows.
 
@@ -18,11 +42,11 @@ meme render --template drake \
 
 That's it — `out.png` is a finished meme. Add `--json` to any command for machine-readable output.
 
-From a clone instead: `npm install && npm run build`, then use `node dist/cli.js` wherever you see `meme`.
+Working from a clone instead of npm? Run `npm install && npm run build`, then use `node dist/cli.js` wherever the examples say `meme`.
 
 ## Templates
 
-118 templates ship in the catalog: 103 static images (drake, distracted-boyfriend, expanding-brain, woman-yelling-at-cat, afraid-to-ask-andy, doge, red-pill-blue-pill, scroll-of-truth, ...) and 15 animated GIFs (mind-blown, deal-with-it, crab-rave, confused-travolta, shrek-running, ...). Provenance for every template is tracked in [assets/templates/CREDITS.md](assets/templates/CREDITS.md).
+609 templates ship in the catalog: 546 static images (drake, distracted-boyfriend, expanding-brain, woman-yelling-at-cat, afraid-to-ask-andy, doge, red-pill-blue-pill, scroll-of-truth, ...) and 63 animated GIFs (mind-blown, deal-with-it, crab-rave, confused-travolta, shrek-running, ...). Provenance for every template is tracked in [assets/templates/CREDITS.md](assets/templates/CREDITS.md).
 
 ![Template catalog contact sheet](docs/contact-sheet.webp)
 
@@ -69,7 +93,7 @@ meme ui --port 8787  # or pin one
 
 The first stdout line is machine-readable JSON — `{"url":"http://127.0.0.1:PORT"}` — so hosts and agents can discover the URL; a human-readable line follows on stderr. The SPA has four surfaces:
 
-- **Gallery** — browse/search all 118 templates with thumbnails
+- **Gallery** — browse/search all 609 templates with thumbnails
 - **Editor** — pick a template, fill slots, live preview, tune slot rects
 - **My memes** — render history (stored under `~/.meme-maker/history`, override with `MEME_HISTORY_DIR`)
 - **Batch** — render one template with many text variants at once
@@ -154,7 +178,7 @@ npm test        # vitest (unit + golden-image + MCP + HTTP integration)
 npm run lint    # eslint + prettier + ui typecheck
 ```
 
-See [DESIGN.md](DESIGN.md) and [docs/DESIGN-v2.md](docs/DESIGN-v2.md) for the full design, [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for catalog workflows, and [docs/ROADMAP.md](docs/ROADMAP.md) for what's next. Template provenance is documented per-entry in `assets/templates/manifest.json` and in [NOTICE](NOTICE).
+See [DESIGN.md](DESIGN.md) and [docs/DESIGN-v2.md](docs/DESIGN-v2.md) for the full design, [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for catalog workflows, [docs/PORTLESS.md](docs/PORTLESS.md) for portless/embedded usage, and [docs/ROADMAP.md](docs/ROADMAP.md) for what's next. Template provenance is documented per-entry in `assets/templates/manifest.json` and in [NOTICE](NOTICE).
 
 ## Fonts
 
