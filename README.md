@@ -103,6 +103,22 @@ If installed from a clone rather than npm, use `"command": "node", "args": ["/pa
 
 `render_meme` takes a full `MemeSpec` and returns the rendered image inline (≤ 1 MB) plus the file path when `output.path` is given.
 
+## Distribution size & slim installs
+
+The full template catalog is ~89 MB. Two options keep installs small:
+
+- **Custom catalog:** point `MEME_TEMPLATES_DIR` (or `--templates-dir`) at any directory
+  containing a `manifest.json` + assets.
+- **Slim tarball + fetch:** `npm run build:slim-tarball` builds a ~2 MB tarball without
+  `assets/templates` (fonts stay bundled), intended as a GitHub Release artifact for a
+  `curl -fsSL https://... | sh` installer. On a slim install, run
+  `meme templates fetch` to download the template pack from GitHub into
+  `~/.cache/meme-maker/templates` (override with `--dest <dir>`, pin a version with
+  `--ref <branch|tag|sha>`); it is picked up automatically when no bundled templates
+  are present. Requires `tar` on PATH.
+
+`npm run report:assets` prints asset size by pack and flags outlier files.
+
 ## Environment variables
 
 | Variable | Default | Purpose |

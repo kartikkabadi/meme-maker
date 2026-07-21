@@ -23,6 +23,8 @@
     "dev:ui": "vite ui",
     "build:manifest": "tsx scripts/build-manifest.ts",
     "build:thumbs": "tsx scripts/build-thumbs.ts",
+    "report:assets": "tsx scripts/asset-size-report.ts",
+    "build:slim-tarball": "tsx scripts/pack-slim.ts",
     "test": "vitest run",
     "lint": "eslint src test scripts ui/src && prettier --check src test scripts ui/src && tsc -p ui/tsconfig.json",
     "format": "prettier --write src test scripts ui/src"
