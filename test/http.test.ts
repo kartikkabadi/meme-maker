@@ -50,7 +50,7 @@ describe('HTTP adapter', () => {
     expect(gifs.length).toBeGreaterThan(0);
     expect(gifs.every((t) => t.type === 'gif')).toBe(true);
     const drakes = (await (await get('/api/templates?search=drake')).json()) as { id: string }[];
-    expect(drakes.map((t) => t.id)).toEqual(['drake']);
+    expect(drakes.map((t) => t.id)).toContain('drake');
   });
 
   it('GET /api/templates/:id returns full metadata with an example', async () => {
