@@ -24,6 +24,8 @@
     "build:manifest": "tsx scripts/build-manifest.ts",
     "build:thumbs": "tsx scripts/build-thumbs.ts",
     "test": "vitest run",
+    "benchmark": "tsx scripts/benchmark.ts",
+    "load-test": "tsx scripts/load-test.ts",
     "lint": "eslint src test scripts ui/src && prettier --check src test scripts ui/src && tsc -p ui/tsconfig.json",
     "format": "prettier --write src test scripts ui/src"
   },
