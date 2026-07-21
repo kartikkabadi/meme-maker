@@ -7,6 +7,11 @@ npm test        # vitest
 npm run lint    # eslint + prettier + ui typecheck
 ```
 
+## Reporting security issues
+
+Please do not open public issues for security vulnerabilities. See
+[SECURITY.md](../SECURITY.md) for how to report them privately.
+
 ## Adding a template
 
 1. Drop the media file under `assets/templates/images/` or `assets/templates/gifs/`.
