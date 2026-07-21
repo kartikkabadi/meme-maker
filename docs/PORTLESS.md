@@ -10,7 +10,7 @@ From the repo root (after `npm run build`):
 npx portless          # -> https://meme.localhost
 ```
 
-Or with a global install (`npm install -g portless`):
+Or, if `portless` is already on your PATH:
 
 ```sh
 portless
