@@ -1,7 +1,8 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, isAbsolute, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ManifestSchema, MemeError, type Template } from './spec.js';
+import { defaultFetchDir } from './templates-fetch.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -17,9 +18,14 @@ interface CatalogCache {
 
 let cache: CatalogCache | null = null;
 
-/** Active templates dir: MEME_TEMPLATES_DIR (or --templates-dir) > bundled assets. */
+/**
+ * Active templates dir: MEME_TEMPLATES_DIR (or --templates-dir) > bundled
+ * assets > fetched pack (`meme templates fetch`, for slim installs).
+ */
 export function templatesRoot(): string {
-  return process.env.MEME_TEMPLATES_DIR ?? TEMPLATES_DIR;
+  if (process.env.MEME_TEMPLATES_DIR) return process.env.MEME_TEMPLATES_DIR;
+  if (existsSync(join(TEMPLATES_DIR, 'manifest.json'))) return TEMPLATES_DIR;
+  return defaultFetchDir();
 }
 
 function validateTemplateFile(file: string, id: string): void {

@@ -279,6 +279,24 @@ Examples:
     }
   });
 
+templates
+  .command('fetch')
+  .description('download the template pack from GitHub (for installs without bundled templates)')
+  .option('--dest <dir>', 'install directory (default: ~/.cache/meme-maker/templates)')
+  .option('--ref <ref>', 'git branch/tag/sha to fetch', 'main')
+  .option('--json', 'JSON output')
+  .action(async (opts: { dest?: string; ref?: string; json?: boolean }) => {
+    try {
+      const { fetchTemplates } = await import('./templates-fetch.js');
+      const dir = await fetchTemplates({ dest: opts.dest, ref: opts.ref });
+      output({ dir }, opts.json ?? false, () => {
+        process.stdout.write(`templates installed at ${dir}\n`);
+      });
+    } catch (err) {
+      fail(err, opts.json ?? false);
+    }
+  });
+
 program
   .command('render')
   .description('render a meme from a template, a custom image, or a blank canvas')
