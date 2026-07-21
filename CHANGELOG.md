@@ -10,7 +10,7 @@
   - Web UI: fixed key handler race, mobile overflow, and added a11y landmarks.
 - CI now runs on a Node 20/22 matrix across Ubuntu, macOS, and Windows.
 - Release workflow on `v*` tags creates a GitHub Release with notes extracted from `CHANGELOG.md` and attaches per-platform self-contained tarballs (`linux-x64`, `macos-x64`, `macos-arm64`), a source tarball, and `install.sh`. macOS tarballs build on the `macos-15-intel` (x64) and `macos-15` (arm64) runners.
-- New install path: `curl -fsSL .../releases/latest/download/install.sh | sh` (no npm registry distribution).
+- New install path: `curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh` (no npm registry distribution).
 
 ## 0.2.0
 
