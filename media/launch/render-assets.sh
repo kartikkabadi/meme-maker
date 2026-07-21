@@ -20,9 +20,13 @@ $CLI render --template two-buttons --force \
   -o assets/scene4-two-buttons.png
 
 $CLI render --template always-has-been --force \
-  --text realization="WAIT, IT'S ALL JUST ONE JSON SPEC?" --text response="ALWAYS HAS BEEN" \
+  --text-file specs/scene5-always-has-been.json \
   -o assets/scene5-always-has-been.png
 
 $CLI render --template success-kid --force \
   --text top="609 TEMPLATES" --text bottom="ZERO CLOUD" \
   -o assets/scene6-success-kid.png
+
+$CLI render --template change-my-mind --force \
+  --text-file specs/scene7-change-my-mind.json \
+  -o assets/scene7-change-my-mind.png

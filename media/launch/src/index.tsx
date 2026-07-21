@@ -82,7 +82,7 @@ const GRAIN_URIS = [0, 1, 2, 3].map((seed) => {
   return `url("data:image/svg+xml,${svg}")`;
 });
 
-const TextureOverlay: React.FC = () => {
+const BackgroundTexture: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <>
@@ -101,15 +101,7 @@ const TextureOverlay: React.FC = () => {
         style={{
           backgroundImage:
             "repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0px, rgba(0,0,0,0.16) 1px, transparent 1px, transparent 4px)",
-          opacity: 0.5,
-          pointerEvents: "none",
-        }}
-      />
-      {/* vignette */}
-      <AbsoluteFill
-        style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,0.5) 100%)",
+          opacity: 0.28,
           pointerEvents: "none",
         }}
       />
@@ -117,12 +109,22 @@ const TextureOverlay: React.FC = () => {
   );
 };
 
+const Vignette: React.FC = () => (
+  <AbsoluteFill
+    style={{
+      background:
+        "radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,0.5) 100%)",
+      pointerEvents: "none",
+    }}
+  />
+);
+
 // ---------------------------------------------------------------------------
 // Persistent HUD chrome
 // ---------------------------------------------------------------------------
 const Bracket: React.FC<{ corner: "tl" | "tr" | "bl" | "br" }> = ({ corner }) => {
   const size = 26;
-  const t = "2px solid rgba(242,239,233,0.35)";
+  const t = "2px solid rgba(242,239,233,0.5)";
   const pos: React.CSSProperties = {
     position: "absolute",
     width: size,
@@ -156,7 +158,7 @@ const HUD: React.FC = () => {
     fontFamily: MONO,
     fontSize: 22,
     letterSpacing: 2,
-    color: "rgba(242,239,233,0.55)",
+    color: "rgba(242,239,233,0.72)",
   };
   return (
     <>
@@ -302,7 +304,7 @@ const MemeProp: React.FC<{
     fps: FPS,
     config: { damping: 13, stiffness: 140, mass: 0.9 },
   });
-  const kb = interpolate(frame, [startFrame, startFrame + kenBurnsFrames], [1, 1.06], {
+  const kb = interpolate(frame, [startFrame, startFrame + kenBurnsFrames], [1, 1.03], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -351,7 +353,7 @@ const SceneShell: React.FC<{
         })
       : 1;
   const fadeOut = isLast
-    ? interpolate(frame, [durationInFrames - 18, durationInFrames - 2], [1, 0], {
+    ? interpolate(frame, [durationInFrames - 5, durationInFrames - 1], [1, 0], {
         extrapolateLeft: "clamp",
         extrapolateRight: "clamp",
       })
@@ -369,8 +371,8 @@ const HookScene: React.FC<{ scene: Scene }> = ({ scene }) => (
     <div style={{ textAlign: "center", maxWidth: 860 }}>
       <Typewriter
         text={textFor(scene, "body")}
-        startFrame={4}
-        charsPerFrame={1.4}
+        startFrame={2}
+        charsPerFrame={2.4}
         hideCursorWhenDone
         style={{
           fontFamily: MONO,
@@ -380,14 +382,14 @@ const HookScene: React.FC<{ scene: Scene }> = ({ scene }) => (
         }}
       />
       <div style={{ height: 48 }} />
-      <PopTitle text={textFor(scene, "title")} startFrame={48} fontSize={104} color={ACCENT} />
+      <PopTitle text={textFor(scene, "title")} startFrame={26} fontSize={104} color={ACCENT} />
     </div>
   </AbsoluteFill>
 );
 
 const RevealScene: React.FC<{ scene: Scene }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const subOpacity = interpolate(frame, [16, 28], [0, 1], {
+  const subOpacity = interpolate(frame, [10, 16], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -441,15 +443,26 @@ const DEMO_JSON = [
   "}",
 ];
 
+const DEMO_CPF = 2.4; // typing speed, chars per frame
+const DEMO_STARTS = DEMO_JSON.reduce<number[]>((acc, _, i) => {
+  const prevChars = DEMO_JSON.slice(0, i).reduce((a, l) => a + l.length, 0);
+  acc.push(8 + Math.ceil(prevChars / DEMO_CPF));
+  return acc;
+}, []);
+const DEMO_TYPING_END =
+  8 + Math.ceil(DEMO_JSON.reduce((a, l) => a + l.length, 0) / DEMO_CPF);
+
 const DemoScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
   scene,
   durationInFrames,
 }) => {
   const frame = useCurrentFrame();
-  const arrowOpacity = interpolate(frame, [58, 66], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const arrowOpacity = interpolate(
+    frame,
+    [DEMO_TYPING_END - 10, DEMO_TYPING_END - 2],
+    [0, 1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
       <div style={{ position: "absolute", top: 118, width: "100%", textAlign: "center" }}>
@@ -466,13 +479,13 @@ const DemoScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
         {/* terminal card */}
         <div
           style={{
-            width: 470,
+            width: 520,
             borderRadius: 14,
             backgroundColor: "#161b22",
             boxShadow: "0 18px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(242,239,233,0.12)",
             padding: "22px 26px",
             fontFamily: MONO,
-            fontSize: 23,
+            fontSize: 21,
             lineHeight: 1.5,
             color: INK,
             overflow: "hidden",
@@ -484,15 +497,15 @@ const DemoScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
             ))}
           </div>
           {DEMO_JSON.map((line, i) => {
-            const lineStart = 8 + i * 6;
+            const lineStart = DEMO_STARTS[i];
             return (
               <div key={i} style={{ whiteSpace: "pre", minHeight: "1.5em" }}>
                 {frame >= lineStart ? (
                   <Typewriter
                     text={line}
                     startFrame={lineStart}
-                    charsPerFrame={2.4}
-                    hideCursorWhenDone={i < DEMO_JSON.length - 1}
+                    charsPerFrame={DEMO_CPF}
+                    hideCursorWhenDone
                     cursorColor={ACCENT}
                   />
                 ) : null}
@@ -512,10 +525,10 @@ const DemoScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
         </div>
         <MemeProp
           src={staticFile("scene2-drake.png")}
-          startFrame={64}
+          startFrame={DEMO_TYPING_END - 6}
           width={380}
           tilt={2.5}
-          kenBurnsFrames={durationInFrames - 64}
+          kenBurnsFrames={durationInFrames - (DEMO_TYPING_END - 6)}
         />
       </div>
     </AbsoluteFill>
@@ -526,14 +539,13 @@ const FeatureScene: React.FC<{
   scene: Scene;
   durationInFrames: number;
   tilt: number;
-}> = ({ scene, durationInFrames, tilt }) => {
+  cardWidth?: number;
+}> = ({ scene, durationInFrames, tilt, cardWidth = 400 }) => {
   const frame = useCurrentFrame();
-  const subOpacity = interpolate(frame, [14, 24], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
   const isCount = scene.text.some((t) => t.role === "countup");
   const img = scene.image ? staticFile(scene.image.replace(/^assets\//, "")) : null;
+  // meme card waits for the counter to land so captions never spoil the count
+  const imgStart = isCount ? 46 : 8;
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
       <div
@@ -563,27 +575,39 @@ const FeatureScene: React.FC<{
                 marginTop: 26,
                 letterSpacing: 1,
                 lineHeight: 1.7,
-                opacity: subOpacity,
               }}
             >
               {textFor(scene, "subtitle")
                 .split(" · ")
-                .map((part, i) => (
-                  <div key={i} style={{ whiteSpace: "nowrap" }}>
-                    {i > 0 ? "· " : ""}
-                    {part}
-                  </div>
-                ))}
+                .map((part, i) => {
+                  const o = interpolate(frame, [14 + i * 4, 22 + i * 4], [0, 1], {
+                    extrapolateLeft: "clamp",
+                    extrapolateRight: "clamp",
+                  });
+                  return (
+                    <div
+                      key={i}
+                      style={{
+                        whiteSpace: "nowrap",
+                        opacity: o,
+                        transform: `translateY(${(1 - o) * 10}px)`,
+                      }}
+                    >
+                      {"· "}
+                      {part}
+                    </div>
+                  );
+                })}
             </div>
           ) : null}
         </div>
         {img ? (
           <MemeProp
             src={img}
-            startFrame={8}
-            width={400}
+            startFrame={imgStart}
+            width={cardWidth}
             tilt={tilt}
-            kenBurnsFrames={durationInFrames - 8}
+            kenBurnsFrames={durationInFrames - imgStart}
           />
         ) : null}
       </div>
@@ -597,25 +621,28 @@ const PROOF_IMAGES = [
   "scene4-two-buttons.png",
   "scene5-always-has-been.png",
   "scene6-success-kid.png",
-  "scene3-expanding-brain.png",
+  "scene7-change-my-mind.png",
 ];
 
 const ProofScene: React.FC<{ scene: Scene }> = ({ scene }) => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      <div style={{ position: "absolute", top: 96, width: "100%", textAlign: "center" }}>
+        <PopTitle text={textFor(scene, "title")} startFrame={2} fontSize={52} color={ACCENT} />
+      </div>
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 280px)",
           gap: 26,
           justifyContent: "center",
-          marginTop: -30,
+          marginTop: 90,
         }}
       >
         {PROOF_IMAGES.map((name, i) => {
           const s = spring({
-            frame: frame - (2 + i * 3),
+            frame: frame - (2 + i * 2),
             fps: FPS,
             config: { damping: 12, stiffness: 170, mass: 0.7 },
           });
@@ -627,6 +654,7 @@ const ProofScene: React.FC<{ scene: Scene }> = ({ scene }) => {
                 height: 250,
                 borderRadius: 14,
                 overflow: "hidden",
+                backgroundColor: "#161b22",
                 boxShadow: "0 14px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(242,239,233,0.1)",
                 transform: `rotate(${i % 2 === 0 ? -2 : 2}deg) scale(${0.7 + 0.3 * s})`,
                 opacity: Math.min(1, s * 1.4),
@@ -634,25 +662,22 @@ const ProofScene: React.FC<{ scene: Scene }> = ({ scene }) => {
             >
               <Img
                 src={staticFile(name)}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "contain", padding: 8, boxSizing: "border-box" }}
               />
             </div>
           );
         })}
-      </div>
-      <div style={{ position: "absolute", bottom: 130, width: "100%", textAlign: "center" }}>
-        <PopTitle text={textFor(scene, "title")} startFrame={20} fontSize={52} color={ACCENT} />
       </div>
     </AbsoluteFill>
   );
 };
 
 const CTA_CURL =
-  "curl -fsSL https://raw.githubusercontent.com/\nkartikkabadi/meme-maker/main/install.sh | sh";
+  "curl -fsSL https://raw.githubusercontent.com/\n  kartikkabadi/meme-maker/main/install.sh | sh";
 
 const CtaScene: React.FC<{ scene: Scene }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const urlOpacity = interpolate(frame, [86, 98], [0, 1], {
+  const urlOpacity = interpolate(frame, [46, 56], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -677,7 +702,7 @@ const CtaScene: React.FC<{ scene: Scene }> = ({ scene }) => {
           }}
         >
           {curlLines.map((line, i) => {
-            const lineStart = 16 + i * 30;
+            const lineStart = 6 + i * 16;
             return (
               <div key={i} style={{ whiteSpace: "pre", minHeight: "1.65em" }}>
                 {i === 0 ? <span style={{ color: DIM }}>$ </span> : null}
@@ -685,8 +710,8 @@ const CtaScene: React.FC<{ scene: Scene }> = ({ scene }) => {
                   <Typewriter
                     text={line}
                     startFrame={lineStart}
-                    charsPerFrame={1.9}
-                    hideCursorWhenDone={i < curlLines.length - 1}
+                    charsPerFrame={3}
+                    hideCursorWhenDone
                     cursorColor={ACCENT}
                   />
                 ) : null}
@@ -722,7 +747,7 @@ const renderScene = (scene: Scene, durationInFrames: number): React.ReactNode =>
     case "surfaces":
       return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={-3} />;
     case "deterministic":
-      return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={2.5} />;
+      return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={2.5} cardWidth={460} />;
     case "templates":
       return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={-2} />;
     case "proof":
@@ -743,14 +768,15 @@ const Launch: React.FC = () => {
   const frame = useCurrentFrame();
   const musicVolume = interpolate(
     frame,
-    [0, 12, total - 40, total - 6],
-    [0, 0.55, 0.55, 0.08],
+    [0, 12, total - 8, total - 2],
+    [0, 0.9, 0.9, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
   let offset = 0;
   return (
     <AbsoluteFill style={{ backgroundColor: BG }}>
-      <Audio src={staticFile("music.mp3")} volume={() => musicVolume} loop />
+      <Audio src={staticFile("music-v2.mp3")} volume={() => musicVolume} />
+      <BackgroundTexture />
       {scenes.map((scene, i) => {
         const durationInFrames = sceneFrames[i];
         const from = offset;
@@ -774,7 +800,7 @@ const Launch: React.FC = () => {
           </Sequence>
         );
       })}
-      <TextureOverlay />
+      <Vignette />
       <HUD />
     </AbsoluteFill>
   );

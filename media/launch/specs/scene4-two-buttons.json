@@ -1,6 +1,6 @@
 {
   "texts": [
-    { "slot": "left", "text": "CLI", "style": { "size": 48 } },
+    { "slot": "left", "text": "CLI", "style": { "size": 42 } },
     { "slot": "right", "text": "MCP SERVER" },
     { "slot": "caption", "text": "WHY NOT BOTH?", "style": { "size": 44 } }
   ]
