@@ -532,7 +532,10 @@ Examples:
     const current = `v${VERSION}`;
     const latest = await latestReleaseTag();
     if (!latest) {
-      fail(new MemeError('IO_ERROR', 'could not determine the latest release from github.com'), json);
+      fail(
+        new MemeError('IO_ERROR', 'could not determine the latest release from github.com'),
+        json,
+      );
     }
     const upToDate = latest === current;
     if (opts.check || upToDate) {
@@ -561,7 +564,10 @@ Examples:
     const cmd = `(command -v curl >/dev/null 2>&1 && curl -fsSL '${INSTALL_URL}' || wget -qO- '${INSTALL_URL}') | sh`;
     const res = spawnSync('sh', ['-c', cmd], { stdio: 'inherit', env });
     if (res.status !== 0) {
-      fail(new MemeError('IO_ERROR', `installer exited with status ${res.status ?? 'unknown'}`), json);
+      fail(
+        new MemeError('IO_ERROR', `installer exited with status ${res.status ?? 'unknown'}`),
+        json,
+      );
     }
   });
 
