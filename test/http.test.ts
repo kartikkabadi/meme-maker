@@ -154,4 +154,11 @@ describe('HTTP adapter', () => {
     expect(res.status).toBe(200);
     expect(res.headers.get('content-type')).toContain('text/html');
   });
+
+  it('404s unknown /api/ GET routes with a typed error instead of the SPA', async () => {
+    const res = await get('/api/nonexistent');
+    expect(res.status).toBe(404);
+    const body = (await res.json()) as { error: { code: string } };
+    expect(body.error.code).toBe('IO_ERROR');
+  });
 });
