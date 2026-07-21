@@ -361,9 +361,13 @@ program
   .action(async (opts: { port?: string }) => {
     try {
       const { startServer } = await import('./http.js');
-      const { url } = await startServer({
-        port: opts.port ? parseInt(opts.port, 10) : undefined,
+      // Under portless, PORT carries the proxy-assigned port and
+      // PORTLESS_URL the stable named URL (e.g. https://meme.localhost).
+      const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : undefined;
+      const { url: localUrl } = await startServer({
+        port: opts.port ? parseInt(opts.port, 10) : envPort,
       });
+      const url = process.env.PORTLESS_URL ?? localUrl;
       // Machine-readable first line so agents/hosts can discover the port.
       process.stdout.write(JSON.stringify({ url }) + '\n');
       process.stderr.write(`meme ui listening at ${url} (Ctrl+C to stop)\n`);
