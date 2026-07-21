@@ -1,0 +1,46 @@
+name: install-test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [devin/install-test-windows]
+
+jobs:
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run curl installer
+        shell: bash
+        run: |
+          export PREFIX="$RUNNER_TEMP/meme-test"
+          curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh
+
+      - name: Add to PATH
+        shell: bash
+        run: echo "$RUNNER_TEMP/meme-test/bin" >> "$GITHUB_PATH"
+
+      - name: meme --version
+        shell: bash
+        run: meme --version
+
+      - name: meme templates list
+        shell: bash
+        run: meme templates list | wc -l
+
+      - name: meme render
+        shell: bash
+        run: meme render --template drake --text no="MANUAL" --text yes="AGENT" -o "$RUNNER_TEMP/meme.png"
+
+      - name: Upload rendered image
+        uses: actions/upload-artifact@v4
+        with:
+          name: meme-${{ matrix.os }}
+          path: ${{ runner.temp }}/meme.png
