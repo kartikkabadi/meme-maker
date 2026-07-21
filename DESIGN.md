@@ -124,7 +124,7 @@ Defaults produce the classic look: Anton, auto-size (fit box, capped), uppercase
 
 ## 5. CLI Spec (`meme`)
 
-Installed via `npm i -g agent-meme-maker` (also `npx agent-meme-maker`). All commands support `--json` for machine-readable output on stdout; exit code 0/1; errors as `{ "error": { "code", "message" } }`.
+Installed via `curl -fsSL https://github.com/kartikkabadi/meme-maker/releases/latest/download/install.sh | sh`. All commands support `--json` for machine-readable output on stdout; exit code 0/1; errors as `{ "error": { "code", "message" } }`.
 
 ```
 meme templates list [--tag <tag>] [--type image|gif] [--search <q>] [--json]
@@ -158,7 +158,7 @@ meme render --template drake --text no="MANUAL MEME EDITORS" --text yes="A CLI F
 
 ## 6. MCP Tool Spec (`meme-maker-mcp`)
 
-Stdio MCP server, launched as `npx agent-meme-maker mcp` (or bin `meme-maker-mcp`). Tools (zod schemas shared with the CLI):
+Stdio MCP server, launched via the installed `meme-maker-mcp` binary. Tools (zod schemas shared with the CLI):
 
 | Tool | Input | Output |
 |---|---|---|
