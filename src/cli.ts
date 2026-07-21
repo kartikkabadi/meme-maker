@@ -468,6 +468,8 @@ Examples:
       const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : undefined;
       const { url: localUrl } = await startServer({
         port: opts.port ? parseInt(opts.port, 10) : envPort,
+        log: true,
+        handleSignals: true,
       });
       const url = process.env.PORTLESS_URL ?? localUrl;
       // Machine-readable first line so agents/hosts can discover the port.
