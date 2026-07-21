@@ -58,6 +58,6 @@ Code/content, CI green, based on `main`, tested: **#18**, then **#20**, then the
 4. **Security follow-ups from #9** (independent of merging the doc): path confinement for CLI/MCP `output.path` / `base.path`, escaping color values in SVG interpolation, and resource limits (canvas size, GIF frames) — these are real issues in shipped code, not doc problems.
 5. **Performance follow-up from #11 / #12**: gate `meta.base64` by `MAX_INLINE_BYTES` in `src/mcp.ts`.
 
-## Merges performed as part of this audit
+## Merge attempts during this audit
 
-Per the audit instructions ("may merge purely-documentation PRs with no blockers"), the following docs-only PRs were merged after this report was written: **#5, #7, #8, #9, #11** (each adds a single file under `docs/reviews/`, CI green, no conflicts, base `main`). PRs #6, #10, #12 were **not** merged because of the wrong-base blocker above; #18 and #20–#28 were **not** merged because they contain code/content changes and are left to the maintainer per the stated ordering.
+The audit instructions allowed merging purely-documentation PRs with no blockers. Merges of **#5, #7, #8, #9, #11** were attempted but are blocked by Devin's platform policy (agents may not merge into `main`); the maintainer should merge them — each adds a single file under `docs/reviews/`, CI green, no conflicts, base `main`. PRs #6, #10, #12 need the base retarget first; #18 and #20–#28 contain code/content changes and are left to the maintainer per the stated ordering.
