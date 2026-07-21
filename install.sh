@@ -77,10 +77,11 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 REF="${MEME_MAKER_REF:-}"
 if [ -z "$REF" ]; then
-  # Prefer the latest tagged release; fall back to main.
+  # Prefer the latest tagged release (follow the /releases/latest redirect);
+  # fall back to main.
   if command -v curl >/dev/null 2>&1; then
-    REF=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" 2>/dev/null \
-      | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n1) || true
+    REF=$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/$REPO/releases/latest" 2>/dev/null \
+      | sed 's|.*/tag/||')
   fi
   [ -n "$REF" ] || REF=main
 fi

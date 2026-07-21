@@ -23,7 +23,7 @@ program
     'Headless meme maker for agents: render classic meme templates, custom images,\n' +
       'blank canvases, and grid layouts to PNG/JPEG/GIF/WebP — no GUI required.',
   )
-  .version('0.2.0');
+  .version('0.3.0');
 program.option('--templates-dir <dir>', 'load templates from a custom directory');
 program.option('--verbose', 'print extra diagnostics and full warning details on stderr');
 program.addHelpText(
