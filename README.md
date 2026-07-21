@@ -261,6 +261,8 @@ Render it with `meme spec render examples/drake.json` or pass the same shape to 
 
 ## Library
 
+The package is not published to npm — to use the library API, work from a clone (`npm install && npm run build`, then `npm link` or a `file:` dependency):
+
 ```ts
 import { listTemplates, getTemplate, renderMeme } from 'agent-meme-maker';
 
