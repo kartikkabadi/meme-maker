@@ -25,9 +25,7 @@
     "url": "https://github.com/kartikkabadi/meme-maker/issues"
   },
   "homepage": "https://github.com/kartikkabadi/meme-maker#readme",
-  "publishConfig": {
-    "access": "public"
-  },
+  "private": true,
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
