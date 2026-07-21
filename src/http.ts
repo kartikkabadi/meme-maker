@@ -68,13 +68,14 @@ function sendError(res: ServerResponse, err: unknown): void {
 }
 
 async function readBody(req: IncomingMessage, maxBytes = MAX_SPEC_BODY_BYTES): Promise<unknown> {
+  const cap = Math.min(maxBytes, limits.maxBodyBytes());
   const chunks: Buffer[] = [];
   let total = 0;
   for await (const chunk of req) {
     total += (chunk as Buffer).length;
-    if (total > maxBytes) {
-      throw new MemeError('RESOURCE_LIMIT', `request body exceeds ${maxBytes} bytes`, {
-        limit: maxBytes,
+    if (total > cap) {
+      throw new MemeError('RESOURCE_LIMIT', `request body exceeds ${cap} bytes`, {
+        limit: cap,
         kind: 'body_bytes',
       });
     }
@@ -204,10 +205,48 @@ async function serveStatic(res: ServerResponse, uiDir: string, pathname: string)
   res.end(body);
 }
 
+function corsOrigin(): string | undefined {
+  const origin = process.env.MEME_CORS_ORIGIN;
+  return origin === undefined || origin === '' ? undefined : origin;
+}
+
+function clientIp(req: IncomingMessage): string {
+  if (process.env.MEME_TRUST_PROXY) {
+    const fwd = req.headers['x-forwarded-for'];
+    const first = (Array.isArray(fwd) ? fwd[0] : fwd)?.split(',')[0]?.trim();
+    if (first) return first;
+  }
+  return req.socket.remoteAddress ?? 'unknown';
+}
+
+function logRequest(req: IncomingMessage, res: ServerResponse): void {
+  const start = Date.now();
+  res.once('finish', () => {
+    process.stderr.write(
+      `${clientIp(req)} ${req.method ?? '-'} ${req.url ?? '-'} ${res.statusCode} ${Date.now() - start}ms\n`,
+    );
+  });
+}
+
 async function handle(req: IncomingMessage, res: ServerResponse, uiDir: string): Promise<void> {
   const url = new URL(req.url ?? '/', 'http://localhost');
   const { pathname } = url;
   const method = req.method ?? 'GET';
+
+  const origin = corsOrigin();
+  if (origin) {
+    res.setHeader('access-control-allow-origin', origin);
+    if (origin !== '*') res.setHeader('vary', 'origin');
+    if (method === 'OPTIONS') {
+      res.writeHead(204, {
+        'access-control-allow-methods': 'GET, POST, DELETE, OPTIONS',
+        'access-control-allow-headers': 'content-type',
+        'access-control-max-age': '86400',
+      });
+      res.end();
+      return;
+    }
+  }
 
   if (method === 'GET' && pathname === '/api/templates') {
     const type = url.searchParams.get('type');
@@ -333,7 +372,12 @@ async function handle(req: IncomingMessage, res: ServerResponse, uiDir: string):
 
 export interface HttpServerOptions {
   port?: number;
+  host?: string;
   uiDir?: string;
+  /** Log requests to stderr. */
+  log?: boolean;
+  /** Close the server and exit on SIGTERM/SIGINT. */
+  handleSignals?: boolean;
 }
 
 export interface RunningServer {
@@ -343,19 +387,19 @@ export interface RunningServer {
   close: () => Promise<void>;
 }
 
-function listen(server: Server, port: number): Promise<number> {
+function listen(server: Server, port: number, host: string): Promise<number> {
   return new Promise((resolvePort, reject) => {
     const onError = (err: NodeJS.ErrnoException): void => {
       server.removeListener('error', onError);
       if (err.code === 'EADDRINUSE' && port !== 0) {
         // Auto-pick a free port on conflict (DESIGN-v2 §4.1).
-        listen(server, 0).then(resolvePort, reject);
+        listen(server, 0, host).then(resolvePort, reject);
       } else {
         reject(err);
       }
     };
     server.once('error', onError);
-    server.listen(port, '127.0.0.1', () => {
+    server.listen(port, host, () => {
       server.removeListener('error', onError);
       const addr = server.address();
       resolvePort(typeof addr === 'object' && addr ? addr.port : port);
@@ -367,7 +411,9 @@ function listen(server: Server, port: number): Promise<number> {
 export async function startServer(options: HttpServerOptions = {}): Promise<RunningServer> {
   setPathPolicy('confined');
   const uiDir = options.uiDir ?? join(__dirname, 'ui');
+  const host = options.host ?? process.env.MEME_HOST ?? '127.0.0.1';
   const server = createServer((req, res) => {
+    if (options.log) logRequest(req, res);
     handle(req, res, uiDir).catch((err: unknown) => {
       sendError(res, err);
       // An unconsumed request body (e.g. over-limit) poisons keep-alive reuse;
@@ -375,16 +421,20 @@ export async function startServer(options: HttpServerOptions = {}): Promise<Runn
       if (!req.complete) res.once('close', () => req.destroy());
     });
   });
-  const port = await listen(server, options.port ?? 0);
-  const url = `http://127.0.0.1:${port}`;
-  return {
-    server,
-    url,
-    port,
-    close: () =>
-      new Promise((r) => {
-        server.close(() => r());
-        server.closeIdleConnections();
-      }),
-  };
+  const port = await listen(server, options.port ?? 0, host);
+  const url = `http://${host.includes(':') ? `[${host}]` : host}:${port}`;
+  const close = (): Promise<void> =>
+    new Promise((r) => {
+      server.close(() => r());
+      server.closeIdleConnections();
+    });
+  if (options.handleSignals) {
+    const shutdown = (): void => {
+      process.stderr.write('shutting down\n');
+      void close().then(() => process.exit(0));
+    };
+    process.once('SIGTERM', shutdown);
+    process.once('SIGINT', shutdown);
+  }
+  return { server, url, port, close };
 }
