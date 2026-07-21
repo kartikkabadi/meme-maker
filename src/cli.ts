@@ -70,7 +70,14 @@ async function runRender(opts: RenderOpts, base: MemeSpec['base']): Promise<void
   const slotNames = base.kind === 'template' ? getTemplate(base.id).slots.map((s) => s.name) : [];
   let texts: TextBox[] = parseTextArgs(opts.text, slotNames);
   if (opts.textFile) {
-    const parsed = readJsonFile(opts.textFile) as { texts?: TextBox[] } | TextBox[];
+    const parsed = readJsonFile(opts.textFile) as { texts?: TextBox[] } | TextBox[] | null;
+    if (typeof parsed !== 'object' || parsed === null) {
+      throw new MemeError(
+        'INVALID_SPEC',
+        `"${opts.textFile}" must contain a JSON array or an object with a "texts" array`,
+        { file: opts.textFile },
+      );
+    }
     texts = texts.concat(Array.isArray(parsed) ? parsed : (parsed.texts ?? []));
   }
   const spec: MemeSpec = {
@@ -147,6 +154,9 @@ templates
   .option('--json', 'JSON output')
   .action((opts: { tag?: string; type?: 'image' | 'gif'; search?: string; json?: boolean }) => {
     try {
+      if (opts.type !== undefined && opts.type !== 'image' && opts.type !== 'gif') {
+        throw new MemeError('INVALID_SPEC', `--type must be "image" or "gif", got "${opts.type}"`);
+      }
       const list = listTemplates({ tag: opts.tag, type: opts.type, search: opts.search }).map(
         (t) => ({
           id: t.id,
@@ -303,11 +313,16 @@ spec
             { file },
           );
         }
+        if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+          throw new MemeError('INVALID_SPEC', `"${file}" must contain a MemeSpec JSON object`, {
+            file,
+          });
+        }
         parsed.output = { ...(parsed.output ?? {}) };
         if (opts.out) parsed.output.path = opts.out;
         if (opts.force) parsed.output.overwrite = true;
         if (opts.strict) parsed.output.onDegrade = 'error';
-        if (!parsed.output.path) {
+        if (!parsed.output.path && typeof parsed.base === 'object' && parsed.base !== null) {
           parsed.output.path = defaultOutputName(
             parsed as MemeSpec,
             (parsed.output.format as string | undefined) ??
@@ -373,6 +388,11 @@ program.parseAsync(process.argv).catch((err) => {
   if (err instanceof CommanderError) {
     if (err.code === 'commander.helpDisplayed' || err.code === 'commander.version') {
       process.exit(0);
+    }
+    if (err.code === 'commander.help') {
+      // Help was requested implicitly (e.g. bare `meme`); print it instead of an error.
+      program.outputHelp();
+      process.exit(1);
     }
     fail(new MemeError('INVALID_SPEC', err.message.replace(/^error: /, '')), jsonMode);
   }
