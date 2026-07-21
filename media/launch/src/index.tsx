@@ -10,7 +10,9 @@ import {
   delayRender,
   continueRender,
   useCurrentFrame,
+  useVideoConfig,
   interpolate,
+  spring,
   Easing,
 } from "remotion";
 import storyboard from "../storyboard.json";
@@ -19,9 +21,17 @@ const FPS = storyboard.format.fps;
 const WIDTH = storyboard.format.width;
 const HEIGHT = storyboard.format.height;
 
+// ---------------------------------------------------------------------------
+// Design system
+// ---------------------------------------------------------------------------
 const BG = "#0d1117";
-const ENTER_FRAMES = 10;
-const EXIT_FRAMES = 8;
+const INK = "#f2efe9";
+const ACCENT = "#ffd400";
+const DIM = "#8b949e";
+const MONO = "'SFMono-Regular', 'Menlo', 'Consolas', 'Liberation Mono', monospace";
+const BRAND_FONT = "Anton, 'Arial Black', sans-serif";
+
+const XFADE = 8; // crossfade frames between scenes
 
 let antonPromise: Promise<void> | null = null;
 const loadAnton = (): Promise<void> => {
@@ -39,16 +49,9 @@ const useBrandFont = () => {
   React.useEffect(() => {
     loadAnton()
       .then(() => continueRender(handle))
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error("Anton font failed to load, falling back to Arial Black", err);
-        continueRender(handle);
-      });
+      .catch(() => continueRender(handle));
   }, [handle]);
 };
-
-const BRAND_FONT = "Anton, 'Arial Black', sans-serif";
-const TEXT_SHADOW = "0 3px 14px rgba(0,0,0,0.65)";
 
 type SceneText = { content: string; role: string };
 type Scene = {
@@ -61,211 +64,718 @@ type Scene = {
 };
 
 const scenes = storyboard.scenes as Scene[];
-const totalFrames = scenes.reduce((sum, s) => sum + Math.round(s.duration * FPS), 0);
+const sceneFrames = scenes.map((s) => Math.round(s.duration * FPS));
+const totalFrames = sceneFrames.reduce((a, b) => a + b, 0);
 
-/** 0→1 entrance progress, 1→0 exit progress folded into a single opacity+motion helper. */
-const useSceneProgress = (durationInFrames: number, isLast: boolean) => {
+const textFor = (scene: Scene, role: string): string =>
+  scene.text.find((t) => t.role === role)?.content ?? "";
+
+// ---------------------------------------------------------------------------
+// Texture overlay: grain + scanlines + vignette (persistent, unifies scenes)
+// ---------------------------------------------------------------------------
+const GRAIN_URIS = [0, 1, 2, 3].map((seed) => {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'>` +
+    `<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='${seed}' stitchTiles='stitch'/>` +
+    `<feColorMatrix type='saturate' values='0'/></filter>` +
+    `<rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>`;
+  return `url("data:image/svg+xml,${svg}")`;
+});
+
+const TextureOverlay: React.FC = () => {
   const frame = useCurrentFrame();
-  const enter = interpolate(frame, [0, ENTER_FRAMES], [0, 1], {
-    extrapolateRight: "clamp",
-    easing: Easing.out(Easing.cubic),
-  });
-  const exitStart = durationInFrames - (isLast ? 15 : EXIT_FRAMES);
-  const exit = interpolate(frame, [exitStart, durationInFrames], [1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.in(Easing.cubic),
-  });
-  const kenBurns = interpolate(frame, [0, durationInFrames], [1, 1.07], {
-    extrapolateRight: "clamp",
-  });
-  const drift = interpolate(frame, [0, durationInFrames], [0, -18], {
-    extrapolateRight: "clamp",
-  });
-  return { frame, enter, exit, kenBurns, drift };
+  return (
+    <>
+      {/* animated film grain */}
+      <AbsoluteFill
+        style={{
+          backgroundImage: GRAIN_URIS[frame % 4],
+          backgroundRepeat: "repeat",
+          opacity: 0.07,
+          mixBlendMode: "overlay",
+          pointerEvents: "none",
+        }}
+      />
+      {/* scanlines */}
+      <AbsoluteFill
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0px, rgba(0,0,0,0.16) 1px, transparent 1px, transparent 4px)",
+          opacity: 0.5,
+          pointerEvents: "none",
+        }}
+      />
+      {/* vignette */}
+      <AbsoluteFill
+        style={{
+          background:
+            "radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,0.5) 100%)",
+          pointerEvents: "none",
+        }}
+      />
+    </>
+  );
 };
 
-const TitleCard: React.FC<{
-  texts: SceneText[];
-  durationInFrames: number;
-  isLast: boolean;
-}> = ({ texts, durationInFrames, isLast }) => {
-  const { frame, enter, exit, kenBurns } = useSceneProgress(durationInFrames, isLast);
-  const title = texts.find((t) => t.role === "title");
-  const subtitle = texts.find((t) => t.role === "subtitle");
-  const subOpacity = interpolate(frame, [6, 18], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const subRise = interpolate(frame, [6, 18], [24, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.out(Easing.cubic),
-  });
-  const titleLines = title?.content.includes("/")
-    ? [title.content.slice(0, title.content.indexOf("/") + 1), title.content.slice(title.content.indexOf("/") + 1)]
-    : [title?.content ?? ""];
+// ---------------------------------------------------------------------------
+// Persistent HUD chrome
+// ---------------------------------------------------------------------------
+const Bracket: React.FC<{ corner: "tl" | "tr" | "bl" | "br" }> = ({ corner }) => {
+  const size = 26;
+  const t = "2px solid rgba(242,239,233,0.35)";
+  const pos: React.CSSProperties = {
+    position: "absolute",
+    width: size,
+    height: size,
+    ...(corner === "tl" && { top: 28, left: 28, borderTop: t, borderLeft: t }),
+    ...(corner === "tr" && { top: 28, right: 28, borderTop: t, borderRight: t }),
+    ...(corner === "bl" && { bottom: 28, left: 28, borderBottom: t, borderLeft: t }),
+    ...(corner === "br" && { bottom: 28, right: 28, borderBottom: t, borderRight: t }),
+  };
+  return <div style={pos} />;
+};
+
+const HUD: React.FC = () => {
+  const frame = useCurrentFrame();
+  // which scene are we in?
+  let acc = 0;
+  let idx = 0;
+  for (let i = 0; i < sceneFrames.length; i++) {
+    if (frame < acc + sceneFrames[i]) {
+      idx = i;
+      break;
+    }
+    acc += sceneFrames[i];
+    idx = i;
+  }
+  const seconds = frame / FPS;
+  const timecode = `00:${String(Math.floor(seconds)).padStart(2, "0")}.${String(
+    Math.floor((seconds % 1) * 100)
+  ).padStart(2, "0")}`;
+  const hudText: React.CSSProperties = {
+    fontFamily: MONO,
+    fontSize: 22,
+    letterSpacing: 2,
+    color: "rgba(242,239,233,0.55)",
+  };
   return (
-    <AbsoluteFill
+    <>
+      <Bracket corner="tl" />
+      <Bracket corner="tr" />
+      <Bracket corner="bl" />
+      <Bracket corner="br" />
+      <div style={{ position: "absolute", top: 34, left: 72, ...hudText }}>
+        meme-maker
+      </div>
+      <div style={{ position: "absolute", top: 34, right: 72, ...hudText }}>
+        {String(idx + 1).padStart(2, "0")} / {String(scenes.length).padStart(2, "0")}
+      </div>
+      <div style={{ position: "absolute", bottom: 34, left: 72, ...hudText }}>
+        kartikkabadi/meme-maker
+      </div>
+      <div style={{ position: "absolute", bottom: 34, right: 72, ...hudText }}>
+        {timecode}
+      </div>
+    </>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Kinetic type helpers
+// ---------------------------------------------------------------------------
+const Cursor: React.FC<{ color?: string }> = ({ color = ACCENT }) => {
+  const frame = useCurrentFrame();
+  const on = Math.floor(frame / 8) % 2 === 0;
+  return (
+    <span
       style={{
-        backgroundColor: BG,
-        justifyContent: "center",
-        alignItems: "center",
-        opacity: enter * exit,
+        display: "inline-block",
+        width: "0.55em",
+        height: "1.05em",
+        marginLeft: 4,
+        verticalAlign: "text-bottom",
+        backgroundColor: on ? color : "transparent",
+      }}
+    />
+  );
+};
+
+const Typewriter: React.FC<{
+  text: string;
+  startFrame: number;
+  charsPerFrame?: number;
+  style?: React.CSSProperties;
+  cursorColor?: string;
+  hideCursorWhenDone?: boolean;
+}> = ({ text, startFrame, charsPerFrame = 0.9, style, cursorColor, hideCursorWhenDone }) => {
+  const frame = useCurrentFrame();
+  const chars = Math.max(0, Math.floor((frame - startFrame) * charsPerFrame));
+  const shown = text.slice(0, chars);
+  const done = chars >= text.length;
+  return (
+    <span style={style}>
+      {shown}
+      {done && hideCursorWhenDone ? null : <Cursor color={cursorColor} />}
+    </span>
+  );
+};
+
+const PopTitle: React.FC<{
+  text: string;
+  startFrame: number;
+  fontSize?: number;
+  color?: string;
+  style?: React.CSSProperties;
+}> = ({ text, startFrame, fontSize = 96, color = INK, style }) => {
+  const frame = useCurrentFrame();
+  const s = spring({
+    frame: frame - startFrame,
+    fps: FPS,
+    config: { damping: 12, stiffness: 160, mass: 0.8 },
+  });
+  const opacity = interpolate(frame - startFrame, [0, 4], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  return (
+    <div
+      style={{
+        fontFamily: BRAND_FONT,
+        fontSize,
+        color,
+        letterSpacing: 2,
+        lineHeight: 1.1,
+        textAlign: "center",
+        transform: `scale(${0.8 + 0.2 * s}) translateY(${(1 - s) * 30}px)`,
+        opacity,
+        textShadow: "0 4px 20px rgba(0,0,0,0.6)",
+        ...style,
       }}
     >
-      <AbsoluteFill
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          transform: `scale(${kenBurns})`,
-          padding: 60,
-        }}
-      >
-        <div style={{ textAlign: "center", maxWidth: WIDTH - 120 }}>
-          {titleLines.map((line, i) => (
-            <h1
-              key={i}
-              style={{
-                color: "#fff",
-                fontSize: titleLines.length > 1 ? 76 : 110,
-                lineHeight: 1.15,
-                fontFamily: BRAND_FONT,
-                letterSpacing: 1,
-                margin: 0,
-                textShadow: TEXT_SHADOW,
-                overflowWrap: "anywhere",
-              }}
-            >
-              {line}
-            </h1>
-          ))}
-          {subtitle ? (
-            <p
-              style={{
-                color: "#9ecbff",
-                fontSize: 44,
-                fontFamily: "Arial, sans-serif",
-                letterSpacing: 0.5,
-                marginTop: 32,
-                marginBottom: 0,
-                opacity: subOpacity,
-                transform: `translateY(${subRise}px)`,
-                textShadow: TEXT_SHADOW,
-              }}
-            >
-              {subtitle.content}
-            </p>
-          ) : null}
-        </div>
-      </AbsoluteFill>
-    </AbsoluteFill>
+      {text}
+    </div>
   );
 };
 
-const MemeCard: React.FC<{
-  scene: Scene;
-  durationInFrames: number;
-  isLast: boolean;
-}> = ({ scene, durationInFrames, isLast }) => {
-  const { frame, enter, exit, kenBurns, drift } = useSceneProgress(durationInFrames, isLast);
-  const slideX = (1 - enter) * 90;
-  const exitX = (1 - exit) * -70;
-  const caption = scene.text.find((t) => t.role === "caption");
-  const captionOpacity = interpolate(frame, [5, 15], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const captionRise = interpolate(frame, [5, 15], [26, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.out(Easing.cubic),
-  });
-  const src = scene.image ? staticFile(scene.image.replace(/^assets\//, "")) : null;
+const CountUp: React.FC<{
+  to: number;
+  startFrame: number;
+  durationFrames: number;
+  fontSize?: number;
+}> = ({ to, startFrame, durationFrames, fontSize = 260 }) => {
+  const frame = useCurrentFrame();
+  const value = Math.round(
+    interpolate(frame, [startFrame, startFrame + durationFrames], [0, to], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic),
+    })
+  );
   return (
-    <AbsoluteFill style={{ backgroundColor: BG, opacity: enter * exit }}>
-      {src ? (
-        <AbsoluteFill style={{ overflow: "hidden" }}>
-          <Img
-            src={src}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: "blur(46px) brightness(0.42) saturate(1.15)",
-              transform: `scale(${kenBurns * 1.18})`,
-            }}
-          />
-        </AbsoluteFill>
-      ) : null}
-      <AbsoluteFill
+    <div
+      style={{
+        fontFamily: BRAND_FONT,
+        fontSize,
+        color: ACCENT,
+        lineHeight: 1,
+        textShadow: "0 6px 30px rgba(0,0,0,0.7)",
+      }}
+    >
+      {value}
+    </div>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Meme prop: masked rounded card, drop shadow, spring in, slow Ken Burns
+// ---------------------------------------------------------------------------
+const MemeProp: React.FC<{
+  src: string;
+  startFrame: number;
+  width: number;
+  tilt?: number;
+  kenBurnsFrames: number;
+}> = ({ src, startFrame, width, tilt = -2, kenBurnsFrames }) => {
+  const frame = useCurrentFrame();
+  const s = spring({
+    frame: frame - startFrame,
+    fps: FPS,
+    config: { damping: 13, stiffness: 140, mass: 0.9 },
+  });
+  const kb = interpolate(frame, [startFrame, startFrame + kenBurnsFrames], [1, 1.06], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const opacity = interpolate(frame - startFrame, [0, 5], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  return (
+    <div
+      style={{
+        width,
+        borderRadius: 18,
+        overflow: "hidden",
+        boxShadow: "0 24px 70px rgba(0,0,0,0.65), 0 0 0 1px rgba(242,239,233,0.12)",
+        transform: `rotate(${tilt}deg) scale(${0.85 + 0.15 * s})`,
+        opacity,
+      }}
+    >
+      <Img
+        src={src}
         style={{
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 40,
-          bottom: 110,
-          transform: `translateX(${slideX + exitX}px) scale(${kenBurns})`,
+          width: "100%",
+          display: "block",
+          transform: `scale(${kb})`,
         }}
-      >
-        {src ? (
-          <Img
-            src={src}
+      />
+    </div>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Scene wrapper: unified bg + crossfade in/out
+// ---------------------------------------------------------------------------
+const SceneShell: React.FC<{
+  durationInFrames: number;
+  transitionIn: string;
+  isLast: boolean;
+  children: React.ReactNode;
+}> = ({ durationInFrames, transitionIn, isLast, children }) => {
+  const frame = useCurrentFrame();
+  const fadeIn =
+    transitionIn === "crossfade"
+      ? interpolate(frame, [0, XFADE], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+        })
+      : 1;
+  const fadeOut = isLast
+    ? interpolate(frame, [durationInFrames - 18, durationInFrames - 2], [1, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : 1;
+  return (
+    <AbsoluteFill style={{ opacity: fadeIn * fadeOut }}>{children}</AbsoluteFill>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Scenes
+// ---------------------------------------------------------------------------
+const HookScene: React.FC<{ scene: Scene }> = ({ scene }) => (
+  <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 110 }}>
+    <div style={{ textAlign: "center", maxWidth: 860 }}>
+      <Typewriter
+        text={textFor(scene, "body")}
+        startFrame={4}
+        charsPerFrame={1.4}
+        hideCursorWhenDone
+        style={{
+          fontFamily: MONO,
+          fontSize: 40,
+          color: DIM,
+          lineHeight: 1.6,
+        }}
+      />
+      <div style={{ height: 48 }} />
+      <PopTitle text={textFor(scene, "title")} startFrame={48} fontSize={104} color={ACCENT} />
+    </div>
+  </AbsoluteFill>
+);
+
+const RevealScene: React.FC<{ scene: Scene }> = ({ scene }) => {
+  const frame = useCurrentFrame();
+  const subOpacity = interpolate(frame, [16, 28], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const glitch = frame >= 2 && frame <= 10 && frame % 3 !== 0;
+  return (
+    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      <div style={{ textAlign: "center", position: "relative" }}>
+        {glitch ? (
+          <div
             style={{
-              maxWidth: WIDTH - 140,
-              maxHeight: HEIGHT - 240,
-              minHeight: HEIGHT * 0.62,
-              objectFit: "contain",
-              transform: `translateY(${drift}px)`,
-              borderRadius: 10,
-              boxShadow: "0 14px 60px rgba(0,0,0,0.6)",
+              position: "absolute",
+              inset: 0,
+              fontFamily: BRAND_FONT,
+              fontSize: 150,
+              letterSpacing: 4,
+              color: ACCENT,
+              opacity: 0.5,
+              transform: `translate(${frame % 2 === 0 ? 6 : -6}px, 0)`,
             }}
-          />
+          >
+            {textFor(scene, "title")}
+          </div>
         ) : null}
-      </AbsoluteFill>
-      {caption ? (
+        <PopTitle text={textFor(scene, "title")} startFrame={2} fontSize={150} />
         <div
           style={{
-            position: "absolute",
-            bottom: 42,
-            width: "100%",
-            textAlign: "center",
-            color: "#fff",
-            fontSize: 46,
-            fontFamily: BRAND_FONT,
-            letterSpacing: 0.8,
-            textShadow: TEXT_SHADOW,
-            opacity: captionOpacity,
-            transform: `translateY(${captionRise}px)`,
+            fontFamily: MONO,
+            fontSize: 38,
+            color: ACCENT,
+            marginTop: 30,
+            letterSpacing: 3,
+            opacity: subOpacity,
           }}
         >
-          {caption.content}
+          {textFor(scene, "subtitle")}
         </div>
-      ) : null}
+      </div>
     </AbsoluteFill>
   );
 };
 
+const DEMO_JSON = [
+  "{",
+  '  "template": "drake",',
+  '  "texts": [',
+  '    { "slot": "no",',
+  '      "text": "manual editors" },',
+  '    { "slot": "yes",',
+  '      "text": "a CLI for agents" }',
+  "  ]",
+  "}",
+];
+
+const DemoScene: React.FC<{ scene: Scene; durationInFrames: number }> = ({
+  scene,
+  durationInFrames,
+}) => {
+  const frame = useCurrentFrame();
+  const arrowOpacity = interpolate(frame, [58, 66], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  return (
+    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      <div style={{ position: "absolute", top: 118, width: "100%", textAlign: "center" }}>
+        <PopTitle text={textFor(scene, "title")} startFrame={2} fontSize={66} />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 28,
+          marginTop: 70,
+        }}
+      >
+        {/* terminal card */}
+        <div
+          style={{
+            width: 470,
+            borderRadius: 14,
+            backgroundColor: "#161b22",
+            boxShadow: "0 18px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(242,239,233,0.12)",
+            padding: "22px 26px",
+            fontFamily: MONO,
+            fontSize: 23,
+            lineHeight: 1.5,
+            color: INK,
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ display: "flex", gap: 9, marginBottom: 16 }}>
+            {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+              <div key={c} style={{ width: 15, height: 15, borderRadius: 8, backgroundColor: c }} />
+            ))}
+          </div>
+          {DEMO_JSON.map((line, i) => {
+            const lineStart = 8 + i * 6;
+            return (
+              <div key={i} style={{ whiteSpace: "pre", minHeight: "1.5em" }}>
+                {frame >= lineStart ? (
+                  <Typewriter
+                    text={line}
+                    startFrame={lineStart}
+                    charsPerFrame={2.4}
+                    hideCursorWhenDone={i < DEMO_JSON.length - 1}
+                    cursorColor={ACCENT}
+                  />
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+        <div
+          style={{
+            fontFamily: BRAND_FONT,
+            fontSize: 60,
+            color: ACCENT,
+            opacity: arrowOpacity,
+          }}
+        >
+          →
+        </div>
+        <MemeProp
+          src={staticFile("scene2-drake.png")}
+          startFrame={64}
+          width={380}
+          tilt={2.5}
+          kenBurnsFrames={durationInFrames - 64}
+        />
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+const FeatureScene: React.FC<{
+  scene: Scene;
+  durationInFrames: number;
+  tilt: number;
+}> = ({ scene, durationInFrames, tilt }) => {
+  const frame = useCurrentFrame();
+  const subOpacity = interpolate(frame, [14, 24], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const isCount = scene.text.some((t) => t.role === "countup");
+  const img = scene.image ? staticFile(scene.image.replace(/^assets\//, "")) : null;
+  return (
+    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 60,
+          padding: "0 90px",
+        }}
+      >
+        <div style={{ flex: 1, textAlign: "left" }}>
+          {isCount ? (
+            <CountUp to={609} startFrame={4} durationFrames={40} fontSize={230} />
+          ) : null}
+          <PopTitle
+            text={textFor(scene, "title")}
+            startFrame={isCount ? 14 : 3}
+            fontSize={isCount ? 64 : 72}
+            style={{ textAlign: "left" }}
+          />
+          {textFor(scene, "subtitle") ? (
+            <div
+              style={{
+                fontFamily: MONO,
+                fontSize: 27,
+                color: ACCENT,
+                marginTop: 26,
+                letterSpacing: 1,
+                lineHeight: 1.7,
+                opacity: subOpacity,
+              }}
+            >
+              {textFor(scene, "subtitle")
+                .split(" · ")
+                .map((part, i) => (
+                  <div key={i} style={{ whiteSpace: "nowrap" }}>
+                    {i > 0 ? "· " : ""}
+                    {part}
+                  </div>
+                ))}
+            </div>
+          ) : null}
+        </div>
+        {img ? (
+          <MemeProp
+            src={img}
+            startFrame={8}
+            width={400}
+            tilt={tilt}
+            kenBurnsFrames={durationInFrames - 8}
+          />
+        ) : null}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+const PROOF_IMAGES = [
+  "scene2-drake.png",
+  "scene3-expanding-brain.png",
+  "scene4-two-buttons.png",
+  "scene5-always-has-been.png",
+  "scene6-success-kid.png",
+  "scene3-expanding-brain.png",
+];
+
+const ProofScene: React.FC<{ scene: Scene }> = ({ scene }) => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 280px)",
+          gap: 26,
+          justifyContent: "center",
+          marginTop: -30,
+        }}
+      >
+        {PROOF_IMAGES.map((name, i) => {
+          const s = spring({
+            frame: frame - (2 + i * 3),
+            fps: FPS,
+            config: { damping: 12, stiffness: 170, mass: 0.7 },
+          });
+          return (
+            <div
+              key={i}
+              style={{
+                width: 280,
+                height: 250,
+                borderRadius: 14,
+                overflow: "hidden",
+                boxShadow: "0 14px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(242,239,233,0.1)",
+                transform: `rotate(${i % 2 === 0 ? -2 : 2}deg) scale(${0.7 + 0.3 * s})`,
+                opacity: Math.min(1, s * 1.4),
+              }}
+            >
+              <Img
+                src={staticFile(name)}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ position: "absolute", bottom: 130, width: "100%", textAlign: "center" }}>
+        <PopTitle text={textFor(scene, "title")} startFrame={20} fontSize={52} color={ACCENT} />
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+const CTA_CURL =
+  "curl -fsSL https://raw.githubusercontent.com/\nkartikkabadi/meme-maker/main/install.sh | sh";
+
+const CtaScene: React.FC<{ scene: Scene }> = ({ scene }) => {
+  const frame = useCurrentFrame();
+  const urlOpacity = interpolate(frame, [86, 98], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const curlLines = CTA_CURL.split("\n");
+  return (
+    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      <div style={{ textAlign: "center", width: "100%" }}>
+        <PopTitle text={textFor(scene, "title")} startFrame={2} fontSize={120} />
+        <div
+          style={{
+            margin: "44px auto 0",
+            width: 870,
+            borderRadius: 14,
+            backgroundColor: "#161b22",
+            boxShadow: "0 18px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,212,0,0.35)",
+            padding: "30px 36px",
+            fontFamily: MONO,
+            fontSize: 31,
+            lineHeight: 1.65,
+            color: ACCENT,
+            textAlign: "left",
+          }}
+        >
+          {curlLines.map((line, i) => {
+            const lineStart = 16 + i * 30;
+            return (
+              <div key={i} style={{ whiteSpace: "pre", minHeight: "1.65em" }}>
+                {i === 0 ? <span style={{ color: DIM }}>$ </span> : null}
+                {frame >= lineStart ? (
+                  <Typewriter
+                    text={line}
+                    startFrame={lineStart}
+                    charsPerFrame={1.9}
+                    hideCursorWhenDone={i < curlLines.length - 1}
+                    cursorColor={ACCENT}
+                  />
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+        <div
+          style={{
+            fontFamily: MONO,
+            fontSize: 34,
+            color: INK,
+            marginTop: 40,
+            letterSpacing: 1.5,
+            opacity: urlOpacity,
+          }}
+        >
+          {textFor(scene, "subtitle")}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+const renderScene = (scene: Scene, durationInFrames: number): React.ReactNode => {
+  switch (scene.id) {
+    case "hook":
+      return <HookScene scene={scene} />;
+    case "reveal":
+      return <RevealScene scene={scene} />;
+    case "demo":
+      return <DemoScene scene={scene} durationInFrames={durationInFrames} />;
+    case "surfaces":
+      return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={-3} />;
+    case "deterministic":
+      return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={2.5} />;
+    case "templates":
+      return <FeatureScene scene={scene} durationInFrames={durationInFrames} tilt={-2} />;
+    case "proof":
+      return <ProofScene scene={scene} />;
+    case "cta":
+      return <CtaScene scene={scene} />;
+    default:
+      return null;
+  }
+};
+
+// ---------------------------------------------------------------------------
+// Root composition
+// ---------------------------------------------------------------------------
 const Launch: React.FC = () => {
   useBrandFont();
+  const { durationInFrames: total } = useVideoConfig();
+  const frame = useCurrentFrame();
+  const musicVolume = interpolate(
+    frame,
+    [0, 12, total - 40, total - 6],
+    [0, 0.55, 0.55, 0.08],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
   let offset = 0;
   return (
     <AbsoluteFill style={{ backgroundColor: BG }}>
-      <Audio src={staticFile("music.mp3")} volume={0.6} />
+      <Audio src={staticFile("music.mp3")} volume={() => musicVolume} />
       {scenes.map((scene, i) => {
-        const durationInFrames = Math.round(scene.duration * FPS);
+        const durationInFrames = sceneFrames[i];
         const from = offset;
         offset += durationInFrames;
         const isLast = i === scenes.length - 1;
+        // crossfading scenes start XFADE frames early, overlapping the previous
+        const overlap = i > 0 && scene.transition === "crossfade" ? XFADE : 0;
         return (
-          <Sequence key={scene.id} from={from} durationInFrames={durationInFrames}>
-            {scene.image ? (
-              <MemeCard scene={scene} durationInFrames={durationInFrames} isLast={isLast} />
-            ) : (
-              <TitleCard texts={scene.text} durationInFrames={durationInFrames} isLast={isLast} />
-            )}
+          <Sequence
+            key={scene.id}
+            from={from - overlap}
+            durationInFrames={durationInFrames + overlap}
+          >
+            <SceneShell
+              durationInFrames={durationInFrames + overlap}
+              transitionIn={i > 0 ? scene.transition : "cut"}
+              isLast={isLast}
+            >
+              {renderScene(scene, durationInFrames + overlap)}
+            </SceneShell>
           </Sequence>
         );
       })}
+      <TextureOverlay />
+      <HUD />
     </AbsoluteFill>
   );
 };

@@ -3,66 +3,90 @@
   "output": "launch.mp4",
   "scenes": [
     {
-      "id": "title",
-      "duration": 2.4,
+      "id": "hook",
+      "duration": 3.0,
       "template": null,
       "image": null,
       "text": [
-        { "content": "meme-maker", "role": "title" },
+        { "content": "your agent can write code, file PRs, book flights.", "role": "body" },
+        { "content": "BUT IT CAN'T SHITPOST.", "role": "title" }
+      ],
+      "transition": "cut"
+    },
+    {
+      "id": "reveal",
+      "duration": 3.0,
+      "template": null,
+      "image": null,
+      "text": [
+        { "content": "MEME-MAKER", "role": "title" },
         { "content": "deterministic memes for agents", "role": "subtitle" }
       ],
-      "transition": "fade"
+      "transition": "crossfade"
     },
     {
-      "id": "drake",
-      "duration": 2.4,
+      "id": "demo",
+      "duration": 5.0,
       "template": "drake",
       "image": "assets/scene2-drake.png",
-      "text": [{ "content": "one JSON spec in, pixels out", "role": "caption" }],
-      "transition": "slide-left"
+      "text": [
+        { "content": "ONE JSON SPEC IN. PIXELS OUT.", "role": "title" },
+        { "content": "{ \"template\": \"drake\", ... }", "role": "code" }
+      ],
+      "transition": "cut"
     },
     {
-      "id": "expanding-brain",
-      "duration": 2.8,
-      "template": "expanding-brain",
-      "image": "assets/scene3-expanding-brain.png",
-      "text": [{ "content": "evolve your meme pipeline", "role": "caption" }],
-      "transition": "slide-left"
-    },
-    {
-      "id": "two-buttons",
-      "duration": 2.4,
+      "id": "surfaces",
+      "duration": 3.0,
       "template": "two-buttons",
       "image": "assets/scene4-two-buttons.png",
-      "text": [{ "content": "CLI · MCP · HTTP · Web UI — one engine", "role": "caption" }],
-      "transition": "slide-left"
+      "text": [
+        { "content": "ONE ENGINE. FOUR SURFACES.", "role": "title" },
+        { "content": "CLI · MCP · HTTP · WEB UI", "role": "subtitle" }
+      ],
+      "transition": "crossfade"
     },
     {
-      "id": "always-has-been",
-      "duration": 2.4,
+      "id": "deterministic",
+      "duration": 3.0,
       "template": "always-has-been",
       "image": "assets/scene5-always-has-been.png",
-      "text": [{ "content": "deterministic. reproducible. testable.", "role": "caption" }],
-      "transition": "slide-left"
+      "text": [
+        { "content": "SAME SPEC. SAME PIXELS.", "role": "title" },
+        { "content": "deterministic · reproducible · CI-friendly", "role": "subtitle" }
+      ],
+      "transition": "crossfade"
     },
     {
-      "id": "success-kid",
-      "duration": 2.4,
+      "id": "templates",
+      "duration": 3.0,
       "template": "success-kid",
       "image": "assets/scene6-success-kid.png",
-      "text": [{ "content": "609 templates. zero cloud.", "role": "caption" }],
-      "transition": "slide-left"
+      "text": [
+        { "content": "609", "role": "countup" },
+        { "content": "TEMPLATES. ZERO CLOUD.", "role": "title" }
+      ],
+      "transition": "crossfade"
     },
     {
-      "id": "outro",
-      "duration": 3.5,
+      "id": "proof",
+      "duration": 2.5,
+      "template": null,
+      "image": null,
+      "text": [{ "content": "RENDERED BY MEME-MAKER ITSELF", "role": "title" }],
+      "transition": "cut"
+    },
+    {
+      "id": "cta",
+      "duration": 4.5,
       "template": null,
       "image": null,
       "text": [
-        { "content": "github.com/kartikkabadi/meme-maker", "role": "title" },
-        { "content": "npm i · MCP-ready · MIT", "role": "subtitle" }
+        { "content": "MEME-MAKER", "role": "title" },
+        { "content": "curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh", "role": "code" },
+        { "content": "github.com/kartikkabadi/meme-maker", "role": "subtitle" }
       ],
-      "transition": "fade"
+      "transition": "crossfade"
     }
   ]
 }
