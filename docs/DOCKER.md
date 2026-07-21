@@ -19,12 +19,13 @@ The image's entrypoint is `meme`, so pass subcommands directly:
 
 ```sh
 docker run --rm meme-maker templates list
-docker run --rm -v "$PWD:/work" -e MEME_OUTPUT_ROOT=/work \
-  meme-maker render --template drake --text "old" --text "new" --out /work/out.png
+docker run --rm -v "$PWD:/work" -e MEME_OUTPUT_ROOT=/work -w /work \
+  meme-maker render --template drake --text "old" --text "new" --out out.png
 ```
 
-Note: rendered output must go to a mounted volume (set `MEME_OUTPUT_ROOT`
-and `--out` to a path under the mount) or it stays inside the container.
+Note: rendered output must go to a mounted volume. The output root is
+confined, so pass `--out` as a path relative to `MEME_OUTPUT_ROOT`
+(absolute paths are rejected with `PATH_DENIED`).
 
 ## Web UI
 
