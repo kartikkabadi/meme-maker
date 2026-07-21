@@ -33,15 +33,15 @@ Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent 
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh
-# installs the `meme` and `meme-maker-mcp` binaries — no npm required (Node >= 20)
-# (see docs/INSTALL.md for options and building from source)
+# installs the `meme` and `meme-maker-mcp` binaries from a pre-built release
+# tarball — no npm required, only Node >= 20
 
 meme templates list                                   # browse the catalog
 meme render --template drake \
   --text no="MANUAL MEME EDITORS" --text yes="A CLI FOR AGENTS" -o out.png
 ```
 
-That's it — `out.png` is a finished meme. Add `--json` to any command for machine-readable output.
+That's it — `out.png` is a finished meme. Add `--json` to any command for machine-readable output. See [docs/INSTALL.md](docs/INSTALL.md) for env-var options (`PREFIX`, `MEME_MAKER_HOME`, `MEME_MAKER_REF`), per-platform details, uninstalling, and troubleshooting.
 
 ![Expanding brain meme rendered from the CLI](docs/assets/screenshots/cli-expanding-brain.webp)
 
