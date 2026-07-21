@@ -7,9 +7,9 @@ Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent 
 ## 60-second quick start
 
 ```sh
-npm i -g agent-meme-maker        # installs the `meme` and `meme-maker-mcp` binaries
-# or run without installing:
-npx agent-meme-maker templates list
+curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh
+# installs the `meme` and `meme-maker-mcp` binaries — no npm required
+# (alternatives: npm i -g agent-meme-maker, or npx agent-meme-maker — see docs/INSTALL.md)
 
 meme templates list                                   # browse the catalog
 meme render --template drake \
