@@ -119,7 +119,9 @@ if [ -z "$REF" ]; then
     REF=$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/$REPO/releases/latest" 2>/dev/null \
       | sed 's|.*/tag/||')
   fi
-  [ -n "$REF" ] || REF=main
+  case "$REF" in
+    ''|*https://*|*/*) REF=main ;;
+  esac
 fi
 info "Installing $REPO@$REF"
 
@@ -196,8 +198,7 @@ if [ "$PLATFORM" = "win32" ]; then
   elif [ "$MEME_MAKER_HOME" = "$HOME/.meme-maker" ]; then
     MEME_MAKER_HOME_WIN='%USERPROFILE%\.meme-maker'
   else
-    err "warning: cygpath not found; meme.cmd may not resolve custom MEME_MAKER_HOME=$MEME_MAKER_HOME"
-    MEME_MAKER_HOME_WIN='%USERPROFILE%\.meme-maker'
+    die "cygpath not found; cannot write a correct .cmd wrapper for custom MEME_MAKER_HOME=$MEME_MAKER_HOME. Install cygpath (Git Bash/MSYS2 include it) or unset MEME_MAKER_HOME."
   fi
   write_cmd_wrapper() { # name, entry
     printf '@echo off\r\nsetlocal\r\nset "MEME_MAKER_HOME=%s"\r\nif exist "%%MEME_MAKER_HOME%%\\node\\node.exe" ("%%MEME_MAKER_HOME%%\\node\\node.exe" "%%MEME_MAKER_HOME%%\\dist\\%s" %%*) else (node "%%MEME_MAKER_HOME%%\\dist\\%s" %%*)\r\n' \
@@ -208,7 +209,10 @@ if [ "$PLATFORM" = "win32" ]; then
 fi
 
 # --- verify -----------------------------------------------------------------
-"$BIN_DIR/meme" --version >/dev/null 2>&1 || die "installed binary failed to run"
+if ! "$BIN_DIR/meme" --version >/dev/null; then
+  err "'$BIN_DIR/meme --version' failed; output above may explain why"
+  die "installed binary failed to run"
+fi
 
 info "Installed meme and meme-maker-mcp to $BIN_DIR"
 case ":$PATH:" in
