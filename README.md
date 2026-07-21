@@ -31,8 +31,9 @@ Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent 
 ## 60-second quick start
 
 ```sh
-curl -fsSL https://github.com/kartikkabadi/meme-maker/releases/latest/download/install.sh | sh
-# installs the `meme` and `meme-maker-mcp` binaries (requires Node >= 20)
+curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh
+# installs the `meme` and `meme-maker-mcp` binaries — no npm required (Node >= 20)
+# (see docs/INSTALL.md for options and building from source)
 
 meme templates list                                   # browse the catalog
 meme render --template drake \
