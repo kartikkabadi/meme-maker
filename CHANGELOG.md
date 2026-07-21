@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.1
+
+- Final production-readiness audit fixes:
+  - CI/release hardening: updated action majors, fail-fast timeouts, concurrency controls, and missing-artifact guards.
+  - Unified versioning: `src/version.ts` derives the version from `package.json`; CLI and MCP server no longer hardcode it.
+  - Added `test/limits.test.ts` for environment parsing and `Semaphore` concurrency coverage.
+  - Documentation consistency pass: fixed install one-liner, template pack `id` semantics, Docker example, and docs index links.
+  - Security/packaging hardening: `.gitignore`/`.npmignore` coverage for secrets and placeholder/source-map exclusion from tarballs.
+  - Fixed web UI slot-overlay scaling on downscaled preview images; verified live in Chrome.
+
 ## 0.3.0
 
 - Template catalog expanded to 609 templates via themed template packs: animals & objects, animated GIFs, characters & celebrities, choices & decisions, gaming, reactions, work & tech, and multi-panel compositions.
