@@ -341,9 +341,10 @@ const MemeProp: React.FC<{
 const SceneShell: React.FC<{
   durationInFrames: number;
   transitionIn: string;
+  nextIsCrossfade: boolean;
   isLast: boolean;
   children: React.ReactNode;
-}> = ({ durationInFrames, transitionIn, isLast, children }) => {
+}> = ({ durationInFrames, transitionIn, nextIsCrossfade, isLast, children }) => {
   const frame = useCurrentFrame();
   const fadeIn =
     transitionIn === "crossfade"
@@ -354,6 +355,11 @@ const SceneShell: React.FC<{
       : 1;
   const fadeOut = isLast
     ? interpolate(frame, [durationInFrames - 5, durationInFrames - 1], [1, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : nextIsCrossfade
+    ? interpolate(frame, [durationInFrames - XFADE, durationInFrames], [1, 0], {
         extrapolateLeft: "clamp",
         extrapolateRight: "clamp",
       })
@@ -793,6 +799,7 @@ const Launch: React.FC = () => {
             <SceneShell
               durationInFrames={durationInFrames + overlap}
               transitionIn={i > 0 ? scene.transition : "cut"}
+              nextIsCrossfade={!isLast && scenes[i + 1].transition === "crossfade"}
               isLast={isLast}
             >
               {renderScene(scene, durationInFrames + overlap)}

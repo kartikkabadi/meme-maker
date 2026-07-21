@@ -1,6 +1,6 @@
 {
   "texts": [
-    { "slot": "no", "text": "MANUAL MEME EDITORS", "style": { "size": 76 } },
-    { "slot": "yes", "text": "A CLI FOR AGENTS", "style": { "size": 76 } }
+    { "slot": "no", "text": "MANUAL MEME EDITORS", "style": { "size": 76, "strokeWidth": 4 } },
+    { "slot": "yes", "text": "A CLI FOR AGENTS", "style": { "size": 76, "strokeWidth": 4 } }
   ]
 }
