@@ -4,6 +4,8 @@
 #   curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh
 #
 # Installs the `meme` CLI and `meme-maker-mcp` server. Requires Node.js >= 20.
+# Prefers a pre-built self-contained tarball from GitHub Releases
+# (meme-maker-<platform>-<arch>.tar.gz); falls back to building from source.
 # The app itself lives in $MEME_MAKER_HOME (default ~/.meme-maker); thin
 # wrappers are placed in $PREFIX/bin.
 #
@@ -61,8 +63,6 @@ if [ "$NODE_MAJOR" -lt "$NODE_MIN_MAJOR" ]; then
 fi
 info "Using Node $(node -v)"
 
-command -v npm >/dev/null 2>&1 || die "npm not found (it normally ships with Node)."
-
 # --- fetch source -----------------------------------------------------------
 fetch() { # url, dest
   if command -v curl >/dev/null 2>&1; then curl -fsSL "$1" -o "$2"
@@ -84,30 +84,49 @@ if [ -z "$REF" ]; then
 fi
 info "Installing $REPO@$REF"
 
+case "$ARCH" in
+  x86_64|amd64) ASSET_ARCH=x64 ;;
+  aarch64|arm64) ASSET_ARCH=arm64 ;;
+  *) ASSET_ARCH="$ARCH" ;;
+esac
+
+SRC_DIR="$TMP_DIR/src"
+mkdir -p "$SRC_DIR"
 TARBALL="$TMP_DIR/meme-maker.tar.gz"
-if fetch "https://codeload.github.com/$REPO/tar.gz/refs/tags/$REF" "$TARBALL" 2>/dev/null \
-  || fetch "https://codeload.github.com/$REPO/tar.gz/refs/heads/$REF" "$TARBALL" 2>/dev/null; then
-  SRC_DIR="$TMP_DIR/src"
-  mkdir -p "$SRC_DIR"
+NEED_BUILD=yes
+
+# 1) Pre-built, self-contained release asset (no npm needed at all).
+ASSET_URL="https://github.com/$REPO/releases/download/$REF/meme-maker-$PLATFORM-$ASSET_ARCH.tar.gz"
+if [ "$REF" != "main" ] && fetch "$ASSET_URL" "$TARBALL" 2>/dev/null; then
+  info "Using pre-built release tarball ($PLATFORM-$ASSET_ARCH)"
   tar -xzf "$TARBALL" -C "$SRC_DIR" --strip-components=1
+  NEED_BUILD=no
+# 2) Source tarball for the ref.
+elif fetch "https://codeload.github.com/$REPO/tar.gz/refs/tags/$REF" "$TARBALL" 2>/dev/null \
+  || fetch "https://codeload.github.com/$REPO/tar.gz/refs/heads/$REF" "$TARBALL" 2>/dev/null; then
+  tar -xzf "$TARBALL" -C "$SRC_DIR" --strip-components=1
+# 3) git clone as a last resort.
 elif command -v git >/dev/null 2>&1; then
   info "Tarball download failed; falling back to git clone"
-  SRC_DIR="$TMP_DIR/src"
   git clone --depth 1 --branch "$REF" "https://github.com/$REPO.git" "$SRC_DIR" >/dev/null 2>&1 \
     || die "could not download $REPO@$REF"
 else
   die "could not download $REPO@$REF (and git is not available)"
 fi
 
-# --- build ------------------------------------------------------------------
+# --- build (source installs only) --------------------------------------------
 cd "$SRC_DIR"
-if [ ! -f dist/cli.js ] || [ ! -f dist/mcp.js ]; then
-  info "Building from source (this may take a minute)..."
-  npm ci --no-audit --no-fund --loglevel=error >/dev/null
-  npm run build >/dev/null
+if [ "$NEED_BUILD" = "yes" ]; then
+  command -v npm >/dev/null 2>&1 \
+    || die "no pre-built tarball for $PLATFORM-$ASSET_ARCH and npm is unavailable to build from source"
+  if [ ! -f dist/cli.js ] || [ ! -f dist/mcp.js ]; then
+    info "Building from source (this may take a minute)..."
+    npm ci --no-audit --no-fund --loglevel=error >/dev/null
+    npm run build >/dev/null
+  fi
+  info "Pruning dev dependencies..."
+  npm prune --omit=dev --no-audit --no-fund --loglevel=error >/dev/null
 fi
-info "Pruning dev dependencies..."
-npm prune --omit=dev --no-audit --no-fund --loglevel=error >/dev/null
 
 # --- install ----------------------------------------------------------------
 info "Installing to $MEME_MAKER_HOME"
