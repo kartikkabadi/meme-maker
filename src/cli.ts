@@ -14,10 +14,31 @@ process.stdout.on('error', (err: NodeJS.ErrnoException) => {
 });
 
 const jsonMode = process.argv.includes('--json');
+const verboseMode = process.argv.includes('--verbose');
 
 const program = new Command();
-program.name('meme').description('Meme maker for agents').version('0.2.0');
+program
+  .name('meme')
+  .description(
+    'Headless meme maker for agents: render classic meme templates, custom images,\n' +
+      'blank canvases, and grid layouts to PNG/JPEG/GIF/WebP — no GUI required.',
+  )
+  .version('0.2.0');
 program.option('--templates-dir <dir>', 'load templates from a custom directory');
+program.option('--verbose', 'print extra diagnostics and full warning details on stderr');
+program.addHelpText(
+  'after',
+  `
+Examples:
+  $ meme templates list                                  # browse available templates
+  $ meme templates show drake                            # inspect a template's text slots
+  $ meme render --template drake --text no=BUGS --text yes=FEATURES
+  $ meme render --canvas 800x600 --bg white --text "HELLO" -o hello.png
+  $ meme layout --grid 2x2 --cell a.png --cell b.png --cell c.png --cell d.png
+  $ meme spec render meme.json --json                    # render from a full MemeSpec
+
+Run 'meme <command> --help' for command-specific options and examples.`,
+);
 program.exitOverride();
 program.configureOutput({ writeErr: () => {} });
 program.hook('preAction', () => {
@@ -113,7 +134,14 @@ async function runRender(opts: RenderOpts, base: MemeSpec['base']): Promise<void
       process.stdout.write(
         `wrote ${result.path} (${result.width}x${result.height} ${result.format}, ${result.bytes} bytes)\n`,
       );
-      for (const w of result.warnings) process.stderr.write(`warning: ${JSON.stringify(w)}\n`);
+      for (const w of result.warnings) {
+        process.stderr.write(
+          verboseMode ? `warning: ${JSON.stringify(w)}\n` : `warning: ${w.code}\n`,
+        );
+      }
+      if (result.warnings.length > 0 && !verboseMode) {
+        process.stderr.write('(re-run with --verbose for warning details)\n');
+      }
     },
   );
 }
@@ -129,13 +157,27 @@ function getTemplateType(base: MemeSpec['base']): string {
 
 function baseFromOpts(opts: RenderOpts): MemeSpec['base'] {
   const given = [opts.template, opts.image, opts.canvas].filter((v) => v !== undefined);
-  if (given.length !== 1) {
-    throw new MemeError('INVALID_SPEC', 'exactly one of --template, --image, --canvas is required');
+  if (given.length === 0) {
+    throw new MemeError(
+      'INVALID_SPEC',
+      'a base is required: pass --template <id> (see `meme templates list`), --image <path>, or --canvas <WxH>',
+    );
+  }
+  if (given.length > 1) {
+    throw new MemeError(
+      'INVALID_SPEC',
+      'exactly one of --template, --image, --canvas is allowed; they are mutually exclusive base options',
+    );
   }
   if (opts.template) return { kind: 'template', id: opts.template };
   if (opts.image) return { kind: 'image', path: opts.image };
   const m = /^(\d+)x(\d+)$/.exec(opts.canvas!);
-  if (!m) throw new MemeError('INVALID_SPEC', `--canvas must be WxH, got "${opts.canvas}"`);
+  if (!m) {
+    throw new MemeError(
+      'INVALID_SPEC',
+      `--canvas must be WxH (e.g. 800x600), got "${opts.canvas}"`,
+    );
+  }
   return {
     kind: 'canvas',
     width: parseInt(m[1]!, 10),
@@ -144,14 +186,32 @@ function baseFromOpts(opts: RenderOpts): MemeSpec['base'] {
   };
 }
 
-const templates = program.command('templates').description('browse the template catalog');
+const templates = program
+  .command('templates')
+  .description('browse the built-in template catalog (ids, sizes, text slots)')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme templates list
+  $ meme templates show drake`,
+  );
 
 templates
   .command('list')
-  .option('--tag <tag>', 'filter by tag')
-  .option('--type <type>', 'filter by type (image|gif)')
-  .option('--search <q>', 'search id/name/tags')
-  .option('--json', 'JSON output')
+  .description('list available templates, optionally filtered')
+  .option('--tag <tag>', 'only templates with this tag')
+  .option('--type <type>', 'only "image" or "gif" templates')
+  .option('--search <q>', 'substring match on id, name, or tags')
+  .option('--json', 'machine-readable JSON output')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme templates list
+  $ meme templates list --type gif
+  $ meme templates list --search drake --json`,
+  )
   .action((opts: { tag?: string; type?: 'image' | 'gif'; search?: string; json?: boolean }) => {
     try {
       if (opts.type !== undefined && opts.type !== 'image' && opts.type !== 'gif') {
@@ -183,8 +243,16 @@ templates
 
 templates
   .command('show <id>')
-  .option('--json', 'JSON output')
+  .description("show a template's details: size, tags, and named text slots")
+  .option('--json', 'machine-readable JSON output')
   .option('--preview <path>', 'write the blank template image to a file')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme templates show drake
+  $ meme templates show drake --preview drake-blank.png`,
+  )
   .action(async (id: string, opts: { json?: boolean; preview?: string }) => {
     try {
       const t = getTemplate(id);
@@ -213,25 +281,34 @@ templates
 
 program
   .command('render')
-  .description('render a meme from a template, image, or blank canvas')
-  .option('--template <id>', 'template id')
-  .option('--image <path>', 'custom base image')
-  .option('--canvas <WxH>', 'blank canvas, e.g. 800x600')
-  .option('--bg <color>', 'canvas background color')
+  .description('render a meme from a template, a custom image, or a blank canvas')
+  .option('--template <id>', 'template id (see `meme templates list`)')
+  .option('--image <path>', 'custom base image path')
+  .option('--canvas <WxH>', 'blank canvas size, e.g. 800x600')
+  .option('--bg <color>', 'canvas background color (default: white)')
   .option(
     '--text <slotOrIndex=content>',
-    'text (repeatable)',
+    'text overlay, repeatable: "slot=content", "0=content" (slot index), or bare content for free placement; escape a literal = as \\=',
     (v: string, acc: string[]) => acc.concat(v),
     [],
   )
   .option('--text-file <path>', 'JSON file with a MemeSpec texts array')
-  .option('-o, --out <path>', 'output path')
-  .option('--format <fmt>', 'png|jpeg|gif|webp')
-  .option('--quality <n>', 'jpeg/webp quality')
+  .option('-o, --out <path>', 'output path (default: derived from the base name)')
+  .option('--format <fmt>', 'png|jpeg|gif|webp (default: gif for gif templates, else png)')
+  .option('--quality <n>', 'jpeg/webp quality, 1-100')
   .option('--max-width <px>', 'downscale output to max width')
   .option('--force', 'overwrite an existing output file')
   .option('--strict', 'treat degraded-render warnings as errors')
-  .option('--json', 'JSON output')
+  .option('--json', 'machine-readable JSON output')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme render --template drake --text no=BUGS --text yes=FEATURES
+  $ meme render --template drake --text 0=BUGS --text 1=FEATURES --json
+  $ meme render --image photo.jpg --text "TOP TEXT" -o out.png
+  $ meme render --canvas 800x600 --bg '#222' --text "HELLO" --format jpeg --quality 90`,
+  )
   .action(async (opts: RenderOpts) => {
     try {
       await runRender(opts, baseFromOpts(opts));
@@ -242,31 +319,38 @@ program
 
 program
   .command('layout')
-  .description('render a grid layout of images')
-  .requiredOption('--grid <CxR>', 'grid size, e.g. 2x2')
+  .description('compose a grid of images (e.g. 2x2 panels) with optional text overlays')
+  .requiredOption('--grid <CxR>', 'grid size as columns x rows, e.g. 2x2')
   .option(
     '--cell <img>',
-    'cell image path (repeatable)',
+    'cell image path, repeatable (fills the grid left-to-right, top-to-bottom)',
     (v: string, acc: string[]) => acc.concat(v),
     [],
   )
-  .option('--gutter <px>', 'gutter size')
-  .option('--bg <color>', 'background color')
-  .option('--width <px>', 'total width')
+  .option('--gutter <px>', 'spacing between cells')
+  .option('--bg <color>', 'background/gutter color')
+  .option('--width <px>', 'total output width')
   .option(
     '--text <slotOrIndex=content>',
-    'text (repeatable)',
+    'text overlay, repeatable (same syntax as `meme render --text`)',
     (v: string, acc: string[]) => acc.concat(v),
     [],
   )
-  .option('--text-file <path>', 'JSON file with texts array')
+  .option('--text-file <path>', 'JSON file with a MemeSpec texts array')
   .option('-o, --out <path>', 'output path')
-  .option('--format <fmt>', 'png|jpeg|webp')
-  .option('--quality <n>', 'jpeg/webp quality')
+  .option('--format <fmt>', 'png|jpeg|webp (default: png)')
+  .option('--quality <n>', 'jpeg/webp quality, 1-100')
   .option('--max-width <px>', 'downscale output to max width')
   .option('--force', 'overwrite an existing output file')
   .option('--strict', 'treat degraded-render warnings as errors')
-  .option('--json', 'JSON output')
+  .option('--json', 'machine-readable JSON output')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme layout --grid 2x1 --cell before.png --cell after.png -o compare.png
+  $ meme layout --grid 2x2 --cell a.png --cell b.png --cell c.png --cell d.png --gutter 8`,
+  )
   .action(
     async (
       opts: RenderOpts & { grid: string; cell: string[]; gutter?: string; width?: string },
@@ -288,14 +372,24 @@ program
     },
   );
 
-const spec = program.command('spec').description('render from a full MemeSpec JSON');
+const spec = program
+  .command('spec')
+  .description('render from a full MemeSpec JSON document (the most expressive input)');
 
 spec
   .command('render <file>')
-  .option('-o, --out <path>', 'override output path')
+  .description('render a MemeSpec JSON file (pass "-" to read the spec from stdin)')
+  .option('-o, --out <path>', "override the spec's output path")
   .option('--force', 'overwrite an existing output file')
   .option('--strict', 'treat degraded-render warnings as errors')
-  .option('--json', 'JSON output')
+  .option('--json', 'machine-readable JSON output')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme spec render meme.json
+  $ echo '{"base":{"kind":"template","id":"drake"},"texts":[]}' | meme spec render - --json`,
+  )
   .action(
     async (
       file: string,
@@ -356,8 +450,16 @@ spec
 
 program
   .command('ui')
-  .description('start the local web UI (gallery, editor, history)')
+  .description('start the local web UI (template gallery, editor, render history)')
   .option('--port <n>', 'port to listen on (auto-picks a free port on conflict)')
+  .option('--json', 'suppress the human-readable stderr note; stdout is always a JSON {url} line')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme ui
+  $ meme ui --port 8080`,
+  )
   .action(async (opts: { port?: string }) => {
     try {
       const { startServer } = await import('./http.js');
@@ -370,7 +472,7 @@ program
       const url = process.env.PORTLESS_URL ?? localUrl;
       // Machine-readable first line so agents/hosts can discover the port.
       process.stdout.write(JSON.stringify({ url }) + '\n');
-      process.stderr.write(`meme ui listening at ${url} (Ctrl+C to stop)\n`);
+      if (!jsonMode) process.stderr.write(`meme ui listening at ${url} (Ctrl+C to stop)\n`);
     } catch (err) {
       fail(err, jsonMode);
     }
@@ -380,7 +482,15 @@ program
   .command('fonts')
   .description('font utilities')
   .command('list')
-  .option('--json', 'JSON output')
+  .description('list the bundled font families usable in text styles')
+  .option('--json', 'machine-readable JSON output')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme fonts list
+  $ meme fonts list --json`,
+  )
   .action((opts: { json?: boolean }) => {
     const fonts = Object.keys(BUILTIN_FONTS);
     output(fonts, opts.json ?? false, () => {
