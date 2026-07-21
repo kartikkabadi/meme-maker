@@ -30,6 +30,8 @@ Please do not open public issues for security vulnerabilities. See
 
 ## Adding a template
 
+Full authoring guide (sidecar format, `pack.json`, adding a pack): [TEMPLATES.md](TEMPLATES.md).
+
 1. Drop the media file under `assets/templates/images/` or `assets/templates/gifs/`.
    To avoid id conflicts when several contributors add templates in parallel, use a
    **template pack** instead: `assets/templates/packs/<pack>/{images,gifs}/` with an optional
