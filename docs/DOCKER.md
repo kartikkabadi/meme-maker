@@ -20,7 +20,7 @@ The image's entrypoint is `meme`, so pass subcommands directly:
 ```sh
 docker run --rm meme-maker templates list
 docker run --rm -v "$PWD:/work" -e MEME_OUTPUT_ROOT=/work -w /work \
-  meme-maker render --template drake --text "old" --text "new" --out out.png
+  meme-maker render --template drake --text no="old" --text yes="new" --out out.png
 ```
 
 Note: rendered output must go to a mounted volume. The output root is
