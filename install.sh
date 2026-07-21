@@ -37,8 +37,7 @@ ARCH=$(uname -m 2>/dev/null || echo unknown)
 case "$OS" in
   Linux)  PLATFORM=linux ;;
   Darwin) PLATFORM=macos ;;
-  MINGW*|MSYS*|CYGWIN*)
-    die "native Windows is not supported; please install inside WSL (https://learn.microsoft.com/windows/wsl/)" ;;
+  MINGW*|MSYS*|CYGWIN*) PLATFORM=win32 ;;
   *) die "unsupported OS: $OS" ;;
 esac
 info "Detected $PLATFORM/$ARCH"
@@ -154,6 +153,23 @@ EOF
 }
 write_wrapper meme cli.js
 write_wrapper meme-maker-mcp mcp.js
+
+if [ "$PLATFORM" = "win32" ]; then
+  if command -v cygpath >/dev/null 2>&1; then
+    MEME_MAKER_HOME_WIN=$(cygpath -w "$MEME_MAKER_HOME")
+  elif [ "$MEME_MAKER_HOME" = "$HOME/.meme-maker" ]; then
+    MEME_MAKER_HOME_WIN='%USERPROFILE%\.meme-maker'
+  else
+    err "warning: cygpath not found; meme.cmd may not resolve custom MEME_MAKER_HOME=$MEME_MAKER_HOME"
+    MEME_MAKER_HOME_WIN='%USERPROFILE%\.meme-maker'
+  fi
+  write_cmd_wrapper() { # name, entry
+    printf '@echo off\r\nsetlocal\r\nset "MEME_MAKER_HOME=%s"\r\nnode "%%MEME_MAKER_HOME%%\\dist\\%s" %%*\r\n' \
+      "$MEME_MAKER_HOME_WIN" "$2" > "$BIN_DIR/$1.cmd"
+  }
+  write_cmd_wrapper meme cli.js
+  write_cmd_wrapper meme-maker-mcp mcp.js
+fi
 
 # --- verify -----------------------------------------------------------------
 "$BIN_DIR/meme" --version >/dev/null 2>&1 || die "installed binary failed to run"
