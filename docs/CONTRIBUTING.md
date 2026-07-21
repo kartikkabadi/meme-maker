@@ -22,6 +22,12 @@ npm run lint    # eslint + prettier + ui typecheck
 
 Run both before pushing. Larger behavioural changes have historically also been verified with per-surface stress tests — see the reports linked from the [docs index](./README.md#stress-test-reports) for the methodology.
 
+## Reporting security issues
+
+Please do not open public issues for security vulnerabilities. See
+[SECURITY.md](../SECURITY.md) for how to report them privately.
+
+
 ## Adding a template
 
 1. Drop the media file under `assets/templates/images/` or `assets/templates/gifs/`.
