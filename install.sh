@@ -15,6 +15,8 @@
 #   MEME_MAKER_HOME  where the app is installed (default: $HOME/.meme-maker)
 #   MEME_MAKER_REF   git ref / release tag to install (default: latest release,
 #                    falling back to main)
+#   MEME_MAKER_TARBALL  path to a local pre-built tarball (skips all downloads;
+#                    mainly for testing scripts/package-release.sh output)
 #
 # Uninstall:
 #   rm -f "$PREFIX/bin/meme" "$PREFIX/bin/meme-maker-mcp"
@@ -95,14 +97,19 @@ mkdir -p "$SRC_DIR"
 TARBALL="$TMP_DIR/meme-maker.tar.gz"
 NEED_BUILD=yes
 
+# 0) Local pre-built tarball (testing / air-gapped installs).
+if [ -n "${MEME_MAKER_TARBALL:-}" ]; then
+  [ -f "$MEME_MAKER_TARBALL" ] || die "MEME_MAKER_TARBALL not found: $MEME_MAKER_TARBALL"
+  info "Using local tarball $MEME_MAKER_TARBALL"
+  tar -xzf "$MEME_MAKER_TARBALL" -C "$SRC_DIR" --strip-components=1
+  NEED_BUILD=no
 # 1) Pre-built, self-contained release asset (no npm needed at all).
-ASSET_URL="https://github.com/$REPO/releases/download/$REF/meme-maker-$PLATFORM-$ASSET_ARCH.tar.gz"
-if [ "$REF" != "main" ] && fetch "$ASSET_URL" "$TARBALL" 2>/dev/null; then
+elif [ "$REF" != "main" ] && ASSET_URL="https://github.com/$REPO/releases/download/$REF/meme-maker-$PLATFORM-$ASSET_ARCH.tar.gz" && fetch "$ASSET_URL" "$TARBALL" 2>/dev/null; then
   info "Using pre-built release tarball ($PLATFORM-$ASSET_ARCH)"
   tar -xzf "$TARBALL" -C "$SRC_DIR" --strip-components=1
   NEED_BUILD=no
 # 2) Source tarball for the ref.
-elif fetch "https://codeload.github.com/$REPO/tar.gz/refs/tags/$REF" "$TARBALL" 2>/dev/null \
+elif { info "No pre-built tarball for $PLATFORM-$ASSET_ARCH at $REF; falling back to source (requires npm)"; false; } || fetch "https://codeload.github.com/$REPO/tar.gz/refs/tags/$REF" "$TARBALL" 2>/dev/null \
   || fetch "https://codeload.github.com/$REPO/tar.gz/refs/heads/$REF" "$TARBALL" 2>/dev/null; then
   tar -xzf "$TARBALL" -C "$SRC_DIR" --strip-components=1
 # 3) git clone as a last resort.
@@ -132,8 +139,8 @@ fi
 info "Installing to $MEME_MAKER_HOME"
 rm -rf "$MEME_MAKER_HOME"
 mkdir -p "$MEME_MAKER_HOME"
-for item in dist assets node_modules package.json LICENSE NOTICE; do
-  [ -e "$item" ] && cp -R "$item" "$MEME_MAKER_HOME/"
+for item in dist assets node_modules package.json LICENSE NOTICE README.md CHANGELOG.md; do
+  if [ -e "$item" ]; then cp -R "$item" "$MEME_MAKER_HOME/"; fi
 done
 
 mkdir -p "$BIN_DIR"

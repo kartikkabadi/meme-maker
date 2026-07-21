@@ -24,6 +24,6 @@ OUT="meme-maker-$PLATFORM-$ARCH.tar.gz"
 STAGE=$(mktemp -d)
 trap 'rm -rf "$STAGE"' EXIT
 mkdir "$STAGE/meme-maker"
-cp -R dist assets node_modules package.json LICENSE NOTICE "$STAGE/meme-maker/"
+cp -R dist assets node_modules package.json LICENSE NOTICE README.md CHANGELOG.md install.sh "$STAGE/meme-maker/"
 tar -czf "$OUT" -C "$STAGE" meme-maker
 echo "wrote $OUT"
