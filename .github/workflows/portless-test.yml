@@ -22,6 +22,9 @@ jobs:
       - name: Run portless on port 8443 and probe
         shell: bash
         run: |
+          npx portless proxy start --port 8443 --https --foreground > proxy.log 2>&1 &
+          sleep 10
+          cat proxy.log || true
           PORTLESS_PORT=8443 npx portless > portless.log 2>&1 &
           PORTLESS_PID=$!
           for i in $(seq 1 30); do
@@ -32,6 +35,9 @@ jobs:
           done
           echo "--- portless.log ---"
           cat portless.log
+          echo "--- ~/.portless ---"
+          ls -la ~/.portless || true
+          cat ~/.portless/proxy.log || true
           curl -sk --resolve meme.localhost:8443:127.0.0.1 https://meme.localhost:8443/api/templates | head -c 300
           echo
           [ "$code" = "200" ]
