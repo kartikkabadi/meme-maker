@@ -71,7 +71,8 @@ select:focus-visible,
 .topbar {
   display: flex;
   align-items: center;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   background: var(--card);
@@ -518,6 +519,7 @@ select:focus-visible,
 }
 .editor-topbar {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   align-items: center;
   padding: 8px 16px;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import type { MemeSpec } from './api';
 import { Batch } from './batch';
 import { Editor } from './editor';
@@ -39,6 +39,11 @@ export function App() {
     setView('editor');
   }, []);
 
+  const viewRef = useRef(view);
+  viewRef.current = view;
+  const showHelpRef = useRef(showHelp);
+  showHelpRef.current = showHelp;
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const inField = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target as HTMLElement).tagName);
@@ -48,19 +53,19 @@ export function App() {
       } else if (e.key === '?' && !inField) {
         setShowHelp((s) => !s);
       } else if (e.key === 'Escape') {
-        if (showHelp) setShowHelp(false);
-        else if (view === 'editor') setView('gallery');
+        if (showHelpRef.current) setShowHelp(false);
+        else if (viewRef.current === 'editor') setView('gallery');
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [view, showHelp]);
+  }, []);
 
   return (
     <div class="app">
       {view !== 'editor' && (
         <header class="topbar">
-          <span class="brand">
+          <span class="brand" role="heading" aria-level={1}>
             <span class="brand-tile anton">M</span> meme maker
           </span>
           <nav class="tabs" role="tablist">
