@@ -53,7 +53,7 @@ export function Batch({ onEdit }: { onEdit: (spec: MemeSpec) => void }) {
   const failed = items.filter((i) => i.error).length;
 
   return (
-    <main>
+    <main id="main">
       <div
         class={`dropzone ${over ? 'over' : ''}`}
         onDragOver={(e) => {
@@ -108,7 +108,7 @@ export function Batch({ onEdit }: { onEdit: (spec: MemeSpec) => void }) {
                   ) : item.error ? (
                     <span class="chip chip-error">{item.error}</span>
                   ) : (
-                    <span>…</span>
+                    <span class="skeleton thumb-skeleton" role="status" aria-label="Rendering" />
                   )}
                 </span>
                 <span class="meta">

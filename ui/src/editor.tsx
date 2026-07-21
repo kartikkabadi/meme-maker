@@ -251,7 +251,7 @@ export function Editor({ spec: initial, onBack, onToast, dark, onToggleTheme }: 
           {dark ? '☀' : '☾'}
         </button>
       </div>
-      <main class="editor">
+      <main id="main" class="editor">
         <div class="preview-pane checker" onPointerMove={onPointerMove} onPointerUp={onPointerUp}>
           {error ? (
             <div class="error-panel" role="alert">
@@ -307,7 +307,8 @@ export function Editor({ spec: initial, onBack, onToast, dark, onToggleTheme }: 
                 })}
             </div>
           ) : (
-            <div class="empty">
+            <div class="empty" role="status">
+              <span class="skeleton preview-skeleton" />
               <div class="anton shout">RENDERING…</div>
             </div>
           )}

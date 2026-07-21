@@ -76,18 +76,18 @@ export function Gallery({ onOpen }: { onOpen: (spec: MemeSpec) => void }) {
 
   if (error) {
     return (
-      <div class="empty">
+      <main id="main" class="empty">
         <div class="anton shout">SOMETHING BROKE</div>
         <div>{error}</div>
         <button class="btn btn-primary" onClick={load}>
           Retry
         </button>
-      </div>
+      </main>
     );
   }
 
   return (
-    <main>
+    <main id="main">
       <div class="filters">
         {(
           [
@@ -126,9 +126,27 @@ export function Gallery({ onOpen }: { onOpen: (spec: MemeSpec) => void }) {
               </button>
             ))}
           </div>
-          {templates && visible.length === 0 ? (
-            <div class="empty">
+          {!templates ? (
+            <div class="card-grid" aria-hidden="true">
+              {Array.from({ length: 8 }, (_, i) => (
+                <div key={i} class="tcard skeleton-card">
+                  <span class="thumb skeleton" />
+                  <span class="meta">
+                    <span class="skeleton skeleton-line" />
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : visible.length === 0 ? (
+            <div class="empty" role="status">
               <div class="anton shout">NOTHING FOUND</div>
+              <div>
+                {search.trim()
+                  ? `No templates match "${search.trim()}"${tag ? ` in #${tag}` : ''}.`
+                  : tag
+                    ? `No ${tab} templates tagged #${tag}.`
+                    : `No ${tab} templates available.`}
+              </div>
               <button
                 class="btn"
                 onClick={() => {
