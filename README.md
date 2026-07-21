@@ -181,7 +181,7 @@ npm test        # vitest (unit + golden-image + MCP + HTTP integration)
 npm run lint    # eslint + prettier + ui typecheck
 ```
 
-See [DESIGN.md](DESIGN.md) and [docs/DESIGN-v2.md](docs/DESIGN-v2.md) for the full design, [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for catalog workflows, [docs/PORTLESS.md](docs/PORTLESS.md) for portless/embedded usage, and [docs/ROADMAP.md](docs/ROADMAP.md) for what's next. Template provenance is documented per-entry in `assets/templates/manifest.json` and in [NOTICE](NOTICE).
+See [docs/README.md](docs/README.md) for the full documentation index: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the code map, [DESIGN.md](DESIGN.md) and [docs/DESIGN-v2.md](docs/DESIGN-v2.md) for the full design, [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for catalog workflows, [docs/PORTLESS.md](docs/PORTLESS.md) for portless/embedded usage, and [docs/ROADMAP.md](docs/ROADMAP.md) for what's next. Template provenance is documented per-entry in `assets/templates/manifest.json` and in [NOTICE](NOTICE).
 
 ## Fonts
 
