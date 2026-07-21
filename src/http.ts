@@ -333,6 +333,7 @@ async function handle(req: IncomingMessage, res: ServerResponse, uiDir: string):
 
 export interface HttpServerOptions {
   port?: number;
+  host?: string;
   uiDir?: string;
 }
 
@@ -343,19 +344,19 @@ export interface RunningServer {
   close: () => Promise<void>;
 }
 
-function listen(server: Server, port: number): Promise<number> {
+function listen(server: Server, port: number, host: string): Promise<number> {
   return new Promise((resolvePort, reject) => {
     const onError = (err: NodeJS.ErrnoException): void => {
       server.removeListener('error', onError);
       if (err.code === 'EADDRINUSE' && port !== 0) {
         // Auto-pick a free port on conflict (DESIGN-v2 §4.1).
-        listen(server, 0).then(resolvePort, reject);
+        listen(server, 0, host).then(resolvePort, reject);
       } else {
         reject(err);
       }
     };
     server.once('error', onError);
-    server.listen(port, '127.0.0.1', () => {
+    server.listen(port, host, () => {
       server.removeListener('error', onError);
       const addr = server.address();
       resolvePort(typeof addr === 'object' && addr ? addr.port : port);
@@ -363,7 +364,7 @@ function listen(server: Server, port: number): Promise<number> {
   });
 }
 
-/** Start the local HTTP adapter: JSON API + static SPA, localhost only. */
+/** Start the local HTTP adapter: JSON API + static SPA. Binds 127.0.0.1 unless MEME_UI_HOST is set. */
 export async function startServer(options: HttpServerOptions = {}): Promise<RunningServer> {
   setPathPolicy('confined');
   const uiDir = options.uiDir ?? join(__dirname, 'ui');
@@ -375,8 +376,9 @@ export async function startServer(options: HttpServerOptions = {}): Promise<Runn
       if (!req.complete) res.once('close', () => req.destroy());
     });
   });
-  const port = await listen(server, options.port ?? 0);
-  const url = `http://127.0.0.1:${port}`;
+  const host = options.host ?? process.env.MEME_UI_HOST ?? '127.0.0.1';
+  const port = await listen(server, options.port ?? 0, host);
+  const url = `http://${host === '0.0.0.0' ? '127.0.0.1' : host}:${port}`;
   return {
     server,
     url,
