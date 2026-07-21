@@ -4,6 +4,8 @@ A meme editor built for **agents**, not humans. Premade image/GIF meme templates
 
 Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent workflows.
 
+![Drake meme rendered with one CLI command](docs/assets/screenshots/cli-drake.webp)
+
 ## 60-second quick start
 
 ```sh
@@ -18,6 +20,8 @@ meme render --template drake \
 
 That's it — `out.png` is a finished meme. Add `--json` to any command for machine-readable output.
 
+![Expanding brain meme rendered from the CLI](docs/assets/screenshots/cli-expanding-brain.webp)
+
 From a clone instead: `npm install && npm run build`, then use `node dist/cli.js` wherever you see `meme`.
 
 ## Templates
@@ -25,6 +29,10 @@ From a clone instead: `npm install && npm run build`, then use `node dist/cli.js
 118 templates ship in the catalog: 103 static images (drake, distracted-boyfriend, expanding-brain, woman-yelling-at-cat, afraid-to-ask-andy, doge, red-pill-blue-pill, scroll-of-truth, ...) and 15 animated GIFs (mind-blown, deal-with-it, crab-rave, confused-travolta, shrek-running, ...). Provenance for every template is tracked in [assets/templates/CREDITS.md](assets/templates/CREDITS.md).
 
 ![Template catalog contact sheet](docs/contact-sheet.webp)
+
+Any thumbnails can also be composed into montages with `meme layout`:
+
+![3x2 template montage rendered with meme layout](docs/assets/screenshots/template-contact-sheet.webp)
 
 The manifest is generated: each template's metadata lives in a `<id>.meta.json` sidecar next to its media file, and `npm run build:manifest` scans `assets/templates/**`, derives file paths and dimensions, validates against the schema, and emits `manifest.json`. `npm run build:thumbs` renders ~320 px webp previews into `assets/templates/thumbs/` plus the contact sheet above.
 
@@ -58,6 +66,8 @@ meme spec render examples/drake.json
 meme fonts list
 ```
 
+![Distracted boyfriend meme rendered from the CLI](docs/assets/screenshots/cli-distracted.webp)
+
 All commands accept `--json` for machine-readable output and `--strict` to treat degraded-render warnings (text overflow, missing glyphs) as errors. Errors are emitted as `{ "error": { "code", "message" } }` with exit code 1.
 
 ## Web UI
@@ -74,11 +84,17 @@ The first stdout line is machine-readable JSON — `{"url":"http://127.0.0.1:POR
 - **My memes** — render history (stored under `~/.meme-maker/history`, override with `MEME_HISTORY_DIR`)
 - **Batch** — render one template with many text variants at once
 
+![Web UI gallery with all templates](docs/assets/screenshots/ui-gallery.webp)
+
+![Web UI editor with the Drake template and live preview](docs/assets/screenshots/ui-editor-drake.webp)
+
 The same server exposes a JSON API (`/api/templates`, `/api/templates/:id`, `/api/measure`, `/api/render`, `/api/history`). See [docs/UI-DESIGN.md](docs/UI-DESIGN.md) for the full UI/UX spec.
 
 ## MCP server
 
 Stdio transport, five tools: `list_templates`, `get_template`, `render_meme`, `render_layout`, `preview_template`.
+
+![MCP render_meme tool call and its rendered result](docs/assets/screenshots/mcp-render-example.webp)
 
 Claude Desktop / any `mcpServers`-style host (`claude_desktop_config.json`):
 
