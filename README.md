@@ -2,7 +2,7 @@
 
 > Deterministic meme generation for autonomous agents — 609 templates, one JSON spec, zero cloud.
 
-[![npm version](https://img.shields.io/npm/v/agent-meme-maker)](https://www.npmjs.com/package/agent-meme-maker)
+[![Release](https://img.shields.io/github/v/release/kartikkabadi/meme-maker)](https://github.com/kartikkabadi/meme-maker/releases)
 [![CI](https://github.com/kartikkabadi/meme-maker/actions/workflows/ci.yml/badge.svg)](https://github.com/kartikkabadi/meme-maker/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/kartikkabadi/meme-maker?style=social)](https://github.com/kartikkabadi/meme-maker/stargazers)
@@ -31,9 +31,8 @@ Inspired by the SupaBird.io "Meme Maker" tool, re-imagined for autonomous agent 
 ## 60-second quick start
 
 ```sh
-npm i -g agent-meme-maker        # installs the `meme` and `meme-maker-mcp` binaries
-# or run without installing:
-npx agent-meme-maker templates list
+curl -fsSL https://github.com/kartikkabadi/meme-maker/releases/latest/download/install.sh | sh
+# installs the `meme` and `meme-maker-mcp` binaries
 
 meme templates list                                   # browse the catalog
 meme render --template drake \
@@ -42,7 +41,7 @@ meme render --template drake \
 
 That's it — `out.png` is a finished meme. Add `--json` to any command for machine-readable output.
 
-Working from a clone instead of npm? Run `npm install && npm run build`, then use `node dist/cli.js` wherever the examples say `meme`.
+Working from a clone instead? Run `npm install && npm run build`, then use `node dist/cli.js` wherever the examples say `meme`.
 
 ## Templates
 
@@ -123,7 +122,7 @@ command = "meme-maker-mcp"
 
 ACP hosts (e.g. Synara): register `meme-maker-mcp` as a stdio MCP server in the agent's MCP configuration; rendered files land under the output root (`SYNARA_ARTIFACTS_DIR` is respected automatically).
 
-If installed from a clone rather than npm, use `"command": "node", "args": ["/path/to/meme-maker/dist/mcp.js"]`.
+If running from a clone rather than the installer, use `"command": "node", "args": ["/path/to/meme-maker/dist/mcp.js"]`.
 
 `render_meme` takes a full `MemeSpec` and returns the rendered image inline (≤ 1 MB) plus the file path when `output.path` is given.
 
