@@ -22,7 +22,7 @@ Optional. If missing, the pack id is derived from the directory name.
 }
 ```
 
-- `id` (required): prefix for generated template ids.
+- `id` (optional): prefix for generated template ids (defaults to the directory name).
 - `name` (optional): human-readable pack name.
 - `tags` (optional): merged into every template's tags.
 

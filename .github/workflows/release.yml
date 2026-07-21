@@ -14,15 +14,18 @@ jobs:
         include:
           - os: ubuntu-latest
             target: linux-x64
-          # GitHub deprecated macos-13; macos-15-intel is the current x64 runner.
+          # GitHub deprecated and retired macos-13 (the last Intel "macos-N"
+          # image); macos-15-intel is the current supported x64 runner label
+          # and macos-15 the current arm64 label.
           - os: macos-15-intel
             target: macos-x64
           - os: macos-15
             target: macos-arm64
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -37,19 +40,31 @@ jobs:
           mkdir "$STAGE/meme-maker"
           cp -R dist assets node_modules package.json LICENSE NOTICE README.md CHANGELOG.md install.sh "$STAGE/meme-maker/"
           tar -czf "meme-maker-${{ matrix.target }}.tar.gz" -C "$STAGE" meme-maker
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: meme-maker-${{ matrix.target }}
           path: meme-maker-${{ matrix.target }}.tar.gz
+          if-no-files-found: error
 
   release:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v8
         with:
           merge-multiple: true
+      - name: Verify all platform artifacts are present
+        run: |
+          missing=0
+          for target in linux-x64 macos-x64 macos-arm64; do
+            if [ ! -s "meme-maker-$target.tar.gz" ]; then
+              echo "::error::Missing artifact meme-maker-$target.tar.gz"
+              missing=1
+            fi
+          done
+          exit "$missing"
       - name: Build source tarball
         run: |
           STAGE="agent-meme-maker-$GITHUB_REF_NAME"

@@ -34,7 +34,7 @@ All project documentation lives here (plus the top-level [README](../README.md) 
 | --- | --- |
 | [DESIGN-v2.md](./DESIGN-v2.md) | The v2 architecture doc: defect register, hardening plan, HTTP/UI adapters, catalog growth |
 | [ROADMAP.md](./ROADMAP.md) | Sequencing view of DESIGN-v2 as small, focused PRs |
-| [UI-DESIGN.md](./UI-DESIGN.md) | UI/UX spec for the local web UI (see also [ui-design/prototype/](./ui-design/prototype/) mockups) |
+| [UI-DESIGN.md](./UI-DESIGN.md) | UI/UX spec for the local web UI (see also the [ui-design/](./ui-design/README.md) prototype mockups) |
 | [../DESIGN.md](../DESIGN.md) | The original v1 design document |
 
 ### Stress-test reports
