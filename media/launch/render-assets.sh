@@ -5,24 +5,24 @@ cd "$(dirname "$0")"
 CLI="node ../../dist/cli.js"
 mkdir -p assets
 
-$CLI render --force --template drake --force \
+$CLI render --force --template drake \
   --text no="MANUAL MEME EDITORS" --text yes="A CLI FOR AGENTS" \
   -o assets/scene2-drake.png
 
-$CLI render --force --template expanding-brain --force \
+$CLI render --force --template expanding-brain \
   --text level1="COPY-PASTING TEMPLATES" --text level2="ONLINE MEME EDITORS" \
   --text level3="A DETERMINISTIC CLI" --text level4="AGENTS RENDERING MEMES VIA MCP" \
   -o assets/scene3-expanding-brain.png
 
-$CLI render --force --template two-buttons --force \
+$CLI render --force --template two-buttons \
   --text left="CLI" --text right="MCP SERVER" \
   --text caption="WHY NOT BOTH? (+ HTTP API + WEB UI)" \
   -o assets/scene4-two-buttons.png
 
-$CLI render --force --template always-has-been --force \
+$CLI render --force --template always-has-been \
   --text realization="WAIT, IT'S ALL JUST ONE JSON SPEC?" --text response="ALWAYS HAS BEEN" \
   -o assets/scene5-always-has-been.png
 
-$CLI render --force --template success-kid --force \
+$CLI render --force --template success-kid \
   --text top="609 TEMPLATES" --text bottom="ZERO CLOUD" \
   -o assets/scene6-success-kid.png
