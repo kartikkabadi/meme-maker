@@ -41,6 +41,7 @@ jobs:
           echo "--- ~/.portless ---"
           ls -la ~/.portless || true
           cat ~/.portless/proxy.log || true
-          curl -sk --resolve meme.localhost:8443:127.0.0.1 https://meme.localhost:8443/api/templates | head -c 300
+          templates=$(curl -sk --resolve meme.localhost:8443:127.0.0.1 https://meme.localhost:8443/api/templates)
+          echo "${templates:0:300}"
           echo
           [ "$code" = "200" ]
