@@ -50,6 +50,7 @@ like a template removed, please open an issue.
 - **Sad Cat Holding Dog** (`sad-cat-holding-dog`) — [https://imgflip.com/memetemplate/206464066/Sad-Cat-Holding-Dog](https://imgflip.com/memetemplate/206464066/Sad-Cat-Holding-Dog) — fair-use, via Imgflip
 - **Sad Megamind** (`sad-megamind`) — [https://imgflip.com/memetemplate/370522514/Sad-Megamind](https://imgflip.com/memetemplate/370522514/Sad-Megamind) — fair-use, via Imgflip
 - **Scared Puss In Boots** (`scared-puss-in-boots`) — [https://imgflip.com/memetemplate/434706120/Puss-and-boots-scared](https://imgflip.com/memetemplate/434706120/Puss-and-boots-scared) — fair-use, via Imgflip
+- **Screaming Bird** (`screaming-bird`) — [https://imgflip.com/memetemplate/139123308/Screaming-bird](https://imgflip.com/memetemplate/139123308/Screaming-bird) — fair-use, via Imgflip
 - **Screaming Cowboy Cat** (`screaming-cowboy-cat`) — [https://imgflip.com/memetemplate/175005582/Screaming-Cowboy-Cat](https://imgflip.com/memetemplate/175005582/Screaming-Cowboy-Cat) — fair-use, via Imgflip
 - **Shocked Monkey** (`shocked-monkey`) — [https://imgflip.com/memetemplate/18106346/Shocked-Monkey](https://imgflip.com/memetemplate/18106346/Shocked-Monkey) — fair-use, via Imgflip
 - **SpongeBob High Five** (`spongebob-high-five`) — [https://imgflip.com/memetemplate/173177339/Krusty-Krab-Spongebob-high-five](https://imgflip.com/memetemplate/173177339/Krusty-Krab-Spongebob-high-five) — fair-use, via Imgflip
@@ -65,5 +66,4 @@ like a template removed, please open an issue.
 - **Unimpressed Man** (`unimpressed-man`) — [https://imgflip.com/memetemplate/235388183/Unimpressed-man](https://imgflip.com/memetemplate/235388183/Unimpressed-man) — fair-use, via Imgflip
 - **Unimpressed Stephen A. Smith** (`unimpressed-stephen-a-smith`) — [https://imgflip.com/memetemplate/182027554/Unimpressed-Stephen-A-Smith](https://imgflip.com/memetemplate/182027554/Unimpressed-Stephen-A-Smith) — fair-use, via Imgflip
 - **Vince McMahon Reaction** (`vince-mcmahon-reaction`) — [https://imgflip.com/memetemplate/193966043/Vince-McMahon-Reaction](https://imgflip.com/memetemplate/193966043/Vince-McMahon-Reaction) — fair-use, via Imgflip
-- **Visible Confusion (Obi-Wan)** (`visible-confusion`) — [https://imgflip.com/memetemplate/151018260/Visible-Confusion](https://imgflip.com/memetemplate/151018260/Visible-Confusion) — fair-use, via Imgflip
 - **Wolf of Wall Street Celebration** (`wolf-of-wall-street-celebration`) — [https://imgflip.com/memetemplate/92219737/Wolf-of-Wallstreet-Celebration](https://imgflip.com/memetemplate/92219737/Wolf-of-Wallstreet-Celebration) — fair-use, via Imgflip
