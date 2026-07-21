@@ -221,9 +221,11 @@ function clientIp(req: IncomingMessage): string {
 
 function logRequest(req: IncomingMessage, res: ServerResponse): void {
   const start = Date.now();
+  // Capture the IP up front: the socket is nulled if the request is destroyed.
+  const ip = clientIp(req);
   res.once('finish', () => {
     process.stderr.write(
-      `${clientIp(req)} ${req.method ?? '-'} ${req.url ?? '-'} ${res.statusCode} ${Date.now() - start}ms\n`,
+      `${ip} ${req.method ?? '-'} ${req.url ?? '-'} ${res.statusCode} ${Date.now() - start}ms\n`,
     );
   });
 }
