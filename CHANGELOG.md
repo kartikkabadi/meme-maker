@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3
+
+- Added `meme update` self-update command: checks the latest release and re-runs the curl installer in place (`--check` and `--json` flags supported).
+
 ## 0.3.2
 
 - `curl | sh` installer is now truly dependency-free: auto-downloads the Node.js v20 runtime if missing, so no pre-installed Node or npm is required.
