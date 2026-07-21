@@ -15,7 +15,7 @@
     },
     {
       "id": "reveal",
-      "duration": 3.0,
+      "duration": 2.5,
       "template": null,
       "image": null,
       "text": [
@@ -37,7 +37,7 @@
     },
     {
       "id": "surfaces",
-      "duration": 3.0,
+      "duration": 2.75,
       "template": "two-buttons",
       "image": "assets/scene4-two-buttons.png",
       "text": [
@@ -48,7 +48,7 @@
     },
     {
       "id": "deterministic",
-      "duration": 3.0,
+      "duration": 2.75,
       "template": "always-has-been",
       "image": "assets/scene5-always-has-been.png",
       "text": [
@@ -70,7 +70,7 @@
     },
     {
       "id": "proof",
-      "duration": 2.5,
+      "duration": 3.5,
       "template": null,
       "image": null,
       "text": [{ "content": "RENDERED BY MEME-MAKER ITSELF", "role": "title" }],
@@ -78,7 +78,7 @@
     },
     {
       "id": "cta",
-      "duration": 4.5,
+      "duration": 5.5,
       "template": null,
       "image": null,
       "text": [
@@ -86,7 +86,7 @@
         { "content": "curl -fsSL https://raw.githubusercontent.com/kartikkabadi/meme-maker/main/install.sh | sh", "role": "code" },
         { "content": "github.com/kartikkabadi/meme-maker", "role": "subtitle" }
       ],
-      "transition": "crossfade"
+      "transition": "cut"
     }
   ]
 }
