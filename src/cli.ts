@@ -188,7 +188,14 @@ function baseFromOpts(opts: RenderOpts): MemeSpec['base'] {
 
 const templates = program
   .command('templates')
-  .description('browse the built-in template catalog (ids, sizes, text slots)');
+  .description('browse the built-in template catalog (ids, sizes, text slots)')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme templates list
+  $ meme templates show drake`,
+  );
 
 templates
   .command('list')
@@ -445,6 +452,7 @@ program
   .command('ui')
   .description('start the local web UI (template gallery, editor, render history)')
   .option('--port <n>', 'port to listen on (auto-picks a free port on conflict)')
+  .option('--json', 'suppress the human-readable stderr note; stdout is always a JSON {url} line')
   .addHelpText(
     'after',
     `
@@ -472,6 +480,13 @@ program
   .command('list')
   .description('list the bundled font families usable in text styles')
   .option('--json', 'machine-readable JSON output')
+  .addHelpText(
+    'after',
+    `
+Examples:
+  $ meme fonts list
+  $ meme fonts list --json`,
+  )
   .action((opts: { json?: boolean }) => {
     const fonts = Object.keys(BUILTIN_FONTS);
     output(fonts, opts.json ?? false, () => {
