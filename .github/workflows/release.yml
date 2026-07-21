@@ -21,8 +21,13 @@ jobs:
             target: macos-x64
           - os: macos-15
             target: macos-arm64
+          - os: windows-latest
+            target: win32-x64
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -58,7 +63,7 @@ jobs:
       - name: Verify all platform artifacts are present
         run: |
           missing=0
-          for target in linux-x64 macos-x64 macos-arm64; do
+          for target in linux-x64 macos-x64 macos-arm64 win32-x64; do
             if [ ! -s "meme-maker-$target.tar.gz" ]; then
               echo "::error::Missing artifact meme-maker-$target.tar.gz"
               missing=1
@@ -90,6 +95,7 @@ jobs:
             meme-maker-linux-x64.tar.gz \
             meme-maker-macos-x64.tar.gz \
             meme-maker-macos-arm64.tar.gz \
+            meme-maker-win32-x64.tar.gz \
             "agent-meme-maker-$GITHUB_REF_NAME.tar.gz" \
             install.sh
         env:
