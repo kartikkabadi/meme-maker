@@ -63,6 +63,9 @@ export function App() {
 
   return (
     <div class="app">
+      <a class="skip-link" href="#main">
+        Skip to content
+      </a>
       {view !== 'editor' && (
         <header class="topbar">
           <span class="brand" role="heading" aria-level={1}>
