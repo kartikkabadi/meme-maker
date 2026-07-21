@@ -48,7 +48,7 @@
     "build:ui": "vite build ui",
     "dev:ui": "vite ui",
     "ui": "node dist/cli.js ui",
-    "ui:portless": "portless --script ui",
+    "ui:portless": "node scripts/portless.js",
     "build:manifest": "tsx scripts/build-manifest.ts",
     "build:thumbs": "tsx scripts/build-thumbs.ts",
     "report:assets": "tsx scripts/asset-size-report.ts",
