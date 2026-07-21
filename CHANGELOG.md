@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.2
+
+- `curl | sh` installer is now truly dependency-free: auto-downloads the Node.js v20 runtime if missing, so no pre-installed Node or npm is required.
+- Native Windows support (Git Bash / MSYS2 / Cygwin) with `.cmd` wrappers for Command Prompt.
+- Release workflow now builds and ships `meme-maker-win32-x64.tar.gz`.
+- Cross-OS install CI tests the curl installer on Linux, macOS, and Windows, plus a no-Node container leg.
+- Portless local HTTPS instructions now default to non-privileged port 8443 (no sudo, no root-owned `~/.portless` files).
+
 ## 0.3.1
 
 - Final production-readiness audit fixes:
