@@ -18,25 +18,36 @@ npx portless
 
 ## Run
 
-From the repo root (after `npm run build`):
+From the repo root (after `npm run build`), run portless on a non-privileged proxy port:
 
 ```sh
-npx portless          # -> https://meme.localhost
+PORTLESS_PORT=8443 npx portless   # -> https://meme.localhost:8443 (no sudo)
 ```
 
-Or, if `portless` is already on your PATH:
+Equivalent npm script (sets `PORTLESS_PORT=8443` for you, works on Linux/macOS/Windows):
 
 ```sh
-portless
+npm run ui:portless   # node scripts/portless.js -> https://meme.localhost:8443
 ```
 
-Equivalent npm script:
+`PORTLESS_PORT` picks the port the portless proxy listens on. The default is 443, which gives the cleanest URL (`https://meme.localhost`, no port suffix) but is a privileged port on macOS/Linux: portless has to elevate with sudo, and the elevated run can leave root-owned files in `~/.portless` that break later non-sudo runs (see Troubleshooting). Ports above 1024 like 8443 need no elevation at all.
+
+If you still want the port-less URL:
 
 ```sh
-npm run ui:portless   # portless --script ui
+npx portless          # -> https://meme.localhost (prompts for sudo on macOS/Linux)
 ```
 
-`portless.json` at the repo root sets the app name (`meme`) and the script to run (`ui`, which starts `meme ui`). On first run, portless generates and trusts a local CA and binds port 443 (it may prompt for sudo on macOS/Linux). Use `portless --no-tls` for plain `http://meme.localhost`.
+`portless.json` at the repo root sets the app name (`meme`) and the script to run (`ui`, which starts `meme ui`). On first run, portless generates a local CA and asks to trust it (this one step may prompt for sudo). Use `portless --no-tls` for plain HTTP.
+
+## Troubleshooting
+
+**HTTPS fails after a sudo run (0-byte certificate, root-owned files).** If portless was ever run with sudo (e.g. to bind port 443), files under `~/.portless` — especially `ca.srl` — can end up owned by root. Later non-sudo runs then can't write to them and generate a broken (0-byte) certificate. Fix the ownership and re-run on a non-privileged port:
+
+```sh
+sudo chown -R $(whoami) ~/.portless
+PORTLESS_PORT=8443 npx portless
+```
 
 ## How it works
 
