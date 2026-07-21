@@ -172,11 +172,25 @@ export function Editor({ spec: initial, onBack, onToast, dark, onToggleTheme }: 
     rect: { x: number; y: number; width: number; height: number };
   } | null>(null);
 
-  const scale = (): number => {
+  const imgSrc = render ? `data:image/${render.format};base64,${render.base64}` : null;
+
+  const [imgScale, setImgScale] = useState(1);
+
+  useEffect(() => {
     const img = imgRef.current;
-    if (!img || !measure) return 1;
-    return img.clientWidth / measure.width;
-  };
+    if (!img || !measure) return;
+    const update = () => {
+      if (img.clientWidth > 0) setImgScale(img.clientWidth / measure.width);
+    };
+    update();
+    img.addEventListener('load', update);
+    const ro = new ResizeObserver(update);
+    ro.observe(img);
+    return () => {
+      img.removeEventListener('load', update);
+      ro.disconnect();
+    };
+  }, [measure, imgSrc]);
 
   const onPointerDown = (e: PointerEvent, box: number, mode: 'move' | 'resize') => {
     if (!advanced || !measure) return;
@@ -190,7 +204,7 @@ export function Editor({ spec: initial, onBack, onToast, dark, onToggleTheme }: 
   const onPointerMove = (e: PointerEvent) => {
     const d = dragState.current;
     if (!d || !measure) return;
-    const k = scale();
+    const k = imgScale;
     const dx = (e.clientX - d.startX) / k;
     const dy = (e.clientY - d.startY) / k;
     const r =
@@ -207,8 +221,6 @@ export function Editor({ spec: initial, onBack, onToast, dark, onToggleTheme }: 
   const onPointerUp = () => {
     dragState.current = null;
   };
-
-  const imgSrc = render ? `data:image/${render.format};base64,${render.base64}` : null;
 
   return (
     <div class="app">
@@ -270,7 +282,7 @@ export function Editor({ spec: initial, onBack, onToast, dark, onToggleTheme }: 
               {overlay &&
                 measure &&
                 measure.boxes.map((b, i) => {
-                  const k = scale();
+                  const k = imgScale;
                   return (
                     <button
                       key={i}
