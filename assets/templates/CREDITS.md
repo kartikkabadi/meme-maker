@@ -52,6 +52,7 @@ like a template removed, please open an issue.
 - **Inside You There Are Two Wolves** (`inside-you-there-are-two-wolves`) — [https://imgflip.com/memetemplate/175043930/Inside-you-there-are-two-wolves](https://imgflip.com/memetemplate/175043930/Inside-you-there-are-two-wolves) — fair-use, via Imgflip
 - **Is This a Pigeon?** (`is-this-a-pigeon`) — [https://imgflip.com/memetemplate/Is-This-A-Pigeon](https://imgflip.com/memetemplate/Is-This-A-Pigeon) — fair-use, via Imgflip
 - **Jim Halpert Explains** (`jim-halpert-explains`) — [https://imgflip.com/memetemplate/228097860/Jim-Halpert-Explains](https://imgflip.com/memetemplate/228097860/Jim-Halpert-Explains) — fair-use, via Imgflip
+- **Jordan Schlansky Staring** (`jordan-schlansky-staring`) — [https://x.com/vishctx/status/2079772291827909009](https://x.com/vishctx/status/2079772291827909009) — fair-use, via Team Coco / Conan O'Brien Needs a Friend
 - **Judgemental Volturi** (`judgemental-volturi`) — [https://imgflip.com/memetemplate/316853891/Judgemental-Volturi](https://imgflip.com/memetemplate/316853891/Judgemental-Volturi) — fair-use, via Imgflip
 - **Left Exit 12 Off Ramp** (`left-exit-12-off-ramp`) — [https://imgflip.com/memetemplate/Left-Exit-12-Off-Ramp](https://imgflip.com/memetemplate/Left-Exit-12-Off-Ramp) — fair-use, via Imgflip
 - **Long Day At The Factory** (`long-day-factory`) — [https://imgflip.com/memetemplate/626639141/Long-day-factory](https://imgflip.com/memetemplate/626639141/Long-day-factory) — fair-use, via Imgflip
